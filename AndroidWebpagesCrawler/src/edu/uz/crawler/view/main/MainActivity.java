@@ -41,29 +41,21 @@ public class MainActivity extends Activity implements ActionBar.TabListener,
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		// Set up the action bar.
-		final ActionBar actionBar = getActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		final ActionBar actionBar = setUpActionBar();
 
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the activity.
 		mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
 
 		// Set up the ViewPager with the sections adapter.
-		mViewPager = (ViewPager) findViewById(R.id.pager);
-		mViewPager.setAdapter(mSectionsPagerAdapter);
+		setUpViewPager();
 
-		// When swiping between different sections, select the corresponding
-		// tab. We can also use ActionBar.Tab#select() to do this if we have
-		// a reference to the Tab.
-		mViewPager
-				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-					@Override
-					public void onPageSelected(int position) {
-						actionBar.setSelectedNavigationItem(position);
-					}
-				});
+		setUpViewPagerListener(actionBar);
 
+		setUpTabs(actionBar);
+	}
+
+	private void setUpTabs(final ActionBar actionBar) {
 		// For each of the sections in the app, add a tab to the action bar.
 		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
 			// Create a tab with text corresponding to the page title defined by
@@ -74,6 +66,30 @@ public class MainActivity extends Activity implements ActionBar.TabListener,
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
+	}
+
+	private void setUpViewPagerListener(final ActionBar actionBar) {
+		// When swiping between different sections, select the corresponding
+		// tab. We can also use ActionBar.Tab#select() to do this if we have
+		// a reference to the Tab.
+		mViewPager
+				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+					@Override
+					public void onPageSelected(int position) {
+						actionBar.setSelectedNavigationItem(position);
+					}
+				});
+	}
+
+	private void setUpViewPager() {
+		mViewPager = (ViewPager) findViewById(R.id.pager);
+		mViewPager.setAdapter(mSectionsPagerAdapter);
+	}
+
+	private ActionBar setUpActionBar() {
+		final ActionBar actionBar = getActionBar();
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		return actionBar;
 	}
 
 	@Override
@@ -113,6 +129,36 @@ public class MainActivity extends Activity implements ActionBar.TabListener,
 			FragmentTransaction fragmentTransaction) {
 	}
 
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void showProgress() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void hideProgress() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setItems(List<String> items) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void showMessage(String message) {
+		// TODO Auto-generated method stub
+
+	}
+
 	/**
 	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
 	 * one of the sections/tabs/pages.
@@ -142,11 +188,11 @@ public class MainActivity extends Activity implements ActionBar.TabListener,
 			Locale l = Locale.getDefault();
 			switch (position) {
 			case 0:
-				return getString(R.string.title_section1).toUpperCase(l);
+				return getString(R.string.webpage_section).toUpperCase(l);
 			case 1:
-				return getString(R.string.title_section2).toUpperCase(l);
+				return getString(R.string.topics_section).toUpperCase(l);
 			case 2:
-				return getString(R.string.title_section3).toUpperCase(l);
+				return getString(R.string.crawl_section).toUpperCase(l);
 			}
 			return null;
 		}
@@ -183,36 +229,6 @@ public class MainActivity extends Activity implements ActionBar.TabListener,
 					false);
 			return rootView;
 		}
-	}
-
-	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void showProgress() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void hideProgress() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setItems(List<String> items) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void showMessage(String message) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

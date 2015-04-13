@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">AndroidWebpagesCrawler</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="app_name">Webpages Crawler</string>
+    <string name="webpage_section">Webpage</string>
+    <string name="topics_section">Topics</string>
+    <string name="crawl_section">Crawl!</string>
     <string name="action_settings">Settings</string>
 
 </resources>
