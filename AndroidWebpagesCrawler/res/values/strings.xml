@@ -4,7 +4,6 @@
     <string name="app_name">Webpages Crawler</string>
     <string name="webpage_section">Webpage</string>
     <string name="topics_section">Topics</string>
-    <string name="crawl_section">Crawl!</string>
-    <string name="action_settings">Settings</string>
+    <string name="settings_section">Settings</string>
 
 </resources>
