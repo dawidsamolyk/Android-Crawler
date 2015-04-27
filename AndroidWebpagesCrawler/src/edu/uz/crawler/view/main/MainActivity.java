@@ -1,5 +1,6 @@
 package edu.uz.crawler.view.main;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
@@ -8,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import edu.uz.crawler.R;
 
+@SuppressLint("NewApi")
 public class MainActivity extends FragmentActivity implements
 		ActionBar.TabListener {
 	private ViewPager viewPager;
@@ -51,7 +53,6 @@ public class MainActivity extends FragmentActivity implements
 			}
 		});
 
-		
 	}
 
 	@Override
