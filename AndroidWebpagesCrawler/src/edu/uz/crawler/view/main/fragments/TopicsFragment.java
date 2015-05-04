@@ -12,22 +12,19 @@ import android.widget.ListView;
 
 public class TopicsFragment extends Fragment {
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		View rootView = inflater.inflate(R.layout.fragment_topics, container,
-				false);
+	View rootView = inflater.inflate(R.layout.fragment_topics, container, false);
 
-		ListView list = (ListView) rootView.findViewById(R.id.listView);
-		final ArrayList<String> sampleTopics = new ArrayList<String>();
-		// XXX Sample data
-		sampleTopics.add("Topic 1");
-		sampleTopics.add("Topic 2");
-		sampleTopics.add("Topic 3");
-		list.setAdapter(new TopicsListAdapter(sampleTopics, rootView
-				.getContext()));
+	ListView list = (ListView) rootView.findViewById(R.id.listView);
+	final ArrayList<String> sampleTopics = new ArrayList<String>();
+	// XXX Sample data
+	sampleTopics.add("Topic 1");
+	sampleTopics.add("Topic 2");
+	sampleTopics.add("Topic 3");
+	list.setAdapter(new TopicsListAdapter(sampleTopics, rootView.getContext()));
 
-		return rootView;
-	}
+	return rootView;
+    }
 }

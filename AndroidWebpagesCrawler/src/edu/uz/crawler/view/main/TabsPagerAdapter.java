@@ -9,25 +9,25 @@ import edu.uz.crawler.view.main.fragments.WebpageFragment;
 
 public class TabsPagerAdapter extends FragmentPagerAdapter {
     public TabsPagerAdapter(FragmentManager fragmentManager) {
-        super(fragmentManager);
+	super(fragmentManager);
     }
- 
+
     @Override
     public Fragment getItem(int position) {
-    	switch (position) {
-        case 0:
-            return new WebpageFragment();
-        case 1:
-            return new TopicsFragment();
-        case 2:
-            return new SettingsFragment();
-        }
- 
-        return null;
+	switch (position) {
+	    case 0:
+		return new WebpageFragment();
+	    case 1:
+		return new TopicsFragment();
+	    case 2:
+		return new SettingsFragment();
+	}
+
+	return null;
     }
- 
+
     @Override
     public int getCount() {
-    	return 3;
+	return 3;
     }
 }
