@@ -1,43 +1,50 @@
 package edu.uz.crawler;
 
-import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
+import edu.uz.validators.WebpageValidator;
 
 public class CrawlingController {
+    private CrawlingConfiguration config;
+    private CrawlController controller;
 
-    public static void main(String[] args) throws Exception {
-	CrawlConfig config = new CrawlConfig();
-	// TODO - parametryzuj
-	config.setCrawlStorageFolder("data/crawl");
-	// config.setConnectionTimeout(500);
-	// config.setSocketTimeout(500);
-	config.setIncludeHttpsPages(true);
-	config.setFollowRedirects(true);
-	config.setPolitenessDelay(100);
-	// TODO - ustawienia Proxy
-	config.setMaxDepthOfCrawling(100);
-	// config.setMaxOutgoingLinksToFollow(100);
-	// config.setMaxTotalConnections(100);
-	config.setResumableCrawling(false);
-	config.setUserAgentString("Android Crawler App");
+    public CrawlingController(final CrawlingConfiguration config) throws IllegalArgumentException {
+	if (config == null) {
+	    throw new IllegalArgumentException("Not specified crawling configuration!F");
+	}
+	this.config = config;
+    }
+
+    public CrawlingMonitor start(final String pageUrl) throws IllegalArgumentException,
+	    IllegalStateException, Exception {
+	if (controller != null && !controller.isFinished()) {
+	    throw new IllegalStateException("Cannot start while another crawling is running!");
+	}
+	WebpageValidator.checkUrl(pageUrl);
 
 	PageFetcher pageFetcher = new PageFetcher(config);
 	RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
-	robotstxtConfig.setUserAgentName("Android Crawler App");
 	RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
 
-	CrawlController controller = new CrawlController(config, pageFetcher, robotstxtServer);
+	controller = new CrawlController(config, pageFetcher, robotstxtServer);
 
-	controller.addSeed("http://www.intel.pl/");
+	controller.addSeed(pageUrl);
 
-	// TODO - parametryzuj
-	int numberOfCrawlers = 8;
+	int numberOfCrawlers = Runtime.getRuntime().availableProcessors();
 	controller.startNonBlocking(MyCrawler.class, numberOfCrawlers);
 
-	controller.isFinished();
-	controller.isShuttingDown();
+	return new CrawlingMonitor(controller);
+    }
+
+    public CrawlingMonitor stop() {
+	if (controller == null) {
+	    throw new IllegalStateException("Crawler not started!");
+	}
+	if (!controller.isFinished()) {
+	    controller.shutdown();
+	}
+	return new CrawlingMonitor(controller);
     }
 }
