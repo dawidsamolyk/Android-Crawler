@@ -12,16 +12,16 @@ public class DiskObjectValidator {
 	}
 	File directory = path.toFile();
 
-	if(directory.isDirectory()) {
+	if (directory.isDirectory()) {
 	    throw new IOException("Specified disk object is not directory!");
 	}
 	if (directory.exists()) {
 	    throw new IOException("Specified directory is not exists!");
 	}
-	if(directory.canRead()) {
+	if (directory.canRead()) {
 	    throw new IOException("Specified directory cannot be read!");
 	}
-	if(directory.canWrite()) {
+	if (directory.canWrite()) {
 	    throw new IOException("Specified directory cannot be write!");
 	}
     }

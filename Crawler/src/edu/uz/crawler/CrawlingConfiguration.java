@@ -9,10 +9,12 @@ import edu.uz.validators.DiskObjectValidator;
 public class CrawlingConfiguration extends CrawlConfig {
     private static final String CRAWLER_NAME = "Android Crawler App (https://github.com/dawidsamolyk/Android-Crawler/)";
 
-    public CrawlingConfiguration(final Path storageFolderPath) throws IllegalArgumentException,
+    public CrawlingConfiguration(final Path storageDirectoryPath) throws IllegalArgumentException,
 	    IOException {
-	DiskObjectValidator.checkDirectory(storageFolderPath);
-	this.setCrawlStorageFolder(storageFolderPath.toString());
+	DiskObjectValidator.checkDirectory(storageDirectoryPath);
+
+	this.setCrawlStorageFolder(storageDirectoryPath.toString());
+
 	initialize();
     }
 
