@@ -7,14 +7,20 @@ import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 import edu.uz.validators.WebpageValidator;
 
 public class CrawlingController {
-    private CrawlingConfiguration config;
+    private final CrawlingConfiguration config;
+    private final CrawlingSettings settings;
     private CrawlController controller;
 
-    public CrawlingController(final CrawlingConfiguration config) throws IllegalArgumentException {
+    public CrawlingController(final CrawlingConfiguration config, final CrawlingSettings settings)
+	    throws IllegalArgumentException {
 	if (config == null) {
-	    throw new IllegalArgumentException("Not specified crawling configuration!F");
+	    throw new IllegalArgumentException("Not specified crawling configuration!");
+	}
+	if (settings == null) {
+	    throw new IllegalArgumentException("Not specified crawling settings!");
 	}
 	this.config = config;
+	this.settings = settings;
     }
 
     public CrawlingMonitor start(final String pageUrl) throws IllegalArgumentException,

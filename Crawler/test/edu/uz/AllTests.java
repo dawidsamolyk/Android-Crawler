@@ -8,9 +8,11 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import edu.uz.crawler.CrawlingConfigurationTest;
+import edu.uz.crawler.MyCrawlerTest;
+import edu.uz.validators.WebpageValidatorTest;
 
 @RunWith(Suite.class)
-@SuiteClasses({ CrawlingConfigurationTest.class })
+@SuiteClasses({ CrawlingConfigurationTest.class, WebpageValidatorTest.class, MyCrawlerTest.class })
 public class AllTests {
     public static void main(String[] args) {
 	Result result = JUnitCore.runClasses(AllTests.class);
