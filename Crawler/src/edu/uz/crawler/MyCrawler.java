@@ -1,7 +1,6 @@
 package edu.uz.crawler;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.regex.Pattern;
 
 import edu.uci.ics.crawler4j.crawler.Page;
@@ -15,13 +14,9 @@ public class MyCrawler extends WebCrawler {
 	    + "|png|mp3|mp3|zip|gz))$");
     private static String[] topics;
     public static String webpageUrl;
-    public static boolean offlineVersion = false;
-    public static boolean downloadImages = false;
-    public static boolean thumbnailImages = false;
-    public static boolean contentSearch = false;
-    public static boolean requireAllTopicsOnOnePage = false;
-    public static List<Page> pagesToSave = new ArrayList<Page>();
-    
+    public static final CrawlingSettings SETTINGS = new CrawlingSettings();
+    public static ConcurrentLinkedQueue<Page> pagesToSave = new ConcurrentLinkedQueue<Page>();
+
     public static void setTopics(String[] topics) {
 	if (topics == null || topics.length == 0) {
 	    throw new IllegalArgumentException("Nie podano tematów do wyfiltrowania!");
@@ -55,14 +50,37 @@ public class MyCrawler extends WebCrawler {
 	return !FILTERS.matcher(href).matches() && href.contains(webpageUrl);
     }
 
+    private boolean containsAllTopics(String text) {
+	String textToAnalyze = text.toLowerCase();
+
+	for (String eachTopic : topics) {
+	    String topicToCheck = eachTopic.toLowerCase();
+
+	    if (!textToAnalyze.contains(topicToCheck)) {
+		return false;
+	    }
+	}
+	return true;
+    }
+
+    private boolean containsAnyTopic(String text) {
+	String textToAnalyze = text.toLowerCase();
+
+	for (String eachTopic : topics) {
+	    String topicToCheck = eachTopic.toLowerCase();
+
+	    if (textToAnalyze.contains(topicToCheck)) {
+		return true;
+	    }
+	}
+	return false;
+    }
+
     /**
      * @see edu.uci.ics.crawler4j.crawler.WebCrawler#visit(edu.uci.ics.crawler4j.crawler.Page)
      */
     @Override
     public void visit(Page page) {
-	String url = page.getWebURL().getURL();
-	System.out.println("URL: " + url);
-
 	boolean downloadThisPage = false;
 
 	ParseData parseData = page.getParseData();
@@ -70,40 +88,21 @@ public class MyCrawler extends WebCrawler {
 	if (parseData instanceof HtmlParseData) {
 	    HtmlParseData htmlParseData = (HtmlParseData) parseData;
 
-	    String pageTitle = htmlParseData.getTitle();
-	    String pageContent = htmlParseData.getText();
+	    String contentToAnalyze = htmlParseData.getTitle();
 
-	    boolean foundAnyTopicInPageTitle = false;
-	    for (String eachTopic : topics) {
-		if (pageTitle.contains(eachTopic)) {
-		    foundAnyTopicInPageTitle = true;
-		    break;
-		}
+	    if (SETTINGS.contentSearch) {
+		contentToAnalyze += htmlParseData.getText();
 	    }
 
-	    boolean foundAnyTopicInPageContent = false;
-	    if (contentSearch || !foundAnyTopicInPageTitle) {
-		for (String eachTopic : topics) {
-		    if (pageContent.contains(eachTopic)) {
-			foundAnyTopicInPageContent = true;
-			break;
-		    }
-		}
+	    if (SETTINGS.requireAllTopicsOnOnePage) {
+		downloadThisPage = containsAllTopics(contentToAnalyze);
 	    }
-
-	    if (foundAnyTopicInPageContent && foundAnyTopicInPageTitle) {
-		if (requireAllTopicsOnOnePage) {
-		    String pageTitleAndContent = pageTitle + pageContent;
-		    // TODO to implement
-		}
-		else {
-		    downloadThisPage = true;
-		}
+	    else {
+		downloadThisPage = containsAnyTopic(contentToAnalyze);
 	    }
-
 	}
-	
-	if(downloadThisPage) {
+
+	if (downloadThisPage) {
 	    pagesToSave.add(page);
 	}
     }
