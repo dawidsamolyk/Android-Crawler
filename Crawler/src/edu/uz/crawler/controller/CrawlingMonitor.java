@@ -1,4 +1,4 @@
-package edu.uz.crawler;
+package edu.uz.crawler.controller;
 
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 
@@ -13,7 +13,7 @@ public class CrawlingMonitor {
 	this.controller = controller;
     }
     
-    public boolean isFinished() {
+    public final boolean isFinished() {
 	return controller.isFinished();
     }
 }

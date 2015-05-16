@@ -1,10 +1,12 @@
-package edu.uz.crawler;
+package edu.uz.crawler.controller;
 
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
-import edu.uz.validators.WebpageValidator;
+import edu.uz.crawler.Crawler;
+import edu.uz.crawler.config.CrawlingConfiguration;
+import edu.uz.crawler.config.CrawlingSettings;
 
 public class CrawlingController {
     private final CrawlingConfiguration config;
@@ -23,12 +25,11 @@ public class CrawlingController {
 	this.settings = settings;
     }
 
-    public CrawlingMonitor start(final String pageUrl) throws IllegalArgumentException,
+    public CrawlingMonitor start() throws IllegalArgumentException,
 	    IllegalStateException, Exception {
 	if (controller != null && !controller.isFinished()) {
 	    throw new IllegalStateException("Cannot start while another crawling is running!");
 	}
-	WebpageValidator.checkUrl(pageUrl);
 
 	PageFetcher pageFetcher = new PageFetcher(config);
 	RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
@@ -36,10 +37,11 @@ public class CrawlingController {
 
 	controller = new CrawlController(config, pageFetcher, robotstxtServer);
 
-	controller.addSeed(pageUrl);
+	controller.addSeed(settings.getWebpageUrl());
 
 	int numberOfCrawlers = Runtime.getRuntime().availableProcessors();
-	controller.startNonBlocking(MyCrawler.class, numberOfCrawlers);
+	Crawler.SETTINGS = settings;
+	controller.startNonBlocking(Crawler.class, numberOfCrawlers);
 
 	return new CrawlingMonitor(controller);
     }

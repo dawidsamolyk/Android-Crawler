@@ -1,4 +1,4 @@
-package edu.uz.crawler;
+package edu.uz.crawler.config;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -30,7 +30,7 @@ public class CrawlingConfiguration extends CrawlConfig {
 	this.setUserAgentString(CRAWLER_NAME);
     }
 
-    public void setMaxDepthOfCrawling(int levels) {
+    public void setMaxDepthOfCrawling(final int levels) {
 	this.setMaxDepthOfCrawling(levels);
     }
 }

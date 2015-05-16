@@ -1,4 +1,4 @@
-package edu.uz.crawler;
+package edu.uz.crawler.config;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,6 +6,8 @@ import java.io.IOException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+import edu.uz.crawler.config.CrawlingConfiguration;
 
 public class CrawlingConfigurationTest {
     @Rule
