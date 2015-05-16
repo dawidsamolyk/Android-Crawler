@@ -9,48 +9,52 @@ import edu.uz.crawler.config.CrawlingConfiguration;
 import edu.uz.crawler.config.CrawlingSettings;
 
 public class CrawlingController {
-    private final CrawlingConfiguration config;
-    private final CrawlingSettings settings;
-    private CrawlController controller;
+    private static final int CPU_CORES = Runtime.getRuntime().availableProcessors();
+    private final CrawlController controller;
+    private boolean started = false;
 
     public CrawlingController(final CrawlingConfiguration config, final CrawlingSettings settings)
-	    throws IllegalArgumentException {
+	    throws Exception {
 	if (config == null) {
 	    throw new IllegalArgumentException("Not specified crawling configuration!");
 	}
 	if (settings == null) {
 	    throw new IllegalArgumentException("Not specified crawling settings!");
 	}
-	this.config = config;
-	this.settings = settings;
+	this.controller = getNewCrawlController(config);
+	configureCrawling(settings);
     }
 
-    public CrawlingMonitor start() throws IllegalArgumentException,
-	    IllegalStateException, Exception {
-	if (controller != null && !controller.isFinished()) {
-	    throw new IllegalStateException("Cannot start while another crawling is running!");
-	}
-
+    protected CrawlController getNewCrawlController(final CrawlingConfiguration config)
+	    throws Exception {
 	PageFetcher pageFetcher = new PageFetcher(config);
 	RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
 	RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
 
-	controller = new CrawlController(config, pageFetcher, robotstxtServer);
+	return new CrawlController(config, pageFetcher, robotstxtServer);
+    }
 
-	controller.addSeed(settings.getWebpageUrl());
-
-	int numberOfCrawlers = Runtime.getRuntime().availableProcessors();
+    protected void configureCrawling(final CrawlingSettings settings) {
+	controller.addSeed(settings.getWebpageURL().getURL());
 	Crawler.SETTINGS = settings;
-	controller.startNonBlocking(Crawler.class, numberOfCrawlers);
+    }
+
+    public CrawlingMonitor start() throws IllegalStateException {
+	if (!controller.isFinished()) {
+	    throw new IllegalStateException("Cannot start again while crawling is running!");
+	}
+
+	controller.startNonBlocking(Crawler.class, CPU_CORES);
+	started = true;
 
 	return new CrawlingMonitor(controller);
     }
 
-    public CrawlingMonitor stop() {
-	if (controller == null) {
+    public CrawlingMonitor stop() throws IllegalStateException {
+	if (!started || controller.isFinished()) {
 	    throw new IllegalStateException("Crawler not started!");
 	}
-	if (!controller.isFinished()) {
+	if (started && !controller.isFinished()) {
 	    controller.shutdown();
 	}
 	return new CrawlingMonitor(controller);

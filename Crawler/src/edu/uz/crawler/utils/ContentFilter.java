@@ -6,7 +6,7 @@ import edu.uz.crawler.Crawler;
 
 public class ContentFilter {
 
-    private final boolean containsAllTopics(final String text) {
+    private boolean containsAllTopics(final String text) {
 	String textToAnalyze = text.toLowerCase();
 
 	for (String eachTopic : Crawler.SETTINGS.getTopics()) {
@@ -19,7 +19,7 @@ public class ContentFilter {
 	return true;
     }
 
-    private final boolean containsAnyTopic(final String text) {
+    private boolean containsAnyTopic(final String text) {
 	String textToAnalyze = text.toLowerCase();
 
 	for (String eachTopic : Crawler.SETTINGS.getTopics()) {
@@ -41,7 +41,7 @@ public class ContentFilter {
 	}
     }
 
-    public final boolean containsTopicsWithSettings(final HtmlParseData htmlParseData) {
+    public boolean containsTopicsWithCrawlerSettings(final HtmlParseData htmlParseData) {
 	String contentToAnalyze = htmlParseData.getTitle();
 
 	if (Crawler.SETTINGS.contentSearch) {
@@ -51,7 +51,7 @@ public class ContentFilter {
 	return containsSpecifiedTopics(contentToAnalyze);
     }
 
-    public boolean containsTopicsWithSettings(TextParseData textParseData) {
+    public boolean containsTopicsWithCrawlerSettings(TextParseData textParseData) {
 	String contentToAnalyze = textParseData.getTextContent();
 
 	return containsSpecifiedTopics(contentToAnalyze);

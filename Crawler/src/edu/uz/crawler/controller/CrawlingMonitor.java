@@ -13,7 +13,7 @@ public class CrawlingMonitor {
 	this.controller = controller;
     }
     
-    public final boolean isFinished() {
+    public boolean isFinished() {
 	return controller.isFinished();
     }
 }

@@ -5,7 +5,8 @@ import java.io.IOException;
 
 public class DiskObjectValidator {
 
-    public static void checkDirectory(File directory) throws IOException, IllegalArgumentException {
+    public static void checkDirectory(final File directory) throws IOException,
+	    IllegalArgumentException {
 	if (directory == null) {
 	    throw new IllegalArgumentException("Not specified directory path!");
 	}

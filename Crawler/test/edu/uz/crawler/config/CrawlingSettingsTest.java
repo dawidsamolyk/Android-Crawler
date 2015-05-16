@@ -62,7 +62,7 @@ public class CrawlingSettingsTest {
 	String webpageAddress = "http://wp.pl";
 	CrawlingSettings fixture = getFixture(webpageAddress, new String[] { "Topic" });
 
-	assertEquals(webpageAddress, fixture.getWebpageUrl());
+	assertEquals(webpageAddress, fixture.getWebpageURL().getURL());
     }
 
     public static CrawlingSettings getFixture(String webUrl, String[] topics) {

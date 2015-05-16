@@ -17,8 +17,6 @@ public class CrawlerContentFilterTest {
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
-    // TODO shouldVisit tests
-
     @Before
     public void setUp() throws Exception {
 	Crawler.PAGES_TO_SAVE.clear();

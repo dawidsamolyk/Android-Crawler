@@ -4,10 +4,9 @@ import edu.uci.ics.crawler4j.url.WebURL;
 import edu.uz.validators.WebpageValidator;
 
 public class CrawlingSettings {
-    private String webpageUrl;
+    private WebURL webpageUrl;
     private String[] topics;
     
-    public boolean searchAlsoInSubpages = true;
     public boolean contentSearch = false;
     public boolean requireAllTopicsOnOnePage = false;
 
@@ -20,10 +19,9 @@ public class CrawlingSettings {
 	if (webpageUrl == null || webpageUrl.getURL() == null) {
 	    throw new IllegalArgumentException("Nie podano adresu strony!");
 	}
-	String url = webpageUrl.getURL();
-	WebpageValidator.checkUrl(url);
+	WebpageValidator.checkUrl(webpageUrl.getURL());
 
-	this.webpageUrl = url;
+	this.webpageUrl = webpageUrl;
     }
 
     private void setTopics(final String[] topics) throws IllegalArgumentException {
@@ -38,18 +36,11 @@ public class CrawlingSettings {
 	this.topics = topics;
     }
 
-    public final String getWebpageUrl() {
+    public WebURL getWebpageURL() {
 	return webpageUrl;
     }
 
-    public final String[] getTopics() {
+    public String[] getTopics() {
 	return topics;
     }
-
-    public void restoreDefaultSettings() {
-	searchAlsoInSubpages = true;
-	contentSearch = false;
-	requireAllTopicsOnOnePage = false;
-    }
-
 }

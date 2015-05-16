@@ -15,9 +15,9 @@ import edu.uz.crawler.utils.ContentFilter;
 public class Crawler extends WebCrawler {
     private final static Pattern FILTERS = Pattern
 	    .compile(".*(\\.(css|js|gif|jpg|png|mp3|mp3|zip|gz))$");
-    private ContentFilter filter = new ContentFilter();
-    public static CrawlingSettings SETTINGS;
+    private static final ContentFilter contentFilter = new ContentFilter();
     public static final ConcurrentLinkedQueue<Page> PAGES_TO_SAVE = new ConcurrentLinkedQueue<Page>();
+    public static CrawlingSettings SETTINGS;
 
     /**
      * This method receives two parameters. The first parameter is the page in
@@ -29,23 +29,19 @@ public class Crawler extends WebCrawler {
      *      edu.uci.ics.crawler4j.url.WebURL)
      */
     @Override
-    public final boolean shouldVisit(final Page referringPage, final WebURL url)
+    public boolean shouldVisit(final Page referringPage, final WebURL url)
 	    throws IllegalArgumentException, IllegalStateException {
 	if (SETTINGS == null) {
 	    throw new IllegalStateException("Brak ustawieñ Crawlera!");
 	}
 
-	String webpageUrl = SETTINGS.getWebpageUrl();
+	String crawledWebpageDomain = SETTINGS.getWebpageURL().getDomain().toLowerCase();
+	String actualWebpageUrl = url.getURL().toLowerCase();
 
-	if (webpageUrl == null || webpageUrl.isEmpty()) {
-	    throw new IllegalArgumentException(
-		    "Nie podano adresu serwisu www, z którego maj¹ byæ œci¹gane strony z podanymi tematami!");
-	}
+	boolean isPageWithContent = !FILTERS.matcher(actualWebpageUrl).matches();
+	boolean isPageInSameDomainAsCrawlingWebpage = actualWebpageUrl.contains(crawledWebpageDomain);
 
-	String href = url.getURL().toLowerCase();
-	webpageUrl = webpageUrl.toLowerCase();
-
-	return !FILTERS.matcher(href).matches() && href.contains(webpageUrl);
+	return isPageWithContent && isPageInSameDomainAsCrawlingWebpage;
     }
 
     /**
@@ -57,18 +53,19 @@ public class Crawler extends WebCrawler {
 	    throw new IllegalStateException("Brak ustawieñ Crawlera!");
 	}
 
-	ParseData parseData = page.getParseData();
+	ParseData dataOnPage = page.getParseData();
 
-	if (parseData instanceof HtmlParseData) {
-	    HtmlParseData htmlParseData = (HtmlParseData) parseData;
+	if (dataOnPage instanceof HtmlParseData) {
+	    HtmlParseData htmlParseData = (HtmlParseData) dataOnPage;
 
-	    if (filter.containsTopicsWithSettings(htmlParseData)) {
+	    if (contentFilter.containsTopicsWithCrawlerSettings(htmlParseData)) {
 		PAGES_TO_SAVE.add(page);
 	    }
-	} else if (parseData instanceof TextParseData) {
-	    TextParseData textParseData = (TextParseData) parseData;
+	}
+	else if (dataOnPage instanceof TextParseData) {
+	    TextParseData textParseData = (TextParseData) dataOnPage;
 
-	    if (filter.containsTopicsWithSettings(textParseData)) {
+	    if (contentFilter.containsTopicsWithCrawlerSettings(textParseData)) {
 		PAGES_TO_SAVE.add(page);
 	    }
 	}
