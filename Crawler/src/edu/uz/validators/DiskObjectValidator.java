@@ -2,26 +2,24 @@ package edu.uz.validators;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 
 public class DiskObjectValidator {
 
-    public static void checkDirectory(Path path) throws IOException, IllegalArgumentException {
-	if (path == null) {
+    public static void checkDirectory(File directory) throws IOException, IllegalArgumentException {
+	if (directory == null) {
 	    throw new IllegalArgumentException("Not specified directory path!");
 	}
-	File directory = path.toFile();
 
-	if (directory.isDirectory()) {
+	if (!directory.isDirectory()) {
 	    throw new IOException("Specified disk object is not directory!");
 	}
-	if (directory.exists()) {
+	if (!directory.exists()) {
 	    throw new IOException("Specified directory is not exists!");
 	}
-	if (directory.canRead()) {
+	if (!directory.canRead()) {
 	    throw new IOException("Specified directory cannot be read!");
 	}
-	if (directory.canWrite()) {
+	if (!directory.canWrite()) {
 	    throw new IOException("Specified directory cannot be write!");
 	}
     }

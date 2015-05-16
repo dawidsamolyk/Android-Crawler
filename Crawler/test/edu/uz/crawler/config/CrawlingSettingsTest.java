@@ -60,10 +60,15 @@ public class CrawlingSettingsTest {
     @Test
     public void shouldGivesWebpageAddress() {
 	String webpageAddress = "http://wp.pl";
-	WebURL url = new WebURL();
-	url.setURL(webpageAddress);
-	CrawlingSettings fixture = new CrawlingSettings(url, new String[] { "Topic" });
+	CrawlingSettings fixture = getFixture(webpageAddress, new String[] { "Topic" });
 
 	assertEquals(webpageAddress, fixture.getWebpageUrl());
+    }
+
+    public static CrawlingSettings getFixture(String webUrl, String[] topics) {
+	WebURL url = new WebURL();
+	url.setURL(webUrl);
+
+	return new CrawlingSettings(url, topics);
     }
 }

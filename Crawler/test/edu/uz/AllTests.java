@@ -10,11 +10,12 @@ import org.junit.runners.Suite.SuiteClasses;
 import edu.uz.crawler.CrawlerContentFilterTest;
 import edu.uz.crawler.config.CrawlingConfigurationTest;
 import edu.uz.crawler.config.CrawlingSettingsTest;
+import edu.uz.crawler.controller.CrawlingControllerTest;
 import edu.uz.validators.WebpageValidatorTest;
 
 @RunWith(Suite.class)
 @SuiteClasses({ CrawlingConfigurationTest.class, WebpageValidatorTest.class,
-	CrawlerContentFilterTest.class, CrawlingSettingsTest.class })
+	CrawlerContentFilterTest.class, CrawlingSettingsTest.class, CrawlingControllerTest.class })
 public class AllTests {
     public static void main(String[] args) {
 	Result result = JUnitCore.runClasses(AllTests.class);

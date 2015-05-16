@@ -1,7 +1,7 @@
 package edu.uz.crawler.config;
 
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uz.validators.DiskObjectValidator;
@@ -9,11 +9,11 @@ import edu.uz.validators.DiskObjectValidator;
 public class CrawlingConfiguration extends CrawlConfig {
     private static final String CRAWLER_NAME = "Android Crawler App (https://github.com/dawidsamolyk/Android-Crawler/)";
 
-    public CrawlingConfiguration(final Path storageDirectoryPath) throws IllegalArgumentException,
+    public CrawlingConfiguration(final File storageDirectoryPath) throws IllegalArgumentException,
 	    IOException {
 	DiskObjectValidator.checkDirectory(storageDirectoryPath);
 
-	this.setCrawlStorageFolder(storageDirectoryPath.toString());
+	this.setCrawlStorageFolder(storageDirectoryPath.getPath());
 
 	initialize();
     }
