@@ -54,9 +54,8 @@ public class CrawlingController {
 	if (!started || controller.isFinished()) {
 	    throw new IllegalStateException("Crawler not started!");
 	}
-	if (started && !controller.isFinished()) {
-	    controller.shutdown();
-	}
+	controller.shutdown();
+	
 	return new CrawlingMonitor(controller);
     }
 }

@@ -10,6 +10,7 @@ import org.junit.runners.Suite.SuiteClasses;
 import edu.uz.crawler.CrawlerContentFilterTest;
 import edu.uz.crawler.CrawlerVisitsTest;
 import edu.uz.crawler.config.CrawlingConfigurationTest;
+import edu.uz.crawler.config.CrawlingMonitorTest;
 import edu.uz.crawler.config.CrawlingSettingsTest;
 import edu.uz.crawler.controller.CrawlingControllerTest;
 import edu.uz.validators.WebpageValidatorTest;
@@ -22,7 +23,8 @@ import edu.uz.validators.WebpageValidatorTest;
     CrawlerContentFilterTest.class, 
     CrawlingSettingsTest.class, 
     CrawlingControllerTest.class,
-    CrawlerVisitsTest.class
+    CrawlerVisitsTest.class,
+    CrawlingMonitorTest.class
 })
 //@formatter:on
 public class AllTests {

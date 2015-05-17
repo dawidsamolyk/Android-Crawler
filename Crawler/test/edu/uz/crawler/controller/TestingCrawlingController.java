@@ -5,7 +5,7 @@ import edu.uz.crawler.config.CrawlingConfiguration;
 import edu.uz.crawler.config.CrawlingSettings;
 
 public class TestingCrawlingController extends CrawlingController {
-    public CrawlController mock;
+    public static CrawlController mock;
 
     public TestingCrawlingController(CrawlingConfiguration config, CrawlingSettings settings)
 	    throws Exception {
@@ -20,10 +20,4 @@ public class TestingCrawlingController extends CrawlingController {
     @Override
     protected void configureCrawling(CrawlingSettings settings) {
     }
-
-    @Override
-    public CrawlingMonitor start() throws IllegalStateException {
-	return new CrawlingMonitor(mock);
-    }
-
 }
