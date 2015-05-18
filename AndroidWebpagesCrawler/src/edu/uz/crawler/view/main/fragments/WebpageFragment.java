@@ -8,14 +8,12 @@ import android.view.ViewGroup;
 import edu.uz.crawler.R;
 
 public class WebpageFragment extends Fragment {
-	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
 
-		View rootView = inflater.inflate(R.layout.fragment_webpage, container,
-				false);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		return rootView;
-	}
+	View rootView = inflater.inflate(R.layout.fragment_webpage, container, false);
+
+	return rootView;
+    }
 }
