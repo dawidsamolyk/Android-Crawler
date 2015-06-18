@@ -17,7 +17,7 @@ public class TopicsFragment extends Fragment {
 
 	View rootView = inflater.inflate(R.layout.fragment_topics, container, false);
 
-	ListView list = (ListView) rootView.findViewById(R.id.listView);
+	ListView list = (ListView) rootView.findViewById(R.id.topicsList);
 	final ArrayList<String> sampleTopics = new ArrayList<String>();
 	// XXX Sample data
 	sampleTopics.add("Topic 1");
