@@ -4,6 +4,19 @@
     <string name="app_name">Webpages Crawler</string>
     <string name="webpage_section">Webpage</string>
     <string name="topics_section">Topics</string>
-    <string name="settings_section">Settings</string>
+    <string name="history_section">History</string>
+    <string name="sort_by">Sort by:</string>
+    <string name="plus_sign">+</string>
+    <string name="subpages_search">Search also in subpages</string>
+    <string name="content_search">Content search</string>
+    <string name="require_all_topics_on_one_page">Require all topics on one page</string>
+    <string name="start">Start!</string>
+
+    <string-array name="history_filters_array">
+        <item>Webpage</item>
+        <item>Found topics</item>
+        <item>Page title</item>
+        <item>Date</item>
+    </string-array>
 
 </resources>

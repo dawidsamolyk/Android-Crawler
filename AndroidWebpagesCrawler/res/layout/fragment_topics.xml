@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignRight="@+id/topicsList"
-            android:text="+" />
+            android:text="@string/plus_sign" />
 
         <EditText
             android:id="@+id/newTopicName"
@@ -61,28 +61,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="Search also in subpages"
+            android:text="@string/subpages_search"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <CheckBox
             android:id="@+id/contentSearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Content search"
+            android:text="@string/content_search"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <CheckBox
             android:id="@+id/requireAllTopicsOnOnePage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Require all topics on one page"
+            android:text="@string/require_all_topics_on_one_page"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <Button
             android:id="@+id/startButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Start"
+            android:text="@string/start"
             android:textAppearance="?android:attr/textAppearanceLarge" />
     </LinearLayout>
 

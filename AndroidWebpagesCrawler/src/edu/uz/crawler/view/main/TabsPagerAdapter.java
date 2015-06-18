@@ -3,7 +3,7 @@ package edu.uz.crawler.view.main;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import edu.uz.crawler.view.main.fragments.SettingsFragment;
+import edu.uz.crawler.view.main.fragments.HistoryFragment;
 import edu.uz.crawler.view.main.fragments.TopicsFragment;
 import edu.uz.crawler.view.main.fragments.WebpageFragment;
 
@@ -20,7 +20,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 	    case 1:
 		return new TopicsFragment();
 	    case 2:
-		return new SettingsFragment();
+		return new HistoryFragment();
 	}
 
 	return null;
