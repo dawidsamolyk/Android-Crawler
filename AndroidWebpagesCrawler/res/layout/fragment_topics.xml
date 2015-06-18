@@ -8,40 +8,82 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="edu.uz.crawler.view.main.MainActivity$PlaceholderFragment" >
 
-    <TextView
-        android:id="@+id/section_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:id="@+id/center_point"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_centerInParent="true"
+        android:orientation="vertical" >
+    </LinearLayout>
 
-    <ListView
-        android:id="@+id/listView"
+    <RelativeLayout
+        android:id="@+id/top_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/section_label"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@+id/addTopicButton" >
+        android:layout_height="match_parent"
+        android:layout_above="@+id/center_point"
+        android:orientation="vertical" >
 
-    </ListView>
+        <Button
+            android:id="@+id/addTopic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/topicsList"
+            android:text="+" />
 
-    <Button
-        android:id="@+id/addTopicButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/listView"
-        android:layout_alignTop="@+id/section_label"
-        android:text="+" />
+        <EditText
+            android:id="@+id/newTopicName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/addTopic"
+            android:ems="10"
+            android:inputType="textCapWords|textCapSentences|textAutoCorrect|textAutoComplete|textPersonName" >
 
-    <EditText
-        android:id="@+id/newTopicName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/addTopicButton"
-        android:layout_alignLeft="@+id/section_label"
-        android:layout_alignTop="@+id/addTopicButton"
-        android:ems="10"
-        android:inputType="textCapWords|textCapSentences|textAutoCorrect|textAutoComplete|textPersonName" >
+            <requestFocus />
+        </EditText>
 
-        <requestFocus />
-    </EditText>
+        <ListView
+            android:id="@+id/topicsList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/addTopic" >
+        </ListView>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/center_point"
+        android:orientation="vertical" >
+
+        <CheckBox
+            android:id="@+id/searchAlsoInSubpages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Search also in subpages"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <CheckBox
+            android:id="@+id/contentSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Content search"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <CheckBox
+            android:id="@+id/requireAllTopicsOnOnePage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Require all topics on one page"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Button
+            android:id="@+id/startButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Start"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+    </LinearLayout>
 
 </RelativeLayout>
