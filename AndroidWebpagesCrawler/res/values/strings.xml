@@ -13,9 +13,9 @@
     <string name="start">Start!</string>
 
     <string-array name="history_filters_array">
-        <item>Webpage</item>
-        <item>Found topics</item>
+        <item>Webpage address</item>
         <item>Page title</item>
+        <item>Found topics</item>
         <item>Date</item>
     </string-array>
 
