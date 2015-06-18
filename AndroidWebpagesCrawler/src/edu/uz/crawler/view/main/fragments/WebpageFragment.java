@@ -1,19 +1,41 @@
 package edu.uz.crawler.view.main.fragments;
 
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.widget.Button;
+import android.widget.EditText;
 import edu.uz.crawler.R;
+import edu.uz.crawler.view.main.fragments.navigator.WebpagesNavigatorHandler;
 
 public class WebpageFragment extends Fragment {
+	private WebView webpageView;
+	private EditText webpageAddress;
+	private Button backButton;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 
-	View rootView = inflater.inflate(R.layout.fragment_webpage, container, false);
+		View rootView = inflater.inflate(R.layout.fragment_webpage, container,
+				false);
 
-	return rootView;
-    }
+		webpageView = (WebView) rootView.findViewById(R.id.webpageView);
+		webpageAddress = (EditText) rootView
+				.findViewById(R.id.webpageAddressInput);
+		backButton = (Button) rootView.findViewById(R.id.backButton);
+
+		WebpagesNavigatorHandler webpagesNavigatorHandler = new WebpagesNavigatorHandler(
+				webpageView);
+
+		webpageView.setWebViewClient(webpagesNavigatorHandler);
+		webpageAddress.setOnKeyListener(webpagesNavigatorHandler);
+		backButton.setOnClickListener(webpagesNavigatorHandler);
+
+		return rootView;
+	}
+
 }
