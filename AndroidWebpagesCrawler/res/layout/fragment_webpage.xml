@@ -14,7 +14,7 @@
         android:layout_height="wrap_content" />
 
     <Button
-        android:id="@+id/refreshWebpage"
+        android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/webpageAddressInput" />
@@ -25,9 +25,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/webpageView"
-        android:layout_toRightOf="@+id/refreshWebpage"
+        android:layout_toRightOf="@+id/backButton"
         android:ems="10"
-        android:inputType="textUri" >
+        android:inputType="text" >
 
         <requestFocus />
     </EditText>
