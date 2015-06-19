@@ -20,9 +20,16 @@ public class TopicsFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.fragment_topics, container,
 				false);
 
+		configureTopicsArea(rootView);
+
+		return rootView;
+	}
+
+	private void configureTopicsArea(final View rootView) {
 		final ListView topicsList = (ListView) rootView
 				.findViewById(R.id.topicsList);
-		final TopicsListAdapter topicsListAdapter = new TopicsListAdapter(rootView.getContext());
+		final TopicsListAdapter topicsListAdapter = new TopicsListAdapter(
+				rootView.getContext());
 
 		topicsList.setAdapter(topicsListAdapter);
 
@@ -38,7 +45,5 @@ public class TopicsFragment extends Fragment {
 				topicsListAdapter.add(newTopic);
 			}
 		});
-
-		return rootView;
 	}
 }
