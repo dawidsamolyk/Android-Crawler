@@ -7,6 +7,8 @@
     <string name="history_section">History</string>
     <string name="sort_by">Sort by:</string>
     <string name="plus_sign">+</string>
+    <string name="minus_sign">-</string>
+    <string name="settings">Settings</string>
     <string name="subpages_search">Search also in subpages</string>
     <string name="content_search">Content search</string>
     <string name="require_all_topics_on_one_page">Require all topics on one page</string>

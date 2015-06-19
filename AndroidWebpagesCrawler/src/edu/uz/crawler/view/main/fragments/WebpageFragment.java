@@ -13,20 +13,19 @@ import edu.uz.crawler.view.main.fragments.navigator.WebpagesNavigatorHandler;
 
 public class WebpageFragment extends Fragment {
 	private WebView webpageView;
-	private EditText webpageAddress;
-	private Button backButton;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(final LayoutInflater inflater,
+			final ViewGroup container, final Bundle savedInstanceState) {
 
-		View rootView = inflater.inflate(R.layout.fragment_webpage, container,
-				false);
+		final View rootView = inflater.inflate(R.layout.fragment_webpage,
+				container, false);
 
 		webpageView = (WebView) rootView.findViewById(R.id.webpageView);
-		webpageAddress = (EditText) rootView
+		final EditText webpageAddress = (EditText) rootView
 				.findViewById(R.id.webpageAddressInput);
-		backButton = (Button) rootView.findViewById(R.id.backButton);
+		final Button backButton = (Button) rootView
+				.findViewById(R.id.backButton);
 
 		WebpagesNavigatorHandler webpagesNavigatorHandler = new WebpagesNavigatorHandler(
 				webpageView);
@@ -38,4 +37,7 @@ public class WebpageFragment extends Fragment {
 		return rootView;
 	}
 
+	public String getWebpageUrl() {
+		return webpageView.getUrl();
+	}
 }

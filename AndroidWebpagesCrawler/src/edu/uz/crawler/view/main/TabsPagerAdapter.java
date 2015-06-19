@@ -4,30 +4,34 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import edu.uz.crawler.view.main.fragments.HistoryFragment;
-import edu.uz.crawler.view.main.fragments.TopicsFragment;
+import edu.uz.crawler.view.main.fragments.TopicsAndSettingsFragment;
 import edu.uz.crawler.view.main.fragments.WebpageFragment;
 
 public class TabsPagerAdapter extends FragmentPagerAdapter {
-    public TabsPagerAdapter(FragmentManager fragmentManager) {
-	super(fragmentManager);
-    }
+	private final WebpageFragment webpageFragment = new WebpageFragment();
+	private final TopicsAndSettingsFragment topicsAndSettingsFragment = new TopicsAndSettingsFragment(webpageFragment);
+	private final HistoryFragment historyFragment = new HistoryFragment();
 
-    @Override
-    public Fragment getItem(int position) {
-	switch (position) {
-	    case 0:
-		return new WebpageFragment();
-	    case 1:
-		return new TopicsFragment();
-	    case 2:
-		return new HistoryFragment();
+	public TabsPagerAdapter(final FragmentManager fragmentManager) {
+		super(fragmentManager);
 	}
 
-	return null;
-    }
+	@Override
+	public Fragment getItem(final int position) {
+		switch (position) {
+		case 0:
+			return webpageFragment;
+		case 1:
+			return topicsAndSettingsFragment;
+		case 2:
+			return historyFragment;
+		}
 
-    @Override
-    public int getCount() {
-	return 3;
-    }
+		return null;
+	}
+
+	@Override
+	public int getCount() {
+		return 3;
+	}
 }
