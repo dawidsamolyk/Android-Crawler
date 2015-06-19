@@ -1,5 +1,6 @@
 package edu.uz.crawler.view.main.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,25 +9,25 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
+import edu.uci.ics.crawler4j.url.WebURL;
 import edu.uz.crawler.R;
 import edu.uz.crawler.view.main.fragments.navigator.WebpagesNavigatorHandler;
 
 public class WebpageFragment extends Fragment {
 	private WebView webpageView;
-	private EditText webpageAddress;
-	private Button backButton;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(final LayoutInflater inflater,
+			final ViewGroup container, final Bundle savedInstanceState) {
 
-		View rootView = inflater.inflate(R.layout.fragment_webpage, container,
-				false);
+		final View rootView = inflater.inflate(R.layout.fragment_webpage,
+				container, false);
 
 		webpageView = (WebView) rootView.findViewById(R.id.webpageView);
-		webpageAddress = (EditText) rootView
+		final EditText webpageAddress = (EditText) rootView
 				.findViewById(R.id.webpageAddressInput);
-		backButton = (Button) rootView.findViewById(R.id.backButton);
+		final Button backButton = (Button) rootView
+				.findViewById(R.id.backButton);
 
 		WebpagesNavigatorHandler webpagesNavigatorHandler = new WebpagesNavigatorHandler(
 				webpageView);
@@ -38,4 +39,17 @@ public class WebpageFragment extends Fragment {
 		return rootView;
 	}
 
+	@SuppressLint("NewApi")
+	public WebURL getWebpageURL() {
+		final String url = webpageView.getUrl();
+
+		if (url != null && !url.isEmpty()) {
+			WebURL result = new WebURL();
+			result.setURL(url);
+			return result;
+			
+		} else {
+			throw new IllegalStateException();
+		}
+	}
 }

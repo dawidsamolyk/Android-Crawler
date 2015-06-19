@@ -1,6 +1,7 @@
 package edu.uz.crawler.view.main.fragments;
 
 import java.util.ArrayList;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -39,7 +40,7 @@ public class TopicsListAdapter extends BaseAdapter implements ListAdapter {
 	}
 
 	@Override
-	public Object getItem(final int pos) {
+	public String getItem(final int pos) {
 		return list.get(pos);
 	}
 
@@ -75,5 +76,16 @@ public class TopicsListAdapter extends BaseAdapter implements ListAdapter {
 		});
 
 		return view;
+	}
+	
+	public String[] getAllTopics() {
+		final int topicsCount = getCount();
+		final String[] result = new String[topicsCount];
+
+		for (int topicPosition = 0; topicPosition < topicsCount; topicPosition++) {
+			result[topicPosition] = getItem(topicPosition);
+		}
+
+		return result;
 	}
 }

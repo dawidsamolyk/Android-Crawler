@@ -19,15 +19,15 @@ public class WebpagesNavigatorHandler extends WebViewClient implements
 	}
 
 	@Override
-	public void onClick(View v) {
+	public void onClick(final View v) {
 		webpageView.goBack();
 	}
 
 	@Override
 	public boolean onKey(final View view, final int keyCode,
 			final KeyEvent event) {
-		EditText webpageAddressInput = (EditText) view;
-		String webpageAddress = webpageAddressInput.getText().toString();
+		final EditText webpageAddressInput = (EditText) view;
+		final String webpageAddress = webpageAddressInput.getText().toString();
 
 		if (keyCode == KeyEvent.KEYCODE_ENTER && webpageAddress != null
 				&& webpageAddress.length() > 0) {
@@ -36,10 +36,10 @@ public class WebpagesNavigatorHandler extends WebViewClient implements
 		}
 		return false;
 	}
-	
+
 	@Override
-    public boolean shouldOverrideUrlLoading(WebView view, String url) {
-        return (false);
-    }
+	public boolean shouldOverrideUrlLoading(final WebView view, final String url) {
+		return (false);
+	}
 
 }

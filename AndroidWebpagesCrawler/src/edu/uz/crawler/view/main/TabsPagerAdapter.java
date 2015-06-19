@@ -4,12 +4,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import edu.uz.crawler.view.main.fragments.HistoryFragment;
-import edu.uz.crawler.view.main.fragments.TopicsFragment;
+import edu.uz.crawler.view.main.fragments.TopicsAndSettingsFragment;
 import edu.uz.crawler.view.main.fragments.WebpageFragment;
 
 public class TabsPagerAdapter extends FragmentPagerAdapter {
 	private final WebpageFragment webpageFragment = new WebpageFragment();
-	private final TopicsFragment topicsFragment = new TopicsFragment();
+	private final TopicsAndSettingsFragment topicsFragment = new TopicsAndSettingsFragment();
 	private final HistoryFragment historyFragment = new HistoryFragment();
 	
 	public TabsPagerAdapter(final FragmentManager fragmentManager) {
