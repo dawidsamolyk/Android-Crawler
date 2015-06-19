@@ -17,9 +17,10 @@ public class ActionBarManager {
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 	}
 
-	public void createTabs(final String[] tabs, final CrawlerTabListener crawlerTabListener) {
+	public void createTabs(final String[] tabs,
+			final CrawlerTabListener crawlerTabListener) {
 		for (String tab_name : tabs) {
-			actionBar.addTab(actionBar.newTab().setText(tab_name)
+			actionBar.addTab(actionBar.newTab().setText(tab_name).setTag(tab_name)
 					.setTabListener(crawlerTabListener));
 		}
 	}

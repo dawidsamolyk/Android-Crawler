@@ -9,9 +9,9 @@ import edu.uz.crawler.view.main.fragments.WebpageFragment;
 
 public class TabsPagerAdapter extends FragmentPagerAdapter {
 	private final WebpageFragment webpageFragment = new WebpageFragment();
-	private final TopicsAndSettingsFragment topicsFragment = new TopicsAndSettingsFragment();
+	private final TopicsAndSettingsFragment topicsAndSettingsFragment = new TopicsAndSettingsFragment(webpageFragment);
 	private final HistoryFragment historyFragment = new HistoryFragment();
-	
+
 	public TabsPagerAdapter(final FragmentManager fragmentManager) {
 		super(fragmentManager);
 	}
@@ -22,7 +22,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 		case 0:
 			return webpageFragment;
 		case 1:
-			return topicsFragment;
+			return topicsAndSettingsFragment;
 		case 2:
 			return historyFragment;
 		}

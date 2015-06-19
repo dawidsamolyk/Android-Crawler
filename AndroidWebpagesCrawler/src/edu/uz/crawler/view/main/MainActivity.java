@@ -16,12 +16,15 @@ public class MainActivity extends FragmentActivity {
 		setContentView(R.layout.activity_main);
 
 		final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-		viewPager.setAdapter(new TabsPagerAdapter(getSupportFragmentManager()));
-		viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener());
-		
+		final TabsPagerAdapter tabsPagerAdapter = new TabsPagerAdapter(
+				getSupportFragmentManager());
+		viewPager.setAdapter(tabsPagerAdapter);
+		viewPager
+				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener());
+
 		final ActionBarManager manager = new ActionBarManager(getActionBar());
-		final CrawlerTabListener crawlerTabListener = new CrawlerTabListener(viewPager);
+		final CrawlerTabListener crawlerTabListener = new CrawlerTabListener(
+				viewPager);
 		manager.createTabs(tabs, crawlerTabListener);
 	}
-
 }
