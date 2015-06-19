@@ -17,7 +17,8 @@
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/webpageAddressInput" />
+        android:layout_alignBottom="@+id/webpageAddressInput"
+        android:text = "@+string/back_sign" />
 
     <EditText
         android:id="@+id/webpageAddressInput"

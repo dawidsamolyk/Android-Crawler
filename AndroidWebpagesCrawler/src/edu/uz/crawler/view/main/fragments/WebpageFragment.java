@@ -18,7 +18,6 @@ public class WebpageFragment extends Fragment {
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-
 		final View rootView = inflater.inflate(R.layout.fragment_webpage, container, false);
 
 		webpageView = (WebView) rootView.findViewById(R.id.webpageView);
