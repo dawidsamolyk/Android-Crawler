@@ -1,30 +1,44 @@
 package edu.uz.crawler.view.main.fragments;
 
-import java.util.ArrayList;
-
-import edu.uz.crawler.R;
-import android.support.v4.app.Fragment;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import edu.uz.crawler.R;
 
 public class TopicsFragment extends Fragment {
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	@Override
+	public View onCreateView(final LayoutInflater inflater,
+			final ViewGroup container, final Bundle savedInstanceState) {
+		View rootView = inflater.inflate(R.layout.fragment_topics, container,
+				false);
 
-	View rootView = inflater.inflate(R.layout.fragment_topics, container, false);
+		final ListView topicsList = (ListView) rootView
+				.findViewById(R.id.topicsList);
+		final TopicsListAdapter topicsListAdapter = new TopicsListAdapter(rootView.getContext());
 
-	ListView list = (ListView) rootView.findViewById(R.id.topicsList);
-	final ArrayList<String> sampleTopics = new ArrayList<String>();
-	// XXX Sample data
-	sampleTopics.add("Topic 1");
-	sampleTopics.add("Topic 2");
-	sampleTopics.add("Topic 3");
-	list.setAdapter(new TopicsListAdapter(sampleTopics, rootView.getContext()));
+		topicsList.setAdapter(topicsListAdapter);
 
-	return rootView;
-    }
+		final EditText newTopicName = (EditText) rootView
+				.findViewById(R.id.newTopicName);
+		final Button addTopic = (Button) rootView.findViewById(R.id.addTopic);
+		addTopic.setOnClickListener(new OnClickListener() {
+
+			@SuppressLint("NewApi")
+			@Override
+			public void onClick(final View view) {
+				String newTopic = newTopicName.getText().toString();
+				topicsListAdapter.add(newTopic);
+			}
+		});
+
+		return rootView;
+	}
 }
