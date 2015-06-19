@@ -24,11 +24,11 @@
         android:layout_toRightOf="@+id/historyFilter"
         android:entries="@array/history_filters_array" />
 
-    <ExpandableListView
-        android:id="@+id/topicsList"
+    <ListView
+        android:id="@+id/historyList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/filter" >
-    </ExpandableListView>
+    </ListView>
 
 </RelativeLayout>
