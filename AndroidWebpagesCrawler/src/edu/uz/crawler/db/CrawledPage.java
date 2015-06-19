@@ -7,6 +7,15 @@ public class CrawledPage {
 	private String foundTopics;
 	private String content;
 
+	public CrawledPage(String date, String url, String title, String foundTopics, String content) {
+		super();
+		this.date = date;
+		this.url = url;
+		this.title = title;
+		this.foundTopics = foundTopics;
+		this.content = content;
+	}
+
 	public String getDate() {
 		return date;
 	}
@@ -25,10 +34,5 @@ public class CrawledPage {
 
 	public String getContent() {
 		return content;
-	}
-
-	@Override
-	public String toString() {
-		return "";// TODO
 	}
 }

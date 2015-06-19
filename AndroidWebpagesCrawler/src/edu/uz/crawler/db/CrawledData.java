@@ -15,14 +15,14 @@ public class CrawledData {
 	private Cursor cursor;
 
 	public final String TABLE_NAME = "Pages";
-	private final String ID = "_ID";
+	private final String ID = "_id";
 	public final String DATE = "DATE";
 	public final String WEBURL = "WEBURL";
 	public final String TITLE = "TITLE";
 	public final String TOPICS = "FOUND_TOPICS";
 	public final String CONTENT = "CONTENT";
 
-	public final String[] columns = new String[] { ID, DATE, WEBURL, TITLE, TOPICS };
+	public final String[] columns = new String[] { ID, DATE, WEBURL, TITLE, TOPICS, CONTENT };
 
 	public final String CREATE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" + ID
 			+ " integer PRIMARY KEY autoincrement," + DATE + "," + WEBURL + "," + TITLE + "," + TOPICS + "," + CONTENT
@@ -66,7 +66,7 @@ public class CrawledData {
 	public SimpleCursorAdapter cursorAdapter(final Context context, final int[] rowsInViewList) {
 		if (cursorAdapter == null) {
 			cursorAdapter = new SimpleCursorAdapter(context, R.layout.history_list_item, cursor(), new String[] { DATE,
-					WEBURL, TITLE, TOPICS }, rowsInViewList, 0);
+					WEBURL, TITLE, TOPICS, CONTENT }, rowsInViewList, 0);
 		}
 
 		return cursorAdapter;

@@ -3,6 +3,7 @@ package edu.uz.crawler.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import android.widget.SimpleCursorAdapter;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -19,6 +20,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(final SQLiteDatabase db) {
+		Log.i("DB", table.CREATE);
 		db.execSQL(table.CREATE);
 	}
 
