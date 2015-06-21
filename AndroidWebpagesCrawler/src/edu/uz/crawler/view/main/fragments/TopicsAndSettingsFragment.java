@@ -18,6 +18,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ListView;
 import edu.uz.crawler.CrawlingJob;
+import edu.uz.crawler.CrawlingSettings;
 import edu.uz.crawler.R;
 import edu.uz.crawler.view.main.fragments.settings.CrawlingOption;
 
@@ -85,9 +86,17 @@ public class TopicsAndSettingsFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
+				CrawlingSettings settings = null;
+				
 				try {
-					CrawlingJob job = new CrawlingJob(webpageFragment.getWebpageUrl(),
-							topicsListAdapter.getAllTopics(), crawlingOptions);
+					settings = new CrawlingSettings(webpageFragment.getWebpageUrl(), topicsListAdapter.getAllTopics(),
+							crawlingOptions);
+				} catch (IllegalArgumentException e) {
+					Log.e("EXCEPTION", e.getMessage());
+				}
+				
+				try {
+					CrawlingJob job = new CrawlingJob(getActivity(), settings);
 					job.start();
 				} catch (IllegalArgumentException e) {
 					Log.e("EXCEPTION", e.getMessage());

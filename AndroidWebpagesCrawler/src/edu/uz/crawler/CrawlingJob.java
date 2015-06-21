@@ -1,41 +1,75 @@
 package edu.uz.crawler;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
-import android.util.Log;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.support.v4.app.FragmentActivity;
+import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uz.crawler.view.main.fragments.settings.CrawlingOption;
 
 public class CrawlingJob {
-	private final String webpageUrl;
-	private final String[] topics;
-	private final Map<CrawlingOption, Boolean> crawlingOptions;
+	public static final String REQUIRE_ALL_TOPICS_ON_ONE_PAGE = "requireAllTopicsOnOnePage";
+	public static final String CONTENT_SEARCH = "contentSearch";
+	public static final String SEARCH_ALSO_IN_SUBPAGES = "searchAlsoInSubpages";
+	public static final String TOPICS = "topics";
+	public static final String WEBPAGE_URL = "webpageUrl";
+	public static final String CRAWLING_ACTION_RESPONSE = "CRAWLING_STARTED";
 
-	public CrawlingJob(final String webpageUrl, final String[] topics,
-			final Map<CrawlingOption, Boolean> crawlingOptions) {
-		if (webpageUrl != null && webpageUrl.length() > 0) {
-			this.webpageUrl = webpageUrl;
+	private final BroadcastReceiver crawlingReceiver;
+	private final FragmentActivity fragmentActivity;
+	private final CrawlingSettings settings;
+
+	public CrawlingJob(final FragmentActivity fragmentActivity, final CrawlingSettings settings) {
+		if (settings != null) {
+			this.settings = settings;
 		} else {
 			throw new IllegalArgumentException("Webpage address is not specified!");
 		}
-
-		if (topics != null && topics.length > 0) {
-			this.topics = topics;
+		if (fragmentActivity != null) {
+			this.fragmentActivity = fragmentActivity;
 		} else {
-			throw new IllegalArgumentException("You must add at least one topic!");
+			throw new IllegalArgumentException("Fragment activity is not set!");
 		}
 
-		if (crawlingOptions != null) {
-			this.crawlingOptions = crawlingOptions;
-		} else {
-			throw new IllegalArgumentException("Crawling options are not set!");
-		}
+		crawlingReceiver = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				ConcurrentLinkedQueue<Page> downloadedPages = (ConcurrentLinkedQueue<Page>) intent.getExtras().get(
+						CrawlingResultProvider.RESULT);
+
+			}
+		};
+		startLocalTimeReceiver(fragmentActivity);
 	}
 
-	public void start() {
-		Log.i("CrawlingJob: webpageUrl", webpageUrl);
-		Log.i("CrawlingJob: topics", Arrays.toString(topics));
-		Log.i("CrawlingJob: crawlingOptions", crawlingOptions.toString());
+	private void startLocalTimeReceiver(final FragmentActivity fragmentActivity) {
+		IntentFilter intentFilter = new IntentFilter(CRAWLING_ACTION_RESPONSE);
+		intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
+		fragmentActivity.registerReceiver(crawlingReceiver, intentFilter);
+	}
+
+	public synchronized void start() {
+		Intent crawlingIntent = new Intent(fragmentActivity, CrawlingResultProvider.class);
+		putCrawlingSettings(crawlingIntent);
+
+		fragmentActivity.startService(crawlingIntent);
+	}
+
+	private void putCrawlingSettings(final Intent crawlingIntent) {
+		crawlingIntent.putExtra(WEBPAGE_URL, settings.getWebpageUrl());
+
+		crawlingIntent.putStringArrayListExtra(TOPICS, settings.getTopics());
+
+		Map<CrawlingOption, Boolean> crawlingOptions = settings.getCrawlingOptions();
+		crawlingIntent.putExtra(SEARCH_ALSO_IN_SUBPAGES, crawlingOptions.get(CrawlingOption.searchAlsoInSubpages));
+		crawlingIntent.putExtra(CONTENT_SEARCH, crawlingOptions.get(CrawlingOption.contentSearch));
+		crawlingIntent.putExtra(REQUIRE_ALL_TOPICS_ON_ONE_PAGE,
+				crawlingOptions.get(CrawlingOption.requireAllTopicsOnOnePage));
 	}
 
 }
