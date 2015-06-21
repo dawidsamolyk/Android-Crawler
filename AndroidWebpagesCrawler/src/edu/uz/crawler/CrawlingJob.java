@@ -1,30 +1,22 @@
 package edu.uz.crawler;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.app.FragmentActivity;
-import edu.uci.ics.crawler4j.crawler.Page;
-import edu.uz.crawler.view.main.fragments.settings.CrawlingOption;
+import edu.uz.crawler.db.DatabaseHelper;
 
 public class CrawlingJob {
-	public static final String REQUIRE_ALL_TOPICS_ON_ONE_PAGE = "requireAllTopicsOnOnePage";
-	public static final String CONTENT_SEARCH = "contentSearch";
-	public static final String SEARCH_ALSO_IN_SUBPAGES = "searchAlsoInSubpages";
-	public static final String TOPICS = "topics";
-	public static final String WEBPAGE_URL = "webpageUrl";
-	public static final String CRAWLING_ACTION_RESPONSE = "CRAWLING_STARTED";
+	public static final String CRAWLING_ACTION_RESPONSE = "PAGE_DOWNLOADED";
+	public static final String CRAWLING_SETTINGS = "CRAWLING_SETTINGS";
 
 	private final BroadcastReceiver crawlingReceiver;
 	private final FragmentActivity fragmentActivity;
 	private final CrawlingSettings settings;
 
-	public CrawlingJob(final FragmentActivity fragmentActivity, final CrawlingSettings settings) {
+	public CrawlingJob(final FragmentActivity fragmentActivity, final CrawlingSettings settings,
+			final DatabaseHelper database) {
 		if (settings != null) {
 			this.settings = settings;
 		} else {
@@ -35,41 +27,35 @@ public class CrawlingJob {
 		} else {
 			throw new IllegalArgumentException("Fragment activity is not set!");
 		}
+		if (database == null) {
+			throw new IllegalArgumentException("Destination database is not specified!");
+		}
 
-		crawlingReceiver = new BroadcastReceiver() {
-			@Override
-			public void onReceive(Context context, Intent intent) {
-				ConcurrentLinkedQueue<Page> downloadedPages = (ConcurrentLinkedQueue<Page>) intent.getExtras().get(
-						CrawlingResultProvider.RESULT);
-
-			}
-		};
-		startLocalTimeReceiver(fragmentActivity);
+		crawlingReceiver = createCrawlingReceiverWhichUsing(database);
+		registerCrawlingResultReceiverIn(fragmentActivity);
 	}
 
-	private void startLocalTimeReceiver(final FragmentActivity fragmentActivity) {
+	private BroadcastReceiver createCrawlingReceiverWhichUsing(final DatabaseHelper database) {
+		return new BroadcastReceiver() {
+			@Override
+			public void onReceive(final Context context, final Intent intent) {
+				CrawledPage downloadedPage = (CrawledPage) intent.getSerializableExtra(CrawlingResultProvider.RESULT_NAME);
+				database.insert(downloadedPage);
+			}
+		};
+	}
+
+	private Intent registerCrawlingResultReceiverIn(final FragmentActivity fragmentActivity) {
 		IntentFilter intentFilter = new IntentFilter(CRAWLING_ACTION_RESPONSE);
 		intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
-		fragmentActivity.registerReceiver(crawlingReceiver, intentFilter);
+		return fragmentActivity.registerReceiver(crawlingReceiver, intentFilter);
 	}
 
 	public synchronized void start() {
 		Intent crawlingIntent = new Intent(fragmentActivity, CrawlingResultProvider.class);
-		putCrawlingSettings(crawlingIntent);
+		crawlingIntent.putExtra(CRAWLING_SETTINGS, settings);
 
 		fragmentActivity.startService(crawlingIntent);
-	}
-
-	private void putCrawlingSettings(final Intent crawlingIntent) {
-		crawlingIntent.putExtra(WEBPAGE_URL, settings.getWebpageUrl());
-
-		crawlingIntent.putStringArrayListExtra(TOPICS, settings.getTopics());
-
-		Map<CrawlingOption, Boolean> crawlingOptions = settings.getCrawlingOptions();
-		crawlingIntent.putExtra(SEARCH_ALSO_IN_SUBPAGES, crawlingOptions.get(CrawlingOption.searchAlsoInSubpages));
-		crawlingIntent.putExtra(CONTENT_SEARCH, crawlingOptions.get(CrawlingOption.contentSearch));
-		crawlingIntent.putExtra(REQUIRE_ALL_TOPICS_ON_ONE_PAGE,
-				crawlingOptions.get(CrawlingOption.requireAllTopicsOnOnePage));
 	}
 
 }

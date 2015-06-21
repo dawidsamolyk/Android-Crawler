@@ -1,11 +1,14 @@
 package edu.uz.crawler;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 
 import edu.uz.crawler.view.main.fragments.settings.CrawlingOption;
 
-public class CrawlingSettings {
+public class CrawlingSettings implements Serializable {
+	private static final long serialVersionUID = -4267084094923986600L;
+	
 	private final String webpageUrl;
 	private final ArrayList<String> topics;
 	private final Map<CrawlingOption, Boolean> crawlingOptions;

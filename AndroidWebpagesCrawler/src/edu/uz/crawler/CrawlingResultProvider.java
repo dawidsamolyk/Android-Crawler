@@ -1,17 +1,12 @@
 package edu.uz.crawler;
 
-import java.util.ArrayList;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
 import android.annotation.SuppressLint;
 import android.app.IntentService;
 import android.content.Intent;
-import android.util.Log;
-import edu.uci.ics.crawler4j.crawler.Page;
 
 @SuppressLint("NewApi")
 public class CrawlingResultProvider extends IntentService {
-	public static final String RESULT = "LOCAL_TIMES";
+	public static final String RESULT_NAME = "CRAWLING_RESULT";
 
 	public CrawlingResultProvider() {
 		super(CrawlingResultProvider.class.getName());
@@ -19,37 +14,33 @@ public class CrawlingResultProvider extends IntentService {
 
 	@Override
 	protected void onHandleIntent(final Intent intent) {
-		ConcurrentLinkedQueue<Page> downloadedPages = new ConcurrentLinkedQueue<Page>();
-
-		getCrawlingSettings(intent);
-
-		sendByBroadcast(downloadedPages);
+		final CrawlingSettings settings = getCrawlingSettings(intent);
+		startCrawler(settings);
 	}
 
-	private void getCrawlingSettings(final Intent intent) {
-		String stringExtra = intent.getStringExtra(CrawlingJob.WEBPAGE_URL);
-		Log.i("CrawlingJob: webpageUrl", stringExtra);
-		
-		ArrayList<String> stringArrayExtra = intent.getStringArrayListExtra(CrawlingJob.TOPICS);
-		for(String eachTopic : stringArrayExtra) {
-			Log.i("CrawlingJob: topic", eachTopic);
-		}
-		
-		boolean searchAlsoInSubpages = intent.getBooleanExtra(CrawlingJob.SEARCH_ALSO_IN_SUBPAGES, true);
-		boolean contentSearch = intent.getBooleanExtra(CrawlingJob.CONTENT_SEARCH, false);
-		boolean requireAllTopicsOnOnePage = intent.getBooleanExtra(CrawlingJob.REQUIRE_ALL_TOPICS_ON_ONE_PAGE, false);
-		Log.i("CrawlingJob: crawlingOptions", "Options: " + searchAlsoInSubpages + contentSearch
-				+ requireAllTopicsOnOnePage);
+	private CrawlingSettings getCrawlingSettings(final Intent intent) {
+		return (CrawlingSettings) intent.getSerializableExtra(CrawlingJob.CRAWLING_SETTINGS);
 	}
 
-	private void sendByBroadcast(final ConcurrentLinkedQueue<Page> downloadedPages) {
-		Intent broadcastIntent = new Intent();
+	// TODO zrob ¿eby nie trzeba by³o synchronized - kazde zadanie crawlera w nowym watku
+	private synchronized void startCrawler(final CrawlingSettings settings) {
+		// TODO uruchom crawler
+		
+		CrawledPage crawledPage = new CrawledPage("21-06-2015", "wp.pl", "Tytul", "temat 1; temat 2", "Zawartosc..");
+		
+		sendByBroadcast(crawledPage);
+	}
 
-		broadcastIntent.setAction(CrawlingJob.CRAWLING_ACTION_RESPONSE);
-		broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
-		broadcastIntent.putExtra(RESULT, downloadedPages);
+	private Intent sendByBroadcast(final CrawledPage downloadedPage) {
+		Intent result = new Intent();
 
-		sendBroadcast(broadcastIntent);
+		result.setAction(CrawlingJob.CRAWLING_ACTION_RESPONSE);
+		result.addCategory(Intent.CATEGORY_DEFAULT);
+		result.putExtra(RESULT_NAME, downloadedPage);
+
+		sendBroadcast(result);
+		
+		return result;
 	}
 
 }

@@ -1,5 +1,6 @@
 package edu.uz.crawler.db;
 
+import edu.uz.crawler.CrawledPage;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -7,14 +8,13 @@ import android.util.Log;
 import android.widget.SimpleCursorAdapter;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-	private final CrawledData table;
+	private final CrawledData table = new CrawledData();
 
 	private static final String DATABASE_NAME = "crawler.db";
 	private static final int DATABASE_VERSION = 1;
 
-	public DatabaseHelper(final Context context, final CrawledData table) {
+	public DatabaseHelper(final Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
-		this.table = table;
 		this.table.open(getWritableDatabase());
 	}
 

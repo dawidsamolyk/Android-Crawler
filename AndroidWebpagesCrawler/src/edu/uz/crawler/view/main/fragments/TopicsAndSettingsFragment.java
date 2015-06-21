@@ -20,11 +20,13 @@ import android.widget.ListView;
 import edu.uz.crawler.CrawlingJob;
 import edu.uz.crawler.CrawlingSettings;
 import edu.uz.crawler.R;
+import edu.uz.crawler.db.DatabaseHelper;
 import edu.uz.crawler.view.main.fragments.settings.CrawlingOption;
 
 public class TopicsAndSettingsFragment extends Fragment {
-	private View rootView;
 	private final WebpageFragment webpageFragment;
+	private DatabaseHelper databaseHelper;
+	private View rootView;
 	private TopicsListAdapter topicsListAdapter;
 	private Map<CrawlingOption, Boolean> crawlingOptions = new HashMap<CrawlingOption, Boolean>();
 
@@ -34,6 +36,8 @@ public class TopicsAndSettingsFragment extends Fragment {
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+		this.databaseHelper = new DatabaseHelper(getActivity());
+		
 		rootView = inflater.inflate(R.layout.fragment_topics_settings, container, false);
 
 		configureTopicsArea();
@@ -87,16 +91,16 @@ public class TopicsAndSettingsFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				CrawlingSettings settings = null;
-				
+
 				try {
 					settings = new CrawlingSettings(webpageFragment.getWebpageUrl(), topicsListAdapter.getAllTopics(),
 							crawlingOptions);
 				} catch (IllegalArgumentException e) {
 					Log.e("EXCEPTION", e.getMessage());
 				}
-				
+
 				try {
-					CrawlingJob job = new CrawlingJob(getActivity(), settings);
+					CrawlingJob job = new CrawlingJob(getActivity(), settings, databaseHelper);
 					job.start();
 				} catch (IllegalArgumentException e) {
 					Log.e("EXCEPTION", e.getMessage());
@@ -104,5 +108,11 @@ public class TopicsAndSettingsFragment extends Fragment {
 			}
 
 		});
+	}
+
+	@Override
+	public void onDestroy() {
+		databaseHelper.close();
+		super.onDestroy();
 	}
 }

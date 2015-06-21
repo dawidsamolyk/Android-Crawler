@@ -16,7 +16,7 @@ public class Crawler extends WebCrawler {
     private final static Pattern FILTERS = Pattern
 	    .compile(".*(\\.(css|js|gif|jpg|png|mp3|mp3|zip|gz))$");
     private static final ContentFilter contentFilter = new ContentFilter();
-    public static final ConcurrentLinkedQueue<Page> PAGES_TO_SAVE = new ConcurrentLinkedQueue<Page>();
+    public static final ConcurrentLinkedQueue<CrawledPage> PAGES_TO_SAVE = new ConcurrentLinkedQueue<CrawledPage>();
     public static CrawlingSettings SETTINGS;
 
     /**
@@ -59,14 +59,14 @@ public class Crawler extends WebCrawler {
 	    HtmlParseData htmlParseData = (HtmlParseData) dataOnPage;
 
 	    if (contentFilter.containsTopicsWithCrawlerSettings(htmlParseData)) {
-		PAGES_TO_SAVE.add(page);
+		PAGES_TO_SAVE.add(CrawledPageCreator.create(page));
 	    }
 	}
 	else if (dataOnPage instanceof TextParseData) {
 	    TextParseData textParseData = (TextParseData) dataOnPage;
 
 	    if (contentFilter.containsTopicsWithCrawlerSettings(textParseData)) {
-		PAGES_TO_SAVE.add(page);
+		PAGES_TO_SAVE.add(CrawledPageCreator.create(page));
 	    }
 	}
     }
