@@ -1,12 +1,6 @@
 package edu.uz.crawler;
 
 import java.io.Serializable;
-import java.util.Date;
-
-import edu.uci.ics.crawler4j.crawler.Page;
-import edu.uci.ics.crawler4j.parser.HtmlParseData;
-import edu.uci.ics.crawler4j.parser.ParseData;
-import edu.uci.ics.crawler4j.parser.TextParseData;
 
 public class CrawledPage implements Serializable {
 	private static final long serialVersionUID = 2482955988269566735L;
