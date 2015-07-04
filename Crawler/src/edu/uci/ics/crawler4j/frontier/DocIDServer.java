@@ -17,9 +17,12 @@
 
 package edu.uci.ics.crawler4j.frontier;
 
-import org.apache.log4j.Logger;
-
-import com.sleepycat.je.*;
+import com.sleepycat.je.Database;
+import com.sleepycat.je.DatabaseConfig;
+import com.sleepycat.je.DatabaseEntry;
+import com.sleepycat.je.DatabaseException;
+import com.sleepycat.je.Environment;
+import com.sleepycat.je.OperationStatus;
 
 import edu.uci.ics.crawler4j.crawler.Configurable;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
@@ -31,7 +34,7 @@ import edu.uci.ics.crawler4j.util.Util;
 
 public class DocIDServer extends Configurable {
 
-	protected static final Logger logger = Logger.getLogger(DocIDServer.class.getName());
+	//protected static final Logger logger = Logger.getLogger(DocIDServer.class.getName());
 	
 	protected Database docIDsDB = null;
 	
@@ -49,7 +52,7 @@ public class DocIDServer extends Configurable {
 		if (config.isResumableCrawling()) {
 			int docCount = getDocCount();
 			if (docCount > 0) {
-				logger.info("Loaded " + docCount + " URLs that had been detected in previous crawl.");
+				//logger.info("Loaded " + docCount + " URLs that had been detected in previous crawl.");
 				lastDocID = docCount;
 			}
 		} else {

@@ -17,7 +17,7 @@
 
 package edu.uci.ics.crawler4j.fetcher;
 
-import org.apache.http.HttpStatus;
+import ch.boye.httpclientandroidlib.HttpStatus;
 
 /**
  * @author Yasser Ganjisaffar <lastname at gmail dot com>

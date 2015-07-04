@@ -22,37 +22,36 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.zip.GZIPInputStream;
 
-import org.apache.http.Header;
-import org.apache.http.HeaderElement;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpException;
-import org.apache.http.HttpHost;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpResponseInterceptor;
-import org.apache.http.HttpStatus;
-import org.apache.http.HttpVersion;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.params.ClientPNames;
-import org.apache.http.client.params.CookiePolicy;
-import org.apache.http.conn.params.ConnRoutePNames;
-import org.apache.http.conn.scheme.PlainSocketFactory;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.conn.ssl.SSLSocketFactory;
-import org.apache.http.entity.HttpEntityWrapper;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.PoolingClientConnectionManager;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.CoreConnectionPNames;
-import org.apache.http.params.CoreProtocolPNames;
-import org.apache.http.params.HttpParams;
-import org.apache.http.params.HttpProtocolParamBean;
-import org.apache.http.protocol.HttpContext;
-import org.apache.log4j.Logger;
-
+import android.util.Log;
+import ch.boye.httpclientandroidlib.Header;
+import ch.boye.httpclientandroidlib.HeaderElement;
+import ch.boye.httpclientandroidlib.HttpEntity;
+import ch.boye.httpclientandroidlib.HttpException;
+import ch.boye.httpclientandroidlib.HttpHost;
+import ch.boye.httpclientandroidlib.HttpResponse;
+import ch.boye.httpclientandroidlib.HttpResponseInterceptor;
+import ch.boye.httpclientandroidlib.HttpStatus;
+import ch.boye.httpclientandroidlib.HttpVersion;
+import ch.boye.httpclientandroidlib.auth.AuthScope;
+import ch.boye.httpclientandroidlib.auth.UsernamePasswordCredentials;
+import ch.boye.httpclientandroidlib.client.HttpClient;
+import ch.boye.httpclientandroidlib.client.methods.HttpGet;
+import ch.boye.httpclientandroidlib.client.params.ClientPNames;
+import ch.boye.httpclientandroidlib.client.params.CookiePolicy;
+import ch.boye.httpclientandroidlib.conn.params.ConnRoutePNames;
+import ch.boye.httpclientandroidlib.conn.scheme.PlainSocketFactory;
+import ch.boye.httpclientandroidlib.conn.scheme.Scheme;
+import ch.boye.httpclientandroidlib.conn.scheme.SchemeRegistry;
+import ch.boye.httpclientandroidlib.conn.ssl.SSLSocketFactory;
+import ch.boye.httpclientandroidlib.entity.HttpEntityWrapper;
+import ch.boye.httpclientandroidlib.impl.client.DefaultHttpClient;
+import ch.boye.httpclientandroidlib.impl.conn.PoolingClientConnectionManager;
+import ch.boye.httpclientandroidlib.params.BasicHttpParams;
+import ch.boye.httpclientandroidlib.params.CoreConnectionPNames;
+import ch.boye.httpclientandroidlib.params.CoreProtocolPNames;
+import ch.boye.httpclientandroidlib.params.HttpParams;
+import ch.boye.httpclientandroidlib.params.HttpProtocolParamBean;
+import ch.boye.httpclientandroidlib.protocol.HttpContext;
 import edu.uci.ics.crawler4j.crawler.Configurable;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.url.URLCanonicalizer;
@@ -63,7 +62,7 @@ import edu.uci.ics.crawler4j.url.WebURL;
  */
 public class PageFetcher extends Configurable {
 
-	protected static final Logger logger = Logger.getLogger(PageFetcher.class);
+	//protected static final Logger logger = Logger.getLogger(PageFetcher.class);
 
 	protected PoolingClientConnectionManager connectionManager;
 
@@ -173,7 +172,7 @@ public class PageFetcher extends Configurable {
 						fetchResult.setStatusCode(statusCode);
 						return fetchResult;
 					}
-					logger.info("Failed: " + response.getStatusLine().toString() + ", while fetching " + toFetchURL);
+					Log.i("CRAWLER", "Failed: " + response.getStatusLine().toString() + ", while fetching " + toFetchURL);
 				}
 				fetchResult.setStatusCode(response.getStatusLine().getStatusCode());
 				return fetchResult;
@@ -214,8 +213,8 @@ public class PageFetcher extends Configurable {
 			get.abort();
 			
 		} catch (IOException e) {
-			logger.error("Fatal transport error: " + e.getMessage() + " while fetching " + toFetchURL
-					+ " (link found in doc #" + webUrl.getParentDocid() + ")");
+//			logger.error("Fatal transport error: " + e.getMessage() + " while fetching " + toFetchURL
+//					+ " (link found in doc #" + webUrl.getParentDocid() + ")");
 			fetchResult.setStatusCode(CustomFetchStatus.FatalTransportError);
 			return fetchResult;
 		} catch (IllegalStateException e) {
@@ -223,9 +222,9 @@ public class PageFetcher extends Configurable {
 			// and other schemes
 		} catch (Exception e) {
 			if (e.getMessage() == null) {
-				logger.error("Error while fetching " + webUrl.getURL());
+				Log.e("CRAWLER", "Error while fetching " + webUrl.getURL());
 			} else {
-				logger.error(e.getMessage() + " while fetching " + webUrl.getURL());
+				Log.e("CRAWLER", e.getMessage() + " while fetching " + webUrl.getURL());
 			}
 		} finally {
 			try {

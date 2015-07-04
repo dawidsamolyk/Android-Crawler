@@ -29,12 +29,7 @@ public class CrawlingResultProvider extends IntentService {
 		try {
 			startCrawler(settings);
 		} catch (Exception e) {
-			if(e.getMessage() != null) {
-				Log.e("CRAWLER", e.getMessage());
-
-			} else {
-				Log.e("CRAWLER", "b³¹d");
-			}
+			Log.e("CRAWLER", e.getMessage());
 		}
 	}
 
@@ -52,7 +47,7 @@ public class CrawlingResultProvider extends IntentService {
 		CrawlingController controller = new CrawlingController(config, setttings);
 
 		final CrawlingMonitor monitor = controller.start();
-
+		
 		new Runnable() {
 
 			@Override

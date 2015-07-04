@@ -19,7 +19,7 @@ package edu.uci.ics.crawler4j.fetcher;
 
 import java.util.concurrent.TimeUnit;
 
-import org.apache.http.impl.conn.PoolingClientConnectionManager;
+import ch.boye.httpclientandroidlib.impl.conn.PoolingClientConnectionManager;
 
 public class IdleConnectionMonitorThread extends Thread {
     

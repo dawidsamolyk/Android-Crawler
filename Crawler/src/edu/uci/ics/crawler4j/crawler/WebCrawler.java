@@ -17,8 +17,13 @@
 
 package edu.uci.ics.crawler4j.crawler;
 
-import edu.uci.ics.crawler4j.fetcher.PageFetchResult;
+import java.util.ArrayList;
+import java.util.List;
+
+import android.util.Log;
+import ch.boye.httpclientandroidlib.HttpStatus;
 import edu.uci.ics.crawler4j.fetcher.CustomFetchStatus;
+import edu.uci.ics.crawler4j.fetcher.PageFetchResult;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.frontier.DocIDServer;
 import edu.uci.ics.crawler4j.frontier.Frontier;
@@ -28,12 +33,6 @@ import edu.uci.ics.crawler4j.parser.Parser;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 import edu.uci.ics.crawler4j.url.WebURL;
 
-import org.apache.http.HttpStatus;
-import org.apache.log4j.Logger;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * WebCrawler class in the Runnable class that is executed by each crawler
  * thread.
@@ -42,7 +41,7 @@ import java.util.List;
  */
 public class WebCrawler implements Runnable {
 
-	protected static final Logger logger = Logger.getLogger(WebCrawler.class.getName());
+	//protected static final Logger logger = Logger.getLogger(WebCrawler.class.getName());
 
 	/**
 	 * The id associated to the crawler thread running this instance
@@ -221,7 +220,7 @@ public class WebCrawler implements Runnable {
 						frontier.setProcessed(curURL);
 					}
 					if (myController.isShuttingDown()) {
-						logger.info("Exiting because of controller shutdown.");
+						Log.i("CRAWLER", "Exiting because of controller shutdown.");
 						return;
 					}
 				}
@@ -291,7 +290,7 @@ public class WebCrawler implements Runnable {
 						}
 					}
 				} else if (fetchResult.getStatusCode() == CustomFetchStatus.PageTooBig) {
-					logger.info("Skipping a page which was bigger than max allowed size: " + curURL.getURL());
+					Log.i("CRAWLER", "Skipping a page which was bigger than max allowed size: " + curURL.getURL());
 				}
 				return;
 			}
@@ -350,11 +349,11 @@ public class WebCrawler implements Runnable {
 			try {
 				visit(page);
 			} catch (Exception e) {
-				logger.error("Exception while running the visit method. Message: '" + e.getMessage() + "' at " + e.getStackTrace()[0]);
+				Log.e("CRAWLER", "Exception while running the visit method. Message: '" + e.getMessage() + "' at " + e.getStackTrace()[0]);
 			}
 
 		} catch (Exception e) {
-			logger.error(e.getMessage() + ", while processing: " + curURL.getURL());
+			Log.e("CRAWLER", e.getMessage() + ", while processing: " + curURL.getURL());
 		} finally {
 			if (fetchResult != null) {
 				fetchResult.discardContentIfNotConsumed();

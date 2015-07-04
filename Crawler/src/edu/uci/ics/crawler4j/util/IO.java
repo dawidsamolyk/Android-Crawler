@@ -17,7 +17,8 @@
 
 package edu.uci.ics.crawler4j.util;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 

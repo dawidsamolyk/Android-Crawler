@@ -20,11 +20,9 @@ package edu.uci.ics.crawler4j.fetcher;
 import java.io.EOFException;
 import java.io.IOException;
 
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.util.EntityUtils;
-import org.apache.log4j.Logger;
-
+import ch.boye.httpclientandroidlib.Header;
+import ch.boye.httpclientandroidlib.HttpEntity;
+import ch.boye.httpclientandroidlib.util.EntityUtils;
 import edu.uci.ics.crawler4j.crawler.Page;
 
 /**
@@ -32,7 +30,7 @@ import edu.uci.ics.crawler4j.crawler.Page;
  */
 public class PageFetchResult {
 
-	protected static final Logger logger = Logger.getLogger(PageFetchResult.class);
+	//protected static final Logger logger = Logger.getLogger(PageFetchResult.class);
 
 	protected int statusCode;
 	protected HttpEntity entity = null;
@@ -78,8 +76,8 @@ public class PageFetchResult {
 			page.setFetchResponseHeaders(responseHeaders);
 			return true;
 		} catch (Exception e) {
-			logger.info("Exception while fetching content for: " + page.getWebURL().getURL() + " [" + e.getMessage()
-					+ "]");
+//			logger.info("Exception while fetching content for: " + page.getWebURL().getURL() + " [" + e.getMessage()
+//					+ "]");
 		}
 		return false;
 	}

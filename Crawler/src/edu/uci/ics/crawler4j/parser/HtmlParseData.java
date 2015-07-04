@@ -17,9 +17,9 @@
 
 package edu.uci.ics.crawler4j.parser;
 
-import edu.uci.ics.crawler4j.url.WebURL;
-
 import java.util.List;
+
+import edu.uci.ics.crawler4j.url.WebURL;
 
 public class HtmlParseData implements ParseData {
 
