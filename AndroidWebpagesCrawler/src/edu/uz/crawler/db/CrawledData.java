@@ -70,7 +70,7 @@ public class CrawledData {
 	public SimpleCursorAdapter cursorAdapter(final Context context, final int[] rowsInViewList) {
 		if (cursorAdapter == null) {
 			cursorAdapter = new SimpleCursorAdapter(context, R.layout.history_list_item, cursor(), new String[] { DATE,
-					WEBURL, TITLE, TOPICS, CONTENT }, rowsInViewList, 0);
+					WEBURL, TITLE, TOPICS }, rowsInViewList, 0);
 		}
 
 		return cursorAdapter;

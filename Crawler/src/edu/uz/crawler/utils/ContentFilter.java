@@ -42,11 +42,15 @@ public class ContentFilter {
 
 	public boolean containsTopicsWithCrawlerSettings(final HtmlParseData htmlParseData) {
 		String contentToAnalyze = htmlParseData.getTitle();
+		
+		if(contentToAnalyze == null) {
+			contentToAnalyze = new String();
+		}
 
 		if (Crawler.SETTINGS.contentSearch) {
 			contentToAnalyze += htmlParseData.getText();
 		}
-
+		
 		return containsSpecifiedTopics(contentToAnalyze);
 	}
 

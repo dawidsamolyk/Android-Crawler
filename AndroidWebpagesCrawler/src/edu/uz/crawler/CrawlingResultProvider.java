@@ -47,6 +47,9 @@ public class CrawlingResultProvider extends IntentService {
 		CrawlingController controller = new CrawlingController(config, setttings);
 
 		final CrawlingMonitor monitor = controller.start();
+		Log.i("CRAWLER", "Start crawling with parameters:");
+		Log.i("CRAWLER", "URL: " + url.getURL());
+		Log.i("CRAWLER", "Topics: " + topicsList.toString());
 		
 		new Runnable() {
 
@@ -56,7 +59,11 @@ public class CrawlingResultProvider extends IntentService {
 					ConcurrentLinkedQueue<edu.uz.crawler.CrawledPage> pagesToSave = Crawler.PAGES_TO_SAVE;
 
 					while (!pagesToSave.isEmpty()) {
-						sendByBroadcast(pagesToSave.poll());
+						edu.uz.crawler.CrawledPage page = pagesToSave.poll();
+						sendByBroadcast(page);
+						Log.i("CRAWLED", page.getTitle());
+						Log.i("CRAWLED", page.getUrl());
+						Log.i("CRAWLED", page.getContent());
 					}
 				}
 			}
@@ -68,7 +75,8 @@ public class CrawlingResultProvider extends IntentService {
 		final File temp;
 
 		temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
-
+		temp.deleteOnExit();
+		
 		if (!(temp.delete())) {
 			throw new IOException("Could not delete temp file: " + temp.getAbsolutePath());
 		}
