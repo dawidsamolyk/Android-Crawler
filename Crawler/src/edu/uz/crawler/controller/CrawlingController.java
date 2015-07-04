@@ -40,7 +40,7 @@ public class CrawlingController {
     }
 
     public CrawlingMonitor start() throws IllegalStateException {
-	if (!controller.isFinished()) {
+	if (started) {
 	    throw new IllegalStateException("Cannot start again while crawling is running!");
 	}
 

@@ -21,7 +21,7 @@ public class CrawlerVisitsTest {
 	Crawler.SETTINGS = null;
 
 	exception.expect(IllegalStateException.class);
-	fixture.shouldVisit(new Page(new WebURL()), new WebURL());
+	fixture.shouldVisit(new WebURL());
     }
 
     @Test
@@ -30,7 +30,7 @@ public class CrawlerVisitsTest {
 	configureSettings(webpageAddress);
 
 	String actualCrawlingWebpage = "http://www.onet.pl/index.html";
-	boolean shouldVisit = new Crawler().shouldVisit(null, getWebURL(actualCrawlingWebpage));
+	boolean shouldVisit = new Crawler().shouldVisit( getWebURL(actualCrawlingWebpage));
 
 	assertFalse("Strona bêd¹ca w innej domenie nie powinna byæ odwiedzona przez Crawler!",
 		shouldVisit);
@@ -42,7 +42,7 @@ public class CrawlerVisitsTest {
 	configureSettings(webpageAddress);
 
 	String actualCrawlingWebpage = "http://www.wp.pl/file.zip";
-	boolean shouldVisit = new Crawler().shouldVisit(null, getWebURL(actualCrawlingWebpage));
+	boolean shouldVisit = new Crawler().shouldVisit( getWebURL(actualCrawlingWebpage));
 
 	assertFalse("Adres, który nie prowadzi do strony z treœci¹ nie powinien byæ odwiedzony!",
 		shouldVisit);
@@ -54,7 +54,7 @@ public class CrawlerVisitsTest {
 	configureSettings(webpageAddress);
 
 	String actualCrawlingWebpage = "http://www.wp.pl/topic/subpage.html";
-	boolean shouldVisit = new Crawler().shouldVisit(null, getWebURL(actualCrawlingWebpage));
+	boolean shouldVisit = new Crawler().shouldVisit( getWebURL(actualCrawlingWebpage));
 
 	assertTrue("Strona powinna byæ odwiedzona, poniewa¿ ma tylko inny protokó³!", shouldVisit);
     }
@@ -65,7 +65,7 @@ public class CrawlerVisitsTest {
 	configureSettings(webpageAddress);
 
 	String actualCrawlingWebpage = "https://www.wp.pl/topic/subpage.html";
-	boolean shouldVisit = new Crawler().shouldVisit(null, getWebURL(actualCrawlingWebpage));
+	boolean shouldVisit = new Crawler().shouldVisit( getWebURL(actualCrawlingWebpage));
 
 	assertTrue("Strona powinna byæ odwiedzona, poniewa¿ ma tylko inny protokó³!", shouldVisit);
     }
@@ -76,7 +76,7 @@ public class CrawlerVisitsTest {
 	configureSettings(webpageAddress);
 
 	String actualCrawlingWebpage = "http://wp.pl/topic/subpage.html";
-	boolean shouldVisit = new Crawler().shouldVisit(null, getWebURL(actualCrawlingWebpage));
+	boolean shouldVisit = new Crawler().shouldVisit( getWebURL(actualCrawlingWebpage));
 
 	assertTrue(
 		"Strona powinna byæ odwiedzona, poniewa¿ ma tylko krótszy zapis (bez przedrostka www)!",
@@ -89,7 +89,7 @@ public class CrawlerVisitsTest {
 	configureSettings(webpageAddress);
 
 	String actualCrawlingWebpage = "http://m.wp.pl/topic/subpage.html";
-	boolean shouldVisit = new Crawler().shouldVisit(null, getWebURL(actualCrawlingWebpage));
+	boolean shouldVisit = new Crawler().shouldVisit( getWebURL(actualCrawlingWebpage));
 
 	assertTrue("Strona powinna byæ odwiedzona, poniewa¿ jest jedynie wersj¹ mobiln¹!",
 		shouldVisit);

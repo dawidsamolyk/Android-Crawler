@@ -13,6 +13,7 @@ import edu.uci.ics.crawler4j.url.WebURL;
 import edu.uz.crawler.config.CrawlingConfiguration;
 import edu.uz.crawler.controller.CrawlingController;
 import edu.uz.crawler.controller.CrawlingMonitor;
+import edu.uz.crawler.db.CrawledPage;
 
 @SuppressLint("NewApi")
 public class CrawlingResultProvider extends IntentService {
@@ -28,7 +29,12 @@ public class CrawlingResultProvider extends IntentService {
 		try {
 			startCrawler(settings);
 		} catch (Exception e) {
-			Log.e("CRAWLER", e.getMessage());
+			if(e.getMessage() != null) {
+				Log.e("CRAWLER", e.getMessage());
+
+			} else {
+				Log.e("CRAWLER", "b³¹d");
+			}
 		}
 	}
 
@@ -36,14 +42,7 @@ public class CrawlingResultProvider extends IntentService {
 		return (CrawlingSettings) intent.getSerializableExtra(CrawlingJob.CRAWLING_SETTINGS);
 	}
 
-	// TODO zrob ¿eby nie trzeba by³o synchronized - kazde zadanie crawlera w
-	// nowym watku
 	private synchronized void startCrawler(final CrawlingSettings settings) throws Exception {
-		// TODO uruchom crawler
-
-		// CrawledPage crawledPage = new CrawledPage("21-06-2015", "wp.pl",
-		// "Tytul", "temat 1; temat 2", "Zawartosc..");
-
 		WebURL url = new WebURL();
 		url.setURL(settings.getWebpageUrl());
 		ArrayList<String> topicsList = settings.getTopics();
@@ -59,7 +58,7 @@ public class CrawlingResultProvider extends IntentService {
 			@Override
 			public void run() {
 				while (!monitor.isFinished()) {
-					ConcurrentLinkedQueue<CrawledPage> pagesToSave = Crawler.PAGES_TO_SAVE;
+					ConcurrentLinkedQueue<edu.uz.crawler.CrawledPage> pagesToSave = Crawler.PAGES_TO_SAVE;
 
 					while (!pagesToSave.isEmpty()) {
 						sendByBroadcast(pagesToSave.poll());
@@ -68,8 +67,6 @@ public class CrawlingResultProvider extends IntentService {
 			}
 
 		}.run();
-
-		;
 	}
 
 	public static File createTempDirectory() throws IOException {
@@ -88,12 +85,12 @@ public class CrawlingResultProvider extends IntentService {
 		return (temp);
 	}
 
-	private Intent sendByBroadcast(final CrawledPage downloadedPage) {
+	private Intent sendByBroadcast(final edu.uz.crawler.CrawledPage crawledPage) {
 		Intent result = new Intent();
 
 		result.setAction(CrawlingJob.CRAWLING_ACTION_RESPONSE);
 		result.addCategory(Intent.CATEGORY_DEFAULT);
-		result.putExtra(RESULT_NAME, downloadedPage);
+		result.putExtra(RESULT_NAME, crawledPage);
 
 		sendBroadcast(result);
 

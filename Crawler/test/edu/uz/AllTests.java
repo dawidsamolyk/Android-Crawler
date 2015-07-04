@@ -36,5 +36,6 @@ public class AllTests {
 	if (result.wasSuccessful()) {
 	    System.out.println("All tests finished successfully...");
 	}
+	System.exit(0);
     }
 }

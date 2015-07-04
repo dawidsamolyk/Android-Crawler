@@ -29,7 +29,7 @@ public class Crawler extends WebCrawler {
      *      edu.uci.ics.crawler4j.url.WebURL)
      */
     @Override
-    public boolean shouldVisit(final Page referringPage, final WebURL url)
+    public boolean shouldVisit(final WebURL url)
 	    throws IllegalArgumentException, IllegalStateException {
 	if (SETTINGS == null) {
 	    throw new IllegalStateException("Brak ustawieñ Crawlera!");
