@@ -13,15 +13,8 @@ public class CrawlingJob {
 
 	private final BroadcastReceiver crawlingReceiver;
 	private final FragmentActivity fragmentActivity;
-	private final CrawlingSettings settings;
 
-	public CrawlingJob(final FragmentActivity fragmentActivity, final CrawlingSettings settings,
-			final DatabaseHelper database) {
-		if (settings != null) {
-			this.settings = settings;
-		} else {
-			throw new IllegalArgumentException("Webpage address is not specified!");
-		}
+	public CrawlingJob(final FragmentActivity fragmentActivity, final DatabaseHelper database) {
 		if (fragmentActivity != null) {
 			this.fragmentActivity = fragmentActivity;
 		} else {
@@ -52,7 +45,11 @@ public class CrawlingJob {
 		return fragmentActivity.registerReceiver(crawlingReceiver, intentFilter);
 	}
 
-	public synchronized void start() {
+	public synchronized void start(final CrawlingSettings settings) throws IllegalArgumentException {
+		if (settings == null) {
+			throw new IllegalArgumentException("Webpage address is not specified!");
+		}
+
 		Intent crawlingIntent = new Intent(fragmentActivity, CrawlingResultProvider.class);
 		crawlingIntent.putExtra(CRAWLING_SETTINGS, settings);
 

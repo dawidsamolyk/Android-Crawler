@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import android.annotation.SuppressLint;
 import android.app.IntentService;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.util.Log;
 import edu.uci.ics.crawler4j.url.WebURL;
 import edu.uz.crawler.config.CrawlingConfiguration;
@@ -24,41 +25,72 @@ public class CrawlingResultProvider extends IntentService {
 
 	@Override
 	protected void onHandleIntent(final Intent intent) {
-		final CrawlingSettings settings = getCrawlingSettings(intent);
-		try {
-			startCrawler(settings);
-		} catch (Exception e) {
-			Log.e("CRAWLER", e.getMessage());
-		}
+		CrawlingSettings settings = getCrawlingSettings(intent);
+		startCrawler(settings);
 	}
 
 	private CrawlingSettings getCrawlingSettings(final Intent intent) {
 		return (CrawlingSettings) intent.getSerializableExtra(CrawlingJob.CRAWLING_SETTINGS);
 	}
 
-	private synchronized void startCrawler(final CrawlingSettings settings) throws Exception {
-		final WebURL url = new WebURL();
-		url.setURL(settings.getWebpageUrl());
-		final ArrayList<String> topicsList = settings.getTopics();
-		final String[] topics = topicsList.toArray(new String[topicsList.size()]);
-		final edu.uz.crawler.config.CrawlingSettings setttings = new edu.uz.crawler.config.CrawlingSettings(url, topics);
-		final CrawlingConfiguration config = new CrawlingConfiguration(createTempDirectory());
-		final CrawlingController controller = new CrawlingController(config, setttings);
+	private synchronized void startCrawler(final CrawlingSettings settings) {
+		new AsyncTask<Object, Void, Void>() {
 
-		final CrawlingMonitor crawlerMonitor = controller.start();
-		Log.i("CRAWLER", "Crawler started with parameters:");
-		Log.i("CRAWLER", "URL: " + url.getURL());
-		Log.i("CRAWLER", "Topics: " + topicsList.toString());
+			@Override
+			protected Void doInBackground(Object... params) {
+				try {
+					CrawlingMonitor crawlerMonitor = getInitializedController().start();
+					runSender(crawlerMonitor);
+				} catch (IllegalStateException e) {
+					Log.e("CRAWLER", e.getMessage());
+				} catch (Exception e) {
+					Log.e("CRAWLER", e.getMessage());
+				}
+				return null;
+			}
 
-		runSender(crawlerMonitor);
+			private CrawlingController getInitializedController() throws Exception {
+				final WebURL url = new WebURL();
+				url.setURL(settings.getWebpageUrl());
+				final ArrayList<String> topicsList = settings.getTopics();
+				final String[] topics = topicsList.toArray(new String[topicsList.size()]);
+				final edu.uz.crawler.config.CrawlingSettings setttings = new edu.uz.crawler.config.CrawlingSettings(
+						url, topics);
+				final CrawlingConfiguration config = new CrawlingConfiguration(createTempDirectory());
+
+				Log.i("CRAWLER", "Crawler initialized with parameters:");
+				Log.i("CRAWLER", "URL: " + url.getURL());
+				Log.i("CRAWLER", "Topics: " + topicsList.toString());
+
+				return new CrawlingController(config, setttings);
+			}
+
+			private File createTempDirectory() throws IOException {
+				final File temp = File.createTempFile("webpages_crawler_temp", Long.toString(System.nanoTime()));
+				temp.deleteOnExit();
+
+				Log.i("CRAWLER", "Temp directory created: " + temp.getPath());
+
+				if (!(temp.delete())) {
+					throw new IOException("Could not delete temp file: " + temp.getAbsolutePath());
+				}
+				if (!(temp.mkdir())) {
+					throw new IOException("Could not create temp directory: " + temp.getAbsolutePath());
+				}
+
+				return temp;
+			}
+
+		}.doInBackground(settings);
+
 	}
 
 	private void runSender(final CrawlingMonitor monitor) {
-		new Runnable() {
+		new AsyncTask<Object, Void, Void>() {
 			private final CrawlingMonitor crawlingMonitor = monitor;
 
 			@Override
-			public void run() {
+			protected Void doInBackground(Object... arguments) {
 				while (!crawlingMonitor.isFinished()) {
 					ConcurrentLinkedQueue<edu.uz.crawler.CrawledPage> pagesToSave = Crawler.PAGES_TO_SAVE;
 
@@ -66,30 +98,14 @@ public class CrawlingResultProvider extends IntentService {
 						edu.uz.crawler.CrawledPage page = pagesToSave.poll();
 						sendByBroadcast(page);
 
-						Log.i("CRAWLED", page.getTitle());
-						Log.i("CRAWLED", page.getUrl());
+						Log.i("CRAWLED", "From: " + page.getUrl());
+						Log.i("CRAWLED", "Page title: " + page.getTitle());
 					}
 				}
+				return null;
 			}
 
-		}.run();
-	}
-
-	public static File createTempDirectory() throws IOException {
-		final File temp;
-
-		temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
-		temp.deleteOnExit();
-
-		if (!(temp.delete())) {
-			throw new IOException("Could not delete temp file: " + temp.getAbsolutePath());
-		}
-
-		if (!(temp.mkdir())) {
-			throw new IOException("Could not create temp directory: " + temp.getAbsolutePath());
-		}
-
-		return (temp);
+		}.doInBackground(monitor);
 	}
 
 	private Intent sendByBroadcast(final edu.uz.crawler.CrawledPage crawledPage) {
