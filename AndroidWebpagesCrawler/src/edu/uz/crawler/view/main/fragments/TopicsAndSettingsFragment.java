@@ -90,8 +90,6 @@ public class TopicsAndSettingsFragment extends Fragment {
 	}
 
 	private void configureStartButton() {
-		
-
 		final Button addTopic = (Button) rootView.findViewById(R.id.startButton);
 		addTopic.setOnClickListener(new OnClickListener() {
 

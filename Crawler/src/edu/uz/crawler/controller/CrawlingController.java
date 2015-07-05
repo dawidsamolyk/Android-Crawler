@@ -1,6 +1,5 @@
 package edu.uz.crawler.controller;
 
-import android.util.Log;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
@@ -47,28 +46,7 @@ public class CrawlingController {
 		controller.startNonBlocking(Crawler.class, CPU_CORES);
 		started = true;
 
-		runStopper();
-
 		return new CrawlingMonitor(controller);
-	}
-
-	private void runStopper() {
-		new Runnable() {
-			private static final String TAG = "STOPPER";
-
-			@Override
-			public void run() {
-				try {
-					int numberOfMinutesToSlepp = 3;
-					int minutesToMiliseconds = numberOfMinutesToSlepp * 60 * 1000;
-					Thread.sleep(minutesToMiliseconds);
-				} catch (InterruptedException e) {
-					Log.e(TAG, e.getMessage());
-				}
-				CrawlingController.this.stop();
-				Log.e(TAG, "Crawler stopped");
-			}
-		}.run();
 	}
 
 	public CrawlingMonitor stop() throws IllegalStateException {

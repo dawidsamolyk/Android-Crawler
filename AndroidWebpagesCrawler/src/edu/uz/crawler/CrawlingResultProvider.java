@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import android.annotation.SuppressLint;
 import android.app.IntentService;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.util.Log;
 import edu.uci.ics.crawler4j.url.WebURL;
 import edu.uz.crawler.config.CrawlingConfiguration;
@@ -51,6 +52,25 @@ public class CrawlingResultProvider extends IntentService {
 		Log.i("CRAWLER", "Topics: " + topicsList.toString());
 
 		runSender(crawlerMonitor);
+
+		new AsyncTask<Object, Void, Void>() {
+			private static final String TAG = "STOPPER";
+
+			@Override
+			protected Void doInBackground(Object... params) {
+				try {
+					int numberOfMinutesToSleep = 2;
+					int minutesToMiliseconds = numberOfMinutesToSleep * 60 * 1000;
+					Thread.sleep(minutesToMiliseconds);
+				} catch (InterruptedException e) {
+					Log.e(TAG, e.getMessage());
+				}
+				controller.stop();
+				Log.e(TAG, "Crawler stopped");
+				
+				return null;
+			}
+		}.doInBackground(crawlerMonitor);
 	}
 
 	private void runSender(final CrawlingMonitor monitor) {
