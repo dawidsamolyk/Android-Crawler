@@ -1,5 +1,7 @@
 package edu.uz.crawler.view.main.fragments;
 
+import java.io.Serializable;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,7 +15,8 @@ import android.widget.ProgressBar;
 import edu.uz.crawler.R;
 import edu.uz.crawler.view.main.fragments.navigator.WebpagesNavigatorHandler;
 
-public class WebpageFragment extends Fragment {
+public class WebpageFragment extends Fragment implements Serializable {
+	private static final long serialVersionUID = 5990770478494895878L;
 	private WebView webpageView;
 
 	@Override

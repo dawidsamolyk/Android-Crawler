@@ -24,20 +24,24 @@ import edu.uz.crawler.db.DatabaseHelper;
 import edu.uz.crawler.view.main.fragments.settings.CrawlingOption;
 
 public class TopicsAndSettingsFragment extends Fragment {
-	private final WebpageFragment webpageFragment;
+	public static final String WEBPAGE_FRAGMENT_BUNDLE_NAME = "WebpageFragment";
+	private WebpageFragment webpageFragment;
 	private DatabaseHelper databaseHelper;
 	private View rootView;
 	private TopicsListAdapter topicsListAdapter;
 	private Map<CrawlingOption, Boolean> crawlingOptions = new HashMap<CrawlingOption, Boolean>();
 
-	public TopicsAndSettingsFragment(final WebpageFragment webpageFragment) {
-		this.webpageFragment = webpageFragment;
+	public TopicsAndSettingsFragment() {
+		super();
+	}
+
+	public void setArguments(Bundle args) {
+		webpageFragment = (WebpageFragment) args.get(WEBPAGE_FRAGMENT_BUNDLE_NAME);
 	}
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
 		this.databaseHelper = new DatabaseHelper(getActivity());
-		databaseHelper.deleteAll(); // TODO delete this line in product
 
 		rootView = inflater.inflate(R.layout.fragment_topics_settings, container, false);
 
@@ -86,6 +90,8 @@ public class TopicsAndSettingsFragment extends Fragment {
 	}
 
 	private void configureStartButton() {
+		final CrawlingJob crawlingJob = new CrawlingJob(getActivity(), databaseHelper);
+
 		final Button addTopic = (Button) rootView.findViewById(R.id.startButton);
 		addTopic.setOnClickListener(new OnClickListener() {
 
@@ -101,8 +107,7 @@ public class TopicsAndSettingsFragment extends Fragment {
 				}
 
 				try {
-					CrawlingJob job = new CrawlingJob(getActivity(), settings, databaseHelper);
-					job.start();
+					crawlingJob.start(settings);
 				} catch (IllegalArgumentException e) {
 					Log.e("EXCEPTION", e.getMessage());
 				}

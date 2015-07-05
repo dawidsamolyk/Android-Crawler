@@ -59,8 +59,9 @@ public class CrawlingController {
 			@Override
 			public void run() {
 				try {
-					int oneMinuteInMiliseconds = 1 * 60 * 1000;
-					Thread.sleep(oneMinuteInMiliseconds);
+					int numberOfMinutesToSlepp = 3;
+					int minutesToMiliseconds = numberOfMinutesToSlepp * 60 * 1000;
+					Thread.sleep(minutesToMiliseconds);
 				} catch (InterruptedException e) {
 					Log.e(TAG, e.getMessage());
 				}
