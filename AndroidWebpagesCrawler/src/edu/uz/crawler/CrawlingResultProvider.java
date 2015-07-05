@@ -33,12 +33,34 @@ public class CrawlingResultProvider extends IntentService {
 		return (CrawlingSettings) intent.getSerializableExtra(CrawlingJob.CRAWLING_SETTINGS);
 	}
 
+<<<<<<< HEAD
 	private synchronized void startCrawler(final CrawlingSettings settings) {
 		new AsyncTask<Object, Void, Void>() {
+=======
+	private synchronized void startCrawler(final CrawlingSettings settings) throws Exception {
+		final WebURL url = new WebURL();
+		url.setURL(settings.getWebpageUrl());
+		final ArrayList<String> topicsList = settings.getTopics();
+		final String[] topics = topicsList.toArray(new String[topicsList.size()]);
+		final edu.uz.crawler.config.CrawlingSettings setttings = new edu.uz.crawler.config.CrawlingSettings(url, topics);
+		final CrawlingConfiguration config = new CrawlingConfiguration(createTempDirectory());
+		final CrawlingController controller = new CrawlingController(config, setttings);
+
+		final CrawlingMonitor crawlerMonitor = controller.start();
+		Log.i("CRAWLER", "Crawler started with parameters:");
+		Log.i("CRAWLER", "URL: " + url.getURL());
+		Log.i("CRAWLER", "Topics: " + topicsList.toString());
+
+		runSender(crawlerMonitor);
+
+		new AsyncTask<Object, Void, Void>() {
+			private static final String TAG = "STOPPER";
+>>>>>>> master
 
 			@Override
 			protected Void doInBackground(Object... params) {
 				try {
+<<<<<<< HEAD
 					CrawlingMonitor crawlerMonitor = getInitializedController().start();
 					runSender(crawlerMonitor);
 				} catch (IllegalStateException e) {
@@ -83,6 +105,20 @@ public class CrawlingResultProvider extends IntentService {
 
 		}.doInBackground(settings);
 
+=======
+					int numberOfMinutesToSleep = 2;
+					int minutesToMiliseconds = numberOfMinutesToSleep * 60 * 1000;
+					Thread.sleep(minutesToMiliseconds);
+				} catch (InterruptedException e) {
+					Log.e(TAG, e.getMessage());
+				}
+				controller.stop();
+				Log.e(TAG, "Crawler stopped");
+				
+				return null;
+			}
+		}.doInBackground(crawlerMonitor);
+>>>>>>> master
 	}
 
 	private void runSender(final CrawlingMonitor monitor) {
