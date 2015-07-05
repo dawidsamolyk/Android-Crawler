@@ -30,7 +30,7 @@ public class CrawledPageCreator {
 	}
 
 	private static String getFoundTopics(final String title, final String content) {
-		StringBuilder foundTopics = new StringBuilder();
+		StringBuilder foundTopics = new StringBuilder("Found topics: ");
 
 		for (String eachTopic : Crawler.SETTINGS.getTopics()) {
 			if (title.contains(eachTopic) || content.contains(eachTopic)) {

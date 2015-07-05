@@ -9,26 +9,10 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="edu.uz.crawler.view.main.MainActivity$PlaceholderFragment" >
 
-    <TextView
-        android:id="@+id/historyFilter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:text="@string/sort_by"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <Spinner
-        android:id="@+id/filter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/historyFilter"
-        android:entries="@array/history_filters_array" />
-
     <ListView
         android:id="@+id/historyList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/filter" >
+        android:layout_height="wrap_content" >
     </ListView>
 
 </RelativeLayout>

@@ -17,8 +17,6 @@ import edu.uz.crawler.controller.CrawlingMonitor;
 @SuppressLint("NewApi")
 public class CrawlingResultProvider extends IntentService {
 	public static final String RESULT_NAME = "CRAWLING_RESULT";
-	private CrawlingController controller;
-	public static CrawlingMonitor crawlerMonitor;
 
 	public CrawlingResultProvider() {
 		super(CrawlingResultProvider.class.getName());
@@ -39,19 +37,15 @@ public class CrawlingResultProvider extends IntentService {
 	}
 
 	private synchronized void startCrawler(final CrawlingSettings settings) throws Exception {
-		if (controller != null && controller.isCrawlerStarted()) {
-			controller.stop();
-		}
-
-		WebURL url = new WebURL();
+		final WebURL url = new WebURL();
 		url.setURL(settings.getWebpageUrl());
-		ArrayList<String> topicsList = settings.getTopics();
-		String[] topics = topicsList.toArray(new String[topicsList.size()]);
-		edu.uz.crawler.config.CrawlingSettings setttings = new edu.uz.crawler.config.CrawlingSettings(url, topics);
-		CrawlingConfiguration config = new CrawlingConfiguration(createTempDirectory());
-		controller = new CrawlingController(config, setttings);
+		final ArrayList<String> topicsList = settings.getTopics();
+		final String[] topics = topicsList.toArray(new String[topicsList.size()]);
+		final edu.uz.crawler.config.CrawlingSettings setttings = new edu.uz.crawler.config.CrawlingSettings(url, topics);
+		final CrawlingConfiguration config = new CrawlingConfiguration(createTempDirectory());
+		final CrawlingController controller = new CrawlingController(config, setttings);
 
-		crawlerMonitor = controller.start();
+		final CrawlingMonitor crawlerMonitor = controller.start();
 		Log.i("CRAWLER", "Crawler started with parameters:");
 		Log.i("CRAWLER", "URL: " + url.getURL());
 		Log.i("CRAWLER", "Topics: " + topicsList.toString());
@@ -61,10 +55,11 @@ public class CrawlingResultProvider extends IntentService {
 
 	private void runSender(final CrawlingMonitor monitor) {
 		new Runnable() {
+			private final CrawlingMonitor crawlingMonitor = monitor;
 
 			@Override
 			public void run() {
-				while (!monitor.isFinished()) {
+				while (!crawlingMonitor.isFinished()) {
 					ConcurrentLinkedQueue<edu.uz.crawler.CrawledPage> pagesToSave = Crawler.PAGES_TO_SAVE;
 
 					while (!pagesToSave.isEmpty()) {

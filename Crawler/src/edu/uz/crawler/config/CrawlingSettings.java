@@ -18,7 +18,6 @@ public class CrawlingSettings {
 		if (webpageUrl == null || webpageUrl.getURL() == null) {
 			throw new IllegalArgumentException("Nie podano adresu strony!");
 		}
-		// WebpageValidator.checkUrl(webpageUrl.getURL());
 
 		this.webpageUrl = webpageUrl;
 	}

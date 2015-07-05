@@ -10,7 +10,8 @@ import edu.uz.crawler.config.CrawlingConfiguration;
 import edu.uz.crawler.config.CrawlingSettings;
 
 public class CrawlingController {
-	private static final int CPU_CORES = Runtime.getRuntime().availableProcessors();
+
+	private static final int CPU_CORES = Runtime.getRuntime().availableProcessors() * 2;
 	private final CrawlController controller;
 	private boolean started = false;
 
@@ -53,16 +54,18 @@ public class CrawlingController {
 
 	private void runStopper() {
 		new Runnable() {
+			private static final String TAG = "STOPPER";
+
 			@Override
 			public void run() {
 				try {
 					int oneMinuteInMiliseconds = 1 * 60 * 1000;
 					Thread.sleep(oneMinuteInMiliseconds);
 				} catch (InterruptedException e) {
-					Log.e("STOPPER", e.getMessage());
+					Log.e(TAG, e.getMessage());
 				}
 				CrawlingController.this.stop();
-				Log.e("STOPPER", "Crawler stopped");
+				Log.e(TAG, "Crawler stopped");
 			}
 		}.run();
 	}
