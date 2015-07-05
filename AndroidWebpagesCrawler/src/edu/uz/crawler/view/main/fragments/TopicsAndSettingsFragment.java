@@ -90,7 +90,7 @@ public class TopicsAndSettingsFragment extends Fragment {
 	}
 
 	private void configureStartButton() {
-		final CrawlingJob crawlingJob = new CrawlingJob(getActivity(), databaseHelper);
+		
 
 		final Button addTopic = (Button) rootView.findViewById(R.id.startButton);
 		addTopic.setOnClickListener(new OnClickListener() {
@@ -107,7 +107,8 @@ public class TopicsAndSettingsFragment extends Fragment {
 				}
 
 				try {
-					crawlingJob.start(settings);
+					final CrawlingJob crawlingJob = new CrawlingJob(getActivity(), settings, databaseHelper);
+					crawlingJob.start();
 				} catch (IllegalArgumentException e) {
 					Log.e("EXCEPTION", e.getMessage());
 				}
