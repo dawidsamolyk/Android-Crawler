@@ -10,7 +10,7 @@ public class WebpageValidatorTest {
 
     @Test
     public void shouldPassValidHttpAddress() {
-	WebpageValidator.checkUrl("http://www.wp.pl");
+	WebpageValidator.checkUrl("http://www.wp.pl/");
     }
 
     @Test
@@ -21,7 +21,7 @@ public class WebpageValidatorTest {
 
     @Test
     public void shouldPassValidHttpsAddress() {
-	WebpageValidator.checkUrl("https://www.wp.pl");
+	WebpageValidator.checkUrl("https://www.wp.pl/");
     }
 
     @Test

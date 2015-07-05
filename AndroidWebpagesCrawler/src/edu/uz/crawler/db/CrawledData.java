@@ -43,8 +43,8 @@ public class CrawledData {
 		initialValues.put(CONTENT, page.getContent());
 
 		database.insert(TABLE_NAME, null, initialValues);
-		
-		if(cursorAdapter != null) {
+
+		if (cursorAdapter != null) {
 			cursorAdapter.changeCursor(cursor());
 		}
 	}
@@ -69,8 +69,9 @@ public class CrawledData {
 
 	public SimpleCursorAdapter cursorAdapter(final Context context, final int[] rowsInViewList) {
 		if (cursorAdapter == null) {
-			cursorAdapter = new SimpleCursorAdapter(context, R.layout.history_list_item, cursor(), new String[] { DATE,
-					WEBURL, TITLE, TOPICS }, rowsInViewList, 0);
+			String[] rowsInDatabase = new String[] { WEBURL, TITLE, DATE, TOPICS };
+			cursorAdapter = new SimpleCursorAdapter(context, R.layout.history_list_item, cursor(), rowsInDatabase,
+					rowsInViewList, 0);
 		}
 
 		return cursorAdapter;

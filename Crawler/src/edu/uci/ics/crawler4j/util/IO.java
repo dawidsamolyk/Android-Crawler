@@ -48,6 +48,7 @@ public class IO {
 		return true;
 	}
 	
+	@SuppressWarnings("resource")
 	public static void writeBytesToFile(byte[] bytes, String destination) {
 		try {
 			FileChannel fc = new FileOutputStream(destination).getChannel();

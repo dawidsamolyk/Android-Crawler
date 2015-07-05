@@ -3,10 +3,7 @@ package edu.uz;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.concurrent.ConcurrentLinkedQueue;
-
-import org.junit.Test;
 
 import edu.uci.ics.crawler4j.url.WebURL;
 import edu.uz.crawler.CrawledPage;
@@ -18,7 +15,7 @@ import edu.uz.crawler.controller.CrawlingMonitor;
 public class IntegrationTest {
 	public static void main(String[] args) throws Exception {
 		WebURL url = new WebURL();
-		url.setURL("http://overclock.pl/articles/show/id/714,evga-gtx-980-ti-acx-20-test-topowej-karty-graficznej");
+		url.setURL("http://overclock.pl/");
 		ArrayList<String> topicsList = new ArrayList<String>();
 		topicsList.add("980");
 		String[] topics = topicsList.toArray(new String[topicsList.size()]);
@@ -47,7 +44,8 @@ public class IntegrationTest {
 		final File temp;
 
 		temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
-
+		temp.deleteOnExit();
+		
 		if (!(temp.delete())) {
 			throw new IOException("Could not delete temp file: " + temp.getAbsolutePath());
 		}

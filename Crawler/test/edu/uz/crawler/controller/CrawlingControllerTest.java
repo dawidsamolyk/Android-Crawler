@@ -114,6 +114,6 @@ public class CrawlingControllerTest {
     }
 
     private CrawlingSettings getFixtureSettings() {
-	return CrawlingSettingsTest.getFixture("http://wp.pl", new String[] { "Topic" });
+	return CrawlingSettingsTest.getFixture("http://wp.pl/", new String[] { "Topic" });
     }
 }

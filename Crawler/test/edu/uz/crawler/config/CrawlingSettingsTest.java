@@ -1,13 +1,12 @@
 package edu.uz.crawler.config;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import edu.uci.ics.crawler4j.url.WebURL;
-import edu.uz.crawler.config.CrawlingSettings;
 
 public class CrawlingSettingsTest {
     @Rule
@@ -35,7 +34,7 @@ public class CrawlingSettingsTest {
     public void shouldNotCreatesWithEmptyTopicsList() {
 	exception.expect(IllegalArgumentException.class);
 	WebURL url = new WebURL();
-	url.setURL("wp.pl");
+	url.setURL("wp.pl/");
 	new CrawlingSettings(url, new String[] {});
     }
 
@@ -43,7 +42,7 @@ public class CrawlingSettingsTest {
     public void shouldNotCreatesWithAnyNotSpecifiedTopic() {
 	exception.expect(IllegalArgumentException.class);
 	WebURL url = new WebURL();
-	url.setURL("wp.pl");
+	url.setURL("wp.pl/");
 	String[] topics = new String[] { "Topic", null, "Topic 2" };
 	new CrawlingSettings(url, topics);
     }
@@ -52,14 +51,14 @@ public class CrawlingSettingsTest {
     public void shouldNotCreatesWithAnyEmptyTopic() {
 	exception.expect(IllegalArgumentException.class);
 	WebURL url = new WebURL();
-	url.setURL("http://wp.pl");
+	url.setURL("http://wp.pl/");
 	String[] topics = new String[] { "Topic", "", "Topic 2" };
 	new CrawlingSettings(url, topics);
     }
 
     @Test
     public void shouldGivesWebpageAddress() {
-	String webpageAddress = "http://wp.pl";
+	String webpageAddress = "http://wp.pl/";
 	CrawlingSettings fixture = getFixture(webpageAddress, new String[] { "Topic" });
 
 	assertEquals(webpageAddress, fixture.getWebpageURL().getURL());

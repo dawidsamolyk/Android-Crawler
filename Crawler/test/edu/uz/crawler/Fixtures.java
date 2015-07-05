@@ -39,7 +39,7 @@ public class Fixtures {
 
     public static final WebURL getFixtureWebpageUrl() {
 	WebURL url = new WebURL();
-	url.setURL("http://fakeurl.com");
+	url.setURL("http://fakeurl.com/");
 	return url;
     }
 

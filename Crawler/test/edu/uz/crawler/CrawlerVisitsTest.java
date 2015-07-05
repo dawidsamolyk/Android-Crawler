@@ -7,7 +7,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.url.WebURL;
 import edu.uz.crawler.config.CrawlingSettingsTest;
 
@@ -26,7 +25,7 @@ public class CrawlerVisitsTest {
 
     @Test
     public void shouldNotVisitPageWhichIsNotInSameDomainAsCrawlingPage() {
-	String webpageAddress = "http://www.wp.pl";
+	String webpageAddress = "http://www.wp.pl/";
 	configureSettings(webpageAddress);
 
 	String actualCrawlingWebpage = "http://www.onet.pl/index.html";
@@ -38,7 +37,7 @@ public class CrawlerVisitsTest {
 
     @Test
     public void shouldNotVisitPageWhichIsNotContainContent() {
-	String webpageAddress = "http://www.wp.pl";
+	String webpageAddress = "http://www.wp.pl/";
 	configureSettings(webpageAddress);
 
 	String actualCrawlingWebpage = "http://www.wp.pl/file.zip";
@@ -50,7 +49,7 @@ public class CrawlerVisitsTest {
 
     @Test
     public void shouldVisitPageWhichIsInTheSameDomainButOnSampleSubpage() {
-	String webpageAddress = "http://www.wp.pl";
+	String webpageAddress = "http://www.wp.pl/";
 	configureSettings(webpageAddress);
 
 	String actualCrawlingWebpage = "http://www.wp.pl/topic/subpage.html";
@@ -61,7 +60,7 @@ public class CrawlerVisitsTest {
 
     @Test
     public void shouldVisitPageWhichIsInTheSameDomainButWithAnotherProtocol() {
-	String webpageAddress = "http://www.wp.pl";
+	String webpageAddress = "http://www.wp.pl/";
 	configureSettings(webpageAddress);
 
 	String actualCrawlingWebpage = "https://www.wp.pl/topic/subpage.html";
@@ -72,7 +71,7 @@ public class CrawlerVisitsTest {
 
     @Test
     public void shouldVisitPageWhichIsInTheSameDomainButWithShortNotation() {
-	String webpageAddress = "http://www.wp.pl";
+	String webpageAddress = "http://www.wp.pl/";
 	configureSettings(webpageAddress);
 
 	String actualCrawlingWebpage = "http://wp.pl/topic/subpage.html";
@@ -85,7 +84,7 @@ public class CrawlerVisitsTest {
 
     @Test
     public void shouldVisitMobileWebpageVersion() {
-	String webpageAddress = "http://www.wp.pl";
+	String webpageAddress = "http://www.wp.pl/";
 	configureSettings(webpageAddress);
 
 	String actualCrawlingWebpage = "http://m.wp.pl/topic/subpage.html";

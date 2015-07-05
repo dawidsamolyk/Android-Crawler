@@ -1,7 +1,6 @@
 package edu.uz.crawler.config;
 
 import edu.uci.ics.crawler4j.url.WebURL;
-import edu.uz.validators.WebpageValidator;
 
 public class CrawlingSettings {
     private WebURL webpageUrl;

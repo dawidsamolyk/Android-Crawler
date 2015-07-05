@@ -13,11 +13,12 @@ import edu.uci.ics.crawler4j.url.WebURL;
 import edu.uz.crawler.config.CrawlingConfiguration;
 import edu.uz.crawler.controller.CrawlingController;
 import edu.uz.crawler.controller.CrawlingMonitor;
-import edu.uz.crawler.db.CrawledPage;
 
 @SuppressLint("NewApi")
 public class CrawlingResultProvider extends IntentService {
 	public static final String RESULT_NAME = "CRAWLING_RESULT";
+	private CrawlingController controller;
+	public static CrawlingMonitor crawlerMonitor;
 
 	public CrawlingResultProvider() {
 		super(CrawlingResultProvider.class.getName());
@@ -38,19 +39,27 @@ public class CrawlingResultProvider extends IntentService {
 	}
 
 	private synchronized void startCrawler(final CrawlingSettings settings) throws Exception {
+		if (controller != null && controller.isCrawlerStarted()) {
+			controller.stop();
+		}
+
 		WebURL url = new WebURL();
 		url.setURL(settings.getWebpageUrl());
 		ArrayList<String> topicsList = settings.getTopics();
 		String[] topics = topicsList.toArray(new String[topicsList.size()]);
 		edu.uz.crawler.config.CrawlingSettings setttings = new edu.uz.crawler.config.CrawlingSettings(url, topics);
 		CrawlingConfiguration config = new CrawlingConfiguration(createTempDirectory());
-		CrawlingController controller = new CrawlingController(config, setttings);
+		controller = new CrawlingController(config, setttings);
 
-		final CrawlingMonitor monitor = controller.start();
-		Log.i("CRAWLER", "Start crawling with parameters:");
+		crawlerMonitor = controller.start();
+		Log.i("CRAWLER", "Crawler started with parameters:");
 		Log.i("CRAWLER", "URL: " + url.getURL());
 		Log.i("CRAWLER", "Topics: " + topicsList.toString());
-		
+
+		runSender(crawlerMonitor);
+	}
+
+	private void runSender(final CrawlingMonitor monitor) {
 		new Runnable() {
 
 			@Override
@@ -61,6 +70,7 @@ public class CrawlingResultProvider extends IntentService {
 					while (!pagesToSave.isEmpty()) {
 						edu.uz.crawler.CrawledPage page = pagesToSave.poll();
 						sendByBroadcast(page);
+
 						Log.i("CRAWLED", page.getTitle());
 						Log.i("CRAWLED", page.getUrl());
 						Log.i("CRAWLED", page.getContent());
@@ -76,7 +86,7 @@ public class CrawlingResultProvider extends IntentService {
 
 		temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
 		temp.deleteOnExit();
-		
+
 		if (!(temp.delete())) {
 			throw new IOException("Could not delete temp file: " + temp.getAbsolutePath());
 		}

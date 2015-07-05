@@ -21,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 import ch.boye.httpclientandroidlib.impl.conn.PoolingClientConnectionManager;
 
+@SuppressWarnings("deprecation")
 public class IdleConnectionMonitorThread extends Thread {
     
     private final PoolingClientConnectionManager connMgr;

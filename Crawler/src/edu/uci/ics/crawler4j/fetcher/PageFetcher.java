@@ -60,6 +60,7 @@ import edu.uci.ics.crawler4j.url.WebURL;
 /**
  * @author Yasser Ganjisaffar <lastname at gmail dot com>
  */
+@SuppressWarnings("deprecation")
 public class PageFetcher extends Configurable {
 
 	//protected static final Logger logger = Logger.getLogger(PageFetcher.class);

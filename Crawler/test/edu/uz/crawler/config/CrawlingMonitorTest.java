@@ -1,6 +1,6 @@
 package edu.uz.crawler.config;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Rule;
 import org.junit.Test;
