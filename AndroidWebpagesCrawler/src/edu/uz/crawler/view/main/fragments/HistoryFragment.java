@@ -17,11 +17,11 @@ public class HistoryFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		databaseHelper = new DatabaseHelper(getActivity());
 		databaseHelper.deleteAll();
-		
+
 		View rootView = inflater.inflate(R.layout.fragment_history, container, false);
-		
+
 		ListView list = (ListView) rootView.findViewById(R.id.historyList);
-		
+
 		int[] rowsInListView = { R.id.mainRow, R.id.secondRow, R.id.thirdRow, R.id.fourthRow };
 		SimpleCursorAdapter adapter = databaseHelper.cursorAdapter(getActivity(), rowsInListView);
 		list.setAdapter(adapter);

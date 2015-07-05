@@ -30,7 +30,7 @@ public class IO {
 	public static boolean deleteFolder(File folder) {
 		return deleteFolderContents(folder) && folder.delete();
 	}
-	
+
 	public static boolean deleteFolderContents(File folder) {
 		System.out.println("Deleting content of: " + folder.getAbsolutePath());
 		File[] files = folder.listFiles();
@@ -47,7 +47,7 @@ public class IO {
 		}
 		return true;
 	}
-	
+
 	@SuppressWarnings("resource")
 	public static void writeBytesToFile(byte[] bytes, String destination) {
 		try {

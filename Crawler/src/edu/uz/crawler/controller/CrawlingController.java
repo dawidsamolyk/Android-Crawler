@@ -45,7 +45,7 @@ public class CrawlingController {
 
 		controller.startNonBlocking(Crawler.class, CPU_CORES);
 		started = true;
-		
+
 		runStopper();
 
 		return new CrawlingMonitor(controller);
@@ -56,8 +56,8 @@ public class CrawlingController {
 			@Override
 			public void run() {
 				try {
-					// One minute
-					Thread.sleep(1 * 60 * 1000);
+					int oneMinuteInMiliseconds = 1 * 60 * 1000;
+					Thread.sleep(oneMinuteInMiliseconds);
 				} catch (InterruptedException e) {
 					Log.e("STOPPER", e.getMessage());
 				}

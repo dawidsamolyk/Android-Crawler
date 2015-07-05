@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class TLDList {
-	
+
 	private final String tldNamesFileName = "tld-names.txt";
 
 	private Set<String> tldSet = new HashSet<>();
@@ -21,7 +21,7 @@ public class TLDList {
 				System.err.println("Couldn't find " + tldNamesFileName);
 				System.exit(-1);
 			}
-			
+
 			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 			String line;
 			while ((line = reader.readLine()) != null) {

@@ -39,7 +39,8 @@ public class CrawlingJob {
 		return new BroadcastReceiver() {
 			@Override
 			public void onReceive(final Context context, final Intent intent) {
-				CrawledPage downloadedPage = (CrawledPage) intent.getSerializableExtra(CrawlingResultProvider.RESULT_NAME);
+				CrawledPage downloadedPage = (CrawledPage) intent
+						.getSerializableExtra(CrawlingResultProvider.RESULT_NAME);
 				database.insert(downloadedPage);
 			}
 		};

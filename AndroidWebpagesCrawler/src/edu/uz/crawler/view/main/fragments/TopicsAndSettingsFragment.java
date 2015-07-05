@@ -38,7 +38,7 @@ public class TopicsAndSettingsFragment extends Fragment {
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
 		this.databaseHelper = new DatabaseHelper(getActivity());
 		databaseHelper.deleteAll(); // TODO delete this line in product
-		
+
 		rootView = inflater.inflate(R.layout.fragment_topics_settings, container, false);
 
 		configureTopicsArea();

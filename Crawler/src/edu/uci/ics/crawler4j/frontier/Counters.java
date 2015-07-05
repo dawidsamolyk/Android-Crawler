@@ -38,13 +38,13 @@ import edu.uci.ics.crawler4j.util.Util;
  */
 
 public class Counters extends Configurable {
-	
+
 	public class ReservedCounterNames {
 		public final static String SCHEDULED_PAGES = "Scheduled-Pages";
 		public final static String PROCESSED_PAGES = "Processed-Pages";
 	}
 
-    protected Database statisticsDB = null;
+	protected Database statisticsDB = null;
 	protected Environment env;
 
 	protected final Object mutex = new Object();
@@ -68,7 +68,7 @@ public class Counters extends Configurable {
 			dbConfig.setTransactional(true);
 			dbConfig.setDeferredWrite(false);
 			statisticsDB = env.openDatabase(null, "Statistics", dbConfig);
-			
+
 			OperationStatus result;
 			DatabaseEntry key = new DatabaseEntry();
 			DatabaseEntry value = new DatabaseEntry();
@@ -104,7 +104,7 @@ public class Counters extends Configurable {
 			try {
 				counterValues.put(name, new Long(value));
 				if (statisticsDB != null) {
-					Transaction txn = env.beginTransaction(null, null);					
+					Transaction txn = env.beginTransaction(null, null);
 					statisticsDB.put(txn, new DatabaseEntry(name.getBytes()),
 							new DatabaseEntry(Util.long2ByteArray(value)));
 					txn.commit();

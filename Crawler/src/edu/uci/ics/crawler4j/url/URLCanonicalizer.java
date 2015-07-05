@@ -44,7 +44,7 @@ public class URLCanonicalizer {
 
 		try {
 			URL canonicalURL = new URL(UrlResolver.resolveUrl(context == null ? "" : context, href));
-			
+
 			String host = canonicalURL.getHost().toLowerCase();
 			if (host == "") {
 				// This is an invalid Url.
@@ -111,7 +111,7 @@ public class URLCanonicalizer {
 
 			URL result = new URL(protocol, host, port, pathAndQueryString);
 			return result.toExternalForm();
-			
+
 		} catch (MalformedURLException ex) {
 			return null;
 		} catch (URISyntaxException ex) {
@@ -147,7 +147,7 @@ public class URLCanonicalizer {
 					params.put(tokens[0], "");
 				}
 				break;
-			case 2: 
+			case 2:
 				params.put(tokens[0], tokens[1]);
 				break;
 			}

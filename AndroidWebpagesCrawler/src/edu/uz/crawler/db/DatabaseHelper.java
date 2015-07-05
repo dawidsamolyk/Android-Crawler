@@ -1,11 +1,11 @@
 package edu.uz.crawler.db;
 
-import edu.uz.crawler.CrawledPage;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import android.widget.SimpleCursorAdapter;
+import edu.uz.crawler.CrawledPage;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 	private final CrawledData table = new CrawledData();

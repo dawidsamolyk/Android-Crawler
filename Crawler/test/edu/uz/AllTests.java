@@ -28,14 +28,14 @@ import edu.uz.validators.WebpageValidatorTest;
 })
 //@formatter:on
 public class AllTests {
-    public static void main(String[] args) {
-	Result result = JUnitCore.runClasses(AllTests.class);
-	for (Failure fail : result.getFailures()) {
-	    System.out.println(fail.toString());
+	public static void main(String[] args) {
+		Result result = JUnitCore.runClasses(AllTests.class);
+		for (Failure fail : result.getFailures()) {
+			System.out.println(fail.toString());
+		}
+		if (result.wasSuccessful()) {
+			System.out.println("All tests finished successfully...");
+		}
+		System.exit(0);
 	}
-	if (result.wasSuccessful()) {
-	    System.out.println("All tests finished successfully...");
-	}
-	System.exit(0);
-    }
 }

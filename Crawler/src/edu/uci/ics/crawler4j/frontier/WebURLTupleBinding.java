@@ -42,7 +42,7 @@ public class WebURLTupleBinding extends TupleBinding<WebURL> {
 	}
 
 	@Override
-	public void objectToEntry(WebURL url, TupleOutput output) {		
+	public void objectToEntry(WebURL url, TupleOutput output) {
 		output.writeString(url.getURL());
 		output.writeInt(url.getDocid());
 		output.writeInt(url.getParentDocid());

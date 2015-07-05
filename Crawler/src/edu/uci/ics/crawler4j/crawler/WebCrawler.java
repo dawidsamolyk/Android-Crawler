@@ -41,7 +41,8 @@ import edu.uci.ics.crawler4j.url.WebURL;
  */
 public class WebCrawler implements Runnable {
 
-	//protected static final Logger logger = Logger.getLogger(WebCrawler.class.getName());
+	// protected static final Logger logger =
+	// Logger.getLogger(WebCrawler.class.getName());
 
 	/**
 	 * The id associated to the crawler thread running this instance
@@ -349,7 +350,9 @@ public class WebCrawler implements Runnable {
 			try {
 				visit(page);
 			} catch (Exception e) {
-				Log.e("CRAWLER", "Exception while running the visit method. Message: '" + e.getMessage() + "' at " + e.getStackTrace()[0]);
+				Log.e("CRAWLER",
+						"Exception while running the visit method. Message: '" + e.getMessage() + "' at "
+								+ e.getStackTrace()[0]);
 			}
 
 		} catch (Exception e) {

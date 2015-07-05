@@ -15,7 +15,7 @@ public class CrawledPageCreator {
 		String title = "", foundTopics = "", content = "";
 
 		ParseData dataOnPage = page.getParseData();
-		
+
 		if (dataOnPage instanceof HtmlParseData) {
 			HtmlParseData data = (HtmlParseData) dataOnPage;
 			title = data.getTitle();

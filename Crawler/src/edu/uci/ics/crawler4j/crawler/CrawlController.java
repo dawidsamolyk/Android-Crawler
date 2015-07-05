@@ -42,7 +42,8 @@ import edu.uci.ics.crawler4j.util.IO;
  */
 public class CrawlController extends Configurable {
 
-	//static final Logger logger = Logger.getLogger(CrawlController.class.getName());
+	// static final Logger logger =
+	// Logger.getLogger(CrawlController.class.getName());
 
 	/**
 	 * The 'customData' object can be used for passing custom crawl-related
@@ -195,8 +196,10 @@ public class CrawlController extends Configurable {
 									// Make sure again that none of the threads
 									// are
 									// alive.
-									Log.i("CRAWLER", "It looks like no thread is working, waiting for 10 seconds to make sure...");
-									Log.i("CRAWLER", "It looks like no thread is working, waiting for 10 seconds to make sure...");
+									Log.i("CRAWLER",
+											"It looks like no thread is working, waiting for 10 seconds to make sure...");
+									Log.i("CRAWLER",
+											"It looks like no thread is working, waiting for 10 seconds to make sure...");
 									sleep(10);
 
 									someoneIsWorking = false;
@@ -212,7 +215,8 @@ public class CrawlController extends Configurable {
 											if (queueLength > 0) {
 												continue;
 											}
-											Log.i("CRAWLER", "No thread is working and no more URLs are in queue waiting for another 10 seconds to make sure...");
+											Log.i("CRAWLER",
+													"No thread is working and no more URLs are in queue waiting for another 10 seconds to make sure...");
 											sleep(10);
 											queueLength = frontier.getQueueLength();
 											if (queueLength > 0) {
@@ -368,7 +372,7 @@ public class CrawlController extends Configurable {
 	 * 
 	 * Note that if you add three seen Urls with document ids 1,2, and 7. Then
 	 * the next URL that is found during the crawl will get a doc id of 8. Also
-	 * you need to ensure to add seen Urls in increasing order of document ids. 
+	 * you need to ensure to add seen Urls in increasing order of document ids.
 	 * 
 	 * @param url
 	 *            the URL of the page

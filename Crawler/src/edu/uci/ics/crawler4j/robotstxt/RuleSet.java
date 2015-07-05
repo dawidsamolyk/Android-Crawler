@@ -39,15 +39,15 @@ public class RuleSet extends TreeSet<String> {
 		}
 		return retVal;
 	}
-	
+
 	public boolean containsPrefixOf(String s) {
 		SortedSet<String> sub = headSet(s);
 		// because redundant prefixes have been eliminated,
 		// only a test against last item in headSet is necessary
 		if (!sub.isEmpty() && s.startsWith(sub.last())) {
 			return true; // prefix substring exists
-		} 
+		}
 		// might still exist exactly (headSet does not contain boundary)
-		return contains(s); 
+		return contains(s);
 	}
 }

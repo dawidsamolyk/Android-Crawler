@@ -63,7 +63,8 @@ import edu.uci.ics.crawler4j.url.WebURL;
 @SuppressWarnings("deprecation")
 public class PageFetcher extends Configurable {
 
-	//protected static final Logger logger = Logger.getLogger(PageFetcher.class);
+	// protected static final Logger logger =
+	// Logger.getLogger(PageFetcher.class);
 
 	protected PoolingClientConnectionManager connectionManager;
 
@@ -113,27 +114,27 @@ public class PageFetcher extends Configurable {
 
 			HttpHost proxy = new HttpHost(config.getProxyHost(), config.getProxyPort());
 			httpClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
-        }
+		}
 
-        httpClient.addResponseInterceptor(new HttpResponseInterceptor() {
+		httpClient.addResponseInterceptor(new HttpResponseInterceptor() {
 
-            @Override
-            public void process(final HttpResponse response, final HttpContext context) throws HttpException,
-                    IOException {
-                HttpEntity entity = response.getEntity();
-                Header contentEncoding = entity.getContentEncoding();
-                if (contentEncoding != null) {
-                    HeaderElement[] codecs = contentEncoding.getElements();
-                    for (HeaderElement codec : codecs) {
-                        if (codec.getName().equalsIgnoreCase("gzip")) {
-                            response.setEntity(new GzipDecompressingEntity(response.getEntity()));
-                            return;
-                        }
-                    }
-                }
-            }
+			@Override
+			public void process(final HttpResponse response, final HttpContext context) throws HttpException,
+					IOException {
+				HttpEntity entity = response.getEntity();
+				Header contentEncoding = entity.getContentEncoding();
+				if (contentEncoding != null) {
+					HeaderElement[] codecs = contentEncoding.getElements();
+					for (HeaderElement codec : codecs) {
+						if (codec.getName().equalsIgnoreCase("gzip")) {
+							response.setEntity(new GzipDecompressingEntity(response.getEntity()));
+							return;
+						}
+					}
+				}
+			}
 
-        });
+		});
 
 		if (connectionMonitorThread == null) {
 			connectionMonitorThread = new IdleConnectionMonitorThread(connectionManager);
@@ -159,7 +160,7 @@ public class PageFetcher extends Configurable {
 			HttpResponse response = httpClient.execute(get);
 			fetchResult.setEntity(response.getEntity());
 			fetchResult.setResponseHeaders(response.getAllHeaders());
-			
+
 			int statusCode = response.getStatusLine().getStatusCode();
 			if (statusCode != HttpStatus.SC_OK) {
 				if (statusCode != HttpStatus.SC_NOT_FOUND) {
@@ -169,11 +170,12 @@ public class PageFetcher extends Configurable {
 							String movedToUrl = header.getValue();
 							movedToUrl = URLCanonicalizer.getCanonicalURL(movedToUrl, toFetchURL);
 							fetchResult.setMovedToUrl(movedToUrl);
-						} 
+						}
 						fetchResult.setStatusCode(statusCode);
 						return fetchResult;
 					}
-					Log.i("CRAWLER", "Failed: " + response.getStatusLine().toString() + ", while fetching " + toFetchURL);
+					Log.i("CRAWLER", "Failed: " + response.getStatusLine().toString() + ", while fetching "
+							+ toFetchURL);
 				}
 				fetchResult.setStatusCode(response.getStatusLine().getStatusCode());
 				return fetchResult;
@@ -210,12 +212,13 @@ public class PageFetcher extends Configurable {
 				return fetchResult;
 
 			}
-			
+
 			get.abort();
-			
+
 		} catch (IOException e) {
-//			logger.error("Fatal transport error: " + e.getMessage() + " while fetching " + toFetchURL
-//					+ " (link found in doc #" + webUrl.getParentDocid() + ")");
+			// logger.error("Fatal transport error: " + e.getMessage() +
+			// " while fetching " + toFetchURL
+			// + " (link found in doc #" + webUrl.getParentDocid() + ")");
 			fetchResult.setStatusCode(CustomFetchStatus.FatalTransportError);
 			return fetchResult;
 		} catch (IllegalStateException e) {
@@ -246,7 +249,7 @@ public class PageFetcher extends Configurable {
 			connectionMonitorThread.shutdown();
 		}
 	}
-	
+
 	public HttpClient getHttpClient() {
 		return httpClient;
 	}

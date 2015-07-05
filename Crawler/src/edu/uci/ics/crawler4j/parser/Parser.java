@@ -42,7 +42,8 @@ import edu.uci.ics.crawler4j.util.Util;
  */
 public class Parser extends Configurable {
 
-	//protected static final Logger logger = Logger.getLogger(Parser.class.getName());
+	// protected static final Logger logger =
+	// Logger.getLogger(Parser.class.getName());
 
 	private HtmlParser htmlParser;
 	private ParseContext parseContext;
@@ -119,8 +120,7 @@ public class Parser extends Configurable {
 			if (href.startsWith("http://")) {
 				hrefWithoutProtocol = href.substring(7);
 			}
-			if (!hrefWithoutProtocol.contains("javascript:") 
-					&& !hrefWithoutProtocol.contains("mailto:")
+			if (!hrefWithoutProtocol.contains("javascript:") && !hrefWithoutProtocol.contains("mailto:")
 					&& !hrefWithoutProtocol.contains("@")) {
 				String url = URLCanonicalizer.getCanonicalURL(href, contextURL);
 				if (url != null) {

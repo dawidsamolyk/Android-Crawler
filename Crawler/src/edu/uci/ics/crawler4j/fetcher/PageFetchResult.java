@@ -30,7 +30,8 @@ import edu.uci.ics.crawler4j.crawler.Page;
  */
 public class PageFetchResult {
 
-	//protected static final Logger logger = Logger.getLogger(PageFetchResult.class);
+	// protected static final Logger logger =
+	// Logger.getLogger(PageFetchResult.class);
 
 	protected int statusCode;
 	protected HttpEntity entity = null;
@@ -53,7 +54,7 @@ public class PageFetchResult {
 	public void setEntity(HttpEntity entity) {
 		this.entity = entity;
 	}
-	
+
 	public Header[] getResponseHeaders() {
 		return responseHeaders;
 	}
@@ -61,7 +62,7 @@ public class PageFetchResult {
 	public void setResponseHeaders(Header[] responseHeaders) {
 		this.responseHeaders = responseHeaders;
 	}
-	
+
 	public String getFetchedUrl() {
 		return fetchedUrl;
 	}
@@ -76,8 +77,9 @@ public class PageFetchResult {
 			page.setFetchResponseHeaders(responseHeaders);
 			return true;
 		} catch (Exception e) {
-//			logger.info("Exception while fetching content for: " + page.getWebURL().getURL() + " [" + e.getMessage()
-//					+ "]");
+			// logger.info("Exception while fetching content for: " +
+			// page.getWebURL().getURL() + " [" + e.getMessage()
+			// + "]");
 		}
 		return false;
 	}

@@ -9,11 +9,11 @@ import android.support.v4.view.ViewPager;
 @SuppressLint("NewApi")
 public class CrawlerTabListener implements TabListener {
 	private final ViewPager viewPager;
-	
+
 	public CrawlerTabListener(final ViewPager viewPager) {
 		this.viewPager = viewPager;
 	}
-	
+
 	@Override
 	public void onTabReselected(final Tab tab, final FragmentTransaction ft) {
 	}

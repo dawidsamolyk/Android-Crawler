@@ -60,7 +60,7 @@ public class HtmlParseData implements ParseData {
 	public void setOutgoingUrls(List<WebURL> outgoingUrls) {
 		this.outgoingUrls = outgoingUrls;
 	}
-	
+
 	@Override
 	public String toString() {
 		return text;

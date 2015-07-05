@@ -140,17 +140,17 @@ public class WorkQueues {
 			}
 		}
 	}
-	
+
 	/*
-	 * The key that is used for storing URLs determines the order
-	 * they are crawled. Lower key values results in earlier crawling.
-	 * Here our keys are 6 bytes. The first byte comes from the URL priority.
-	 * The second byte comes from depth of crawl at which this URL is first found.
-	 * The rest of the 4 bytes come from the docid of the URL. As a result,
-	 * URLs with lower priority numbers will be crawled earlier. If priority
-	 * numbers are the same, those found at lower depths will be crawled earlier.
-	 * If depth is also equal, those found earlier (therefore, smaller docid) will
-	 * be crawled earlier.
+	 * The key that is used for storing URLs determines the order they are
+	 * crawled. Lower key values results in earlier crawling. Here our keys are
+	 * 6 bytes. The first byte comes from the URL priority. The second byte
+	 * comes from depth of crawl at which this URL is first found. The rest of
+	 * the 4 bytes come from the docid of the URL. As a result, URLs with lower
+	 * priority numbers will be crawled earlier. If priority numbers are the
+	 * same, those found at lower depths will be crawled earlier. If depth is
+	 * also equal, those found earlier (therefore, smaller docid) will be
+	 * crawled earlier.
 	 */
 	protected DatabaseEntry getDatabaseEntryKey(WebURL url) {
 		byte[] keyData = new byte[6];

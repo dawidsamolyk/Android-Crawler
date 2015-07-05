@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class CrawledPage implements Serializable {
 	private static final long serialVersionUID = 2482955988269566735L;
-	
+
 	private String date;
 	private String url;
 	private String title;

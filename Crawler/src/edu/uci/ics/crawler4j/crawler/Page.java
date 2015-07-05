@@ -33,44 +33,40 @@ import edu.uci.ics.crawler4j.url.WebURL;
  */
 public class Page {
 
-    /**
-     * The URL of this page.
-     */
-    protected WebURL url;
+	/**
+	 * The URL of this page.
+	 */
+	protected WebURL url;
 
-    /**
-     * The content of this page in binary format.
-     */
-    protected byte[] contentData;
+	/**
+	 * The content of this page in binary format.
+	 */
+	protected byte[] contentData;
 
-    /**
-     * The ContentType of this page.
-     * For example: "text/html; charset=UTF-8"
-     */
-    protected String contentType;
+	/**
+	 * The ContentType of this page. For example: "text/html; charset=UTF-8"
+	 */
+	protected String contentType;
 
-    /**
-     * The encoding of the content.
-     * For example: "gzip"
-     */
-    protected String contentEncoding;
+	/**
+	 * The encoding of the content. For example: "gzip"
+	 */
+	protected String contentEncoding;
 
-    /**
-     * The charset of the content.
-     * For example: "UTF-8"
-     */
-    protected String contentCharset;
-    
-    /**
-     * Headers which were present in the response of the
-     * fetch request
-     */
-    protected Header[] fetchResponseHeaders;
+	/**
+	 * The charset of the content. For example: "UTF-8"
+	 */
+	protected String contentCharset;
 
-    /**
-     * The parsed data populated by parsers
-     */
-    protected ParseData parseData;
+	/**
+	 * Headers which were present in the response of the fetch request
+	 */
+	protected Header[] fetchResponseHeaders;
+
+	/**
+	 * The parsed data populated by parsers
+	 */
+	protected ParseData parseData;
 
 	public Page(WebURL url) {
 		this.url = url;
@@ -84,10 +80,9 @@ public class Page {
 		this.url = url;
 	}
 
-    /**
-     * Loads the content of this page from a fetched
-     * HttpEntity.
-     */
+	/**
+	 * Loads the content of this page from a fetched HttpEntity.
+	 */
 	public void load(HttpEntity entity) throws Exception {
 
 		contentType = null;
@@ -104,27 +99,26 @@ public class Page {
 
 		Charset charset = ContentType.getOrDefault(entity).getCharset();
 		if (charset != null) {
-			contentCharset = charset.displayName();	
+			contentCharset = charset.displayName();
 		}
 
 		contentData = EntityUtils.toByteArray(entity);
 	}
-	
+
 	/**
-     * Returns headers which were present in the response of the
-     * fetch request
-     */
+	 * Returns headers which were present in the response of the fetch request
+	 */
 	public Header[] getFetchResponseHeaders() {
 		return fetchResponseHeaders;
 	}
-	
+
 	public void setFetchResponseHeaders(Header[] headers) {
 		fetchResponseHeaders = headers;
 	}
 
-    /**
-     * Returns the parsed data generated for this page by parsers
-     */
+	/**
+	 * Returns the parsed data generated for this page by parsers
+	 */
 	public ParseData getParseData() {
 		return parseData;
 	}
@@ -133,9 +127,9 @@ public class Page {
 		this.parseData = parseData;
 	}
 
-    /**
-     * Returns the content of this page in binary format.
-     */
+	/**
+	 * Returns the content of this page in binary format.
+	 */
 	public byte[] getContentData() {
 		return contentData;
 	}
@@ -144,10 +138,10 @@ public class Page {
 		this.contentData = contentData;
 	}
 
-    /**
-     * Returns the ContentType of this page.
-     * For example: "text/html; charset=UTF-8"
-     */
+	/**
+	 * Returns the ContentType of this page. For example:
+	 * "text/html; charset=UTF-8"
+	 */
 	public String getContentType() {
 		return contentType;
 	}
@@ -156,22 +150,20 @@ public class Page {
 		this.contentType = contentType;
 	}
 
-    /**
-     * Returns the encoding of the content.
-     * For example: "gzip"
-     */
-    public String getContentEncoding() {
-        return contentEncoding;
-    }
+	/**
+	 * Returns the encoding of the content. For example: "gzip"
+	 */
+	public String getContentEncoding() {
+		return contentEncoding;
+	}
 
-    public void setContentEncoding(String contentEncoding) {
-        this.contentEncoding = contentEncoding;
-    }
+	public void setContentEncoding(String contentEncoding) {
+		this.contentEncoding = contentEncoding;
+	}
 
-    /**
-     * Returns the charset of the content.
-     * For example: "UTF-8"
-     */
+	/**
+	 * Returns the charset of the content. For example: "UTF-8"
+	 */
 	public String getContentCharset() {
 		return contentCharset;
 	}

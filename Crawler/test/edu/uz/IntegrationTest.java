@@ -45,7 +45,7 @@ public class IntegrationTest {
 
 		temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
 		temp.deleteOnExit();
-		
+
 		if (!(temp.delete())) {
 			throw new IOException("Could not delete temp file: " + temp.getAbsolutePath());
 		}
@@ -53,7 +53,7 @@ public class IntegrationTest {
 		if (!(temp.mkdir())) {
 			throw new IOException("Could not create temp directory: " + temp.getAbsolutePath());
 		}
-		
+
 		temp.deleteOnExit();
 
 		return (temp);

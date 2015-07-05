@@ -54,7 +54,7 @@ public class WebURL implements Serializable {
 	public void setDocid(int docid) {
 		this.docid = docid;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return url.hashCode();
@@ -177,8 +177,8 @@ public class WebURL implements Serializable {
 	}
 
 	/**
-	 * Returns the anchor string. For example, in <a href="example.com">A sample anchor</a>
-	 * the anchor string is 'A sample anchor'
+	 * Returns the anchor string. For example, in <a href="example.com">A sample
+	 * anchor</a> the anchor string is 'A sample anchor'
 	 */
 	public String getAnchor() {
 		return anchor;
@@ -189,8 +189,8 @@ public class WebURL implements Serializable {
 	}
 
 	/**
-	 * Returns the priority for crawling this URL. 
-	 * A lower number results in higher priority.
+	 * Returns the priority for crawling this URL. A lower number results in
+	 * higher priority.
 	 */
 	public byte getPriority() {
 		return priority;
@@ -198,6 +198,6 @@ public class WebURL implements Serializable {
 
 	public void setPriority(byte priority) {
 		this.priority = priority;
-	}	
+	}
 
 }
