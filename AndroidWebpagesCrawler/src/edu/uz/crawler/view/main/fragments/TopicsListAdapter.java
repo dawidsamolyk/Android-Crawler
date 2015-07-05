@@ -17,8 +17,7 @@ public class TopicsListAdapter extends BaseAdapter implements ListAdapter {
 	private final ArrayList<String> list = new ArrayList<String>();
 	private final Context context;
 
-	public TopicsListAdapter(final Context context)
-			throws IllegalArgumentException {
+	public TopicsListAdapter(final Context context) throws IllegalArgumentException {
 		if (context != null) {
 			this.context = context;
 		} else {
@@ -51,22 +50,18 @@ public class TopicsListAdapter extends BaseAdapter implements ListAdapter {
 
 	@SuppressLint("InflateParams")
 	@Override
-	public View getView(final int position, final View convertView,
-			final ViewGroup parent) {
+	public View getView(final int position, final View convertView, final ViewGroup parent) {
 		View view = convertView;
 
 		if (view == null) {
-			final LayoutInflater inflater = (LayoutInflater) context
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			view = inflater.inflate(R.layout.topic_list_item, null);
 		}
 
-		final TextView listItemText = (TextView) view
-				.findViewById(R.id.topicText);
+		final TextView listItemText = (TextView) view.findViewById(R.id.topicText);
 		listItemText.setText(list.get(position));
 
-		final Button deleteBtn = (Button) view
-				.findViewById(R.id.deleteTopicButton);
+		final Button deleteBtn = (Button) view.findViewById(R.id.deleteTopicButton);
 		deleteBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View v) {
@@ -77,13 +72,13 @@ public class TopicsListAdapter extends BaseAdapter implements ListAdapter {
 
 		return view;
 	}
-	
-	public String[] getAllTopics() {
+
+	public ArrayList<String> getAllTopics() {
 		final int topicsCount = getCount();
-		final String[] result = new String[topicsCount];
+		final ArrayList<String> result = new ArrayList<String>(topicsCount);
 
 		for (int topicPosition = 0; topicPosition < topicsCount; topicPosition++) {
-			result[topicPosition] = getItem(topicPosition);
+			result.add(getItem(topicPosition));
 		}
 
 		return result;

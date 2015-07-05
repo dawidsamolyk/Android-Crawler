@@ -14,185 +14,180 @@ import edu.uci.ics.crawler4j.parser.BinaryParseData;
 import edu.uz.crawler.config.CrawlingSettings;
 
 public class CrawlerContentFilterTest {
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
+	@Rule
+	public ExpectedException exception = ExpectedException.none();
 
-    @Before
-    public void setUp() throws Exception {
-	Crawler.PAGES_TO_SAVE.clear();
-    }
+	@Before
+	public void setUp() throws Exception {
+		Crawler.PAGES_TO_SAVE.clear();
+	}
 
-    @After
-    public void tearDown() throws Exception {
-	Crawler.SETTINGS = null;
-    }
+	@After
+	public void tearDown() throws Exception {
+		Crawler.SETTINGS = null;
+	}
 
-    @Test
-    public void shouldThrowErrorWhenSettingsAreNotSetted() {
-	exception.expect(IllegalStateException.class);
-	testHtmlPage("", "", null);
-    }
+	@Test
+	public void shouldThrowErrorWhenSettingsAreNotSetted() {
+		exception.expect(IllegalStateException.class);
+		testHtmlPage("", "", null);
+	}
 
-    @Test
-    public void shouldNotDownladPageIfItIsNotHtmlOrText() {
-	String[] topics = Fixtures.getFixtureTopics("Dog", "Cat");
-	CrawlingSettings settings = new CrawlingSettings(Fixtures.getFixtureWebpageUrl(), topics);
-	Page fixturePage = new Page(Fixtures.getFixtureWebpageUrl());
-	fixturePage.setParseData(new BinaryParseData());
-	Crawler fixture = new Crawler();
-	Crawler.SETTINGS = settings;
+	@Test
+	public void shouldNotDownladPageIfItIsNotHtmlOrText() {
+		String[] topics = Fixtures.getFixtureTopics("Dog", "Cat");
+		CrawlingSettings settings = new CrawlingSettings(Fixtures.getFixtureWebpageUrl(), topics);
+		Page fixturePage = new Page(Fixtures.getFixtureWebpageUrl());
+		fixturePage.setParseData(new BinaryParseData());
+		Crawler fixture = new Crawler();
+		Crawler.SETTINGS = settings;
 
-	fixture.visit(fixturePage);
+		fixture.visit(fixturePage);
 
-	assertFalse("Strona nie powinna byæ dodana do kolejki pobierania!",
-		isNewPageAddedToDownload());
-    }
+		assertFalse("Strona nie powinna byæ dodana do kolejki pobierania!", isNewPageAddedToDownload());
+	}
 
-    @Test
-    public void shouldDownloadTextPageIfContainsAnyTopic() {
-	String[] topics = Fixtures.getFixtureTopics("Dog", "Cat");
-	CrawlingSettings settings = new CrawlingSettings(Fixtures.getFixtureWebpageUrl(), topics);
-	settings.contentSearch = true;
-	settings.requireAllTopicsOnOnePage = false;
-	String content = "My dog is my best friend...";
+	@Test
+	public void shouldDownloadTextPageIfContainsAnyTopic() {
+		String[] topics = Fixtures.getFixtureTopics("Dog", "Cat");
+		CrawlingSettings settings = new CrawlingSettings(Fixtures.getFixtureWebpageUrl(), topics);
+		settings.contentSearch = true;
+		settings.requireAllTopicsOnOnePage = false;
+		String content = "My dog is my best friend...";
 
-	testTextPage(content, settings);
+		testTextPage(content, settings);
 
-	assertTrue("Nie dodano strony do kolejki pobierania!", isNewPageAddedToDownload());
-    }
-    
-    @Test
-    public void shouldNotDownloadTextPageIfNotContainsAnyTopic() {
-	String[] topics = Fixtures.getFixtureTopics("Dog", "Cat");
-	CrawlingSettings settings = new CrawlingSettings(Fixtures.getFixtureWebpageUrl(), topics);
-	settings.contentSearch = false;
-	settings.requireAllTopicsOnOnePage = false;
-	String content = "Best friend for the programmer is a frog, because...";
+		assertTrue("Nie dodano strony do kolejki pobierania!", isNewPageAddedToDownload());
+	}
 
-	testTextPage(content, settings);
+	@Test
+	public void shouldNotDownloadTextPageIfNotContainsAnyTopic() {
+		String[] topics = Fixtures.getFixtureTopics("Dog", "Cat");
+		CrawlingSettings settings = new CrawlingSettings(Fixtures.getFixtureWebpageUrl(), topics);
+		settings.contentSearch = false;
+		settings.requireAllTopicsOnOnePage = false;
+		String content = "Best friend for the programmer is a frog, because...";
 
-	assertFalse("Strona nie powinna byæ dodana do kolejki pobierania!",
-		isNewPageAddedToDownload());
-    }
+		testTextPage(content, settings);
 
-    @Test
-    public void shouldDownloadHtmlPageIfContainsAnyTopicInTitle() {
-	String[] topics = Fixtures.getFixtureTopics("Dog", "Cat");
-	CrawlingSettings settings = new CrawlingSettings(Fixtures.getFixtureWebpageUrl(), topics);
-	settings.contentSearch = false;
-	settings.requireAllTopicsOnOnePage = false;
-	String title = "I love my dog!";
-	String content = "My dog is my best friend...";
+		assertFalse("Strona nie powinna byæ dodana do kolejki pobierania!", isNewPageAddedToDownload());
+	}
 
-	testHtmlPage(title, content, settings);
+	@Test
+	public void shouldDownloadHtmlPageIfContainsAnyTopicInTitle() {
+		String[] topics = Fixtures.getFixtureTopics("Dog", "Cat");
+		CrawlingSettings settings = new CrawlingSettings(Fixtures.getFixtureWebpageUrl(), topics);
+		settings.contentSearch = false;
+		settings.requireAllTopicsOnOnePage = false;
+		String title = "I love my dog!";
+		String content = "My dog is my best friend...";
 
-	assertTrue("Nie dodano strony do kolejki pobierania!", isNewPageAddedToDownload());
-    }
+		testHtmlPage(title, content, settings);
 
-    @Test
-    public void shouldDownloadHtmlPageIfContainsAnyTopicInContent() {
-	String[] topics = Fixtures.getFixtureTopics("Dog", "Cat");
-	CrawlingSettings settings = new CrawlingSettings(Fixtures.getFixtureWebpageUrl(), topics);
-	settings.contentSearch = true;
-	settings.requireAllTopicsOnOnePage = false;
-	String title = "I love my dog!";
-	String content = "My dog is my best friend...";
+		assertTrue("Nie dodano strony do kolejki pobierania!", isNewPageAddedToDownload());
+	}
 
-	testHtmlPage(title, content, settings);
+	@Test
+	public void shouldDownloadHtmlPageIfContainsAnyTopicInContent() {
+		String[] topics = Fixtures.getFixtureTopics("Dog", "Cat");
+		CrawlingSettings settings = new CrawlingSettings(Fixtures.getFixtureWebpageUrl(), topics);
+		settings.contentSearch = true;
+		settings.requireAllTopicsOnOnePage = false;
+		String title = "I love my dog!";
+		String content = "My dog is my best friend...";
 
-	assertTrue("Nie dodano strony do kolejki pobierania!", isNewPageAddedToDownload());
-    }
+		testHtmlPage(title, content, settings);
 
-    @Test
-    public void shouldDownloadHtmlPageIfContainsAnyTopicInTopicButNotInTheContent() {
-	String[] topics = Fixtures.getFixtureTopics("Dog", "Cat");
-	CrawlingSettings settings = new CrawlingSettings(Fixtures.getFixtureWebpageUrl(), topics);
-	settings.contentSearch = true;
-	settings.requireAllTopicsOnOnePage = false;
-	String title = "I love my cat!";
-	String content = "My frog is my best friend...";
+		assertTrue("Nie dodano strony do kolejki pobierania!", isNewPageAddedToDownload());
+	}
 
-	testHtmlPage(title, content, settings);
+	@Test
+	public void shouldDownloadHtmlPageIfContainsAnyTopicInTopicButNotInTheContent() {
+		String[] topics = Fixtures.getFixtureTopics("Dog", "Cat");
+		CrawlingSettings settings = new CrawlingSettings(Fixtures.getFixtureWebpageUrl(), topics);
+		settings.contentSearch = true;
+		settings.requireAllTopicsOnOnePage = false;
+		String title = "I love my cat!";
+		String content = "My frog is my best friend...";
 
-	assertTrue("Nie dodano strony do kolejki pobierania!", isNewPageAddedToDownload());
-    }
+		testHtmlPage(title, content, settings);
 
-    @Test
-    public void shouldNotDownloadHtmlPageIfNotContainsAnyTopicInTitle() {
-	String[] topics = Fixtures.getFixtureTopics("Dog", "Cat");
-	CrawlingSettings settings = new CrawlingSettings(Fixtures.getFixtureWebpageUrl(), topics);
-	settings.contentSearch = false;
-	settings.requireAllTopicsOnOnePage = false;
-	String title = "The best pets for programmers";
-	String content = "Best friend for the programmer is a dog, because...";
+		assertTrue("Nie dodano strony do kolejki pobierania!", isNewPageAddedToDownload());
+	}
 
-	testHtmlPage(title, content, settings);
+	@Test
+	public void shouldNotDownloadHtmlPageIfNotContainsAnyTopicInTitle() {
+		String[] topics = Fixtures.getFixtureTopics("Dog", "Cat");
+		CrawlingSettings settings = new CrawlingSettings(Fixtures.getFixtureWebpageUrl(), topics);
+		settings.contentSearch = false;
+		settings.requireAllTopicsOnOnePage = false;
+		String title = "The best pets for programmers";
+		String content = "Best friend for the programmer is a dog, because...";
 
-	assertFalse("Strona nie powinna byæ dodana do kolejki pobierania!",
-		isNewPageAddedToDownload());
-    }
+		testHtmlPage(title, content, settings);
 
-    @Test
-    public void shouldNotDownloadHtmlPageIfNotContainsAnyTopicInContent() {
-	String[] topics = Fixtures.getFixtureTopics("Dog", "Cat");
-	CrawlingSettings settings = new CrawlingSettings(Fixtures.getFixtureWebpageUrl(), topics);
-	settings.contentSearch = true;
-	settings.requireAllTopicsOnOnePage = false;
-	String title = "The best pets for programmers";
-	String content = "Best friend for the programmer is a frog, because...";
+		assertFalse("Strona nie powinna byæ dodana do kolejki pobierania!", isNewPageAddedToDownload());
+	}
 
-	testHtmlPage(title, content, settings);
+	@Test
+	public void shouldNotDownloadHtmlPageIfNotContainsAnyTopicInContent() {
+		String[] topics = Fixtures.getFixtureTopics("Dog", "Cat");
+		CrawlingSettings settings = new CrawlingSettings(Fixtures.getFixtureWebpageUrl(), topics);
+		settings.contentSearch = true;
+		settings.requireAllTopicsOnOnePage = false;
+		String title = "The best pets for programmers";
+		String content = "Best friend for the programmer is a frog, because...";
 
-	assertFalse("Strona nie powinna byæ dodana do kolejki pobierania!",
-		isNewPageAddedToDownload());
-    }
+		testHtmlPage(title, content, settings);
 
-    @Test
-    public void shouldDownloadHtmlPageIfContainsAllTopicsInTitle() {
-	String[] topics = Fixtures.getFixtureTopics("Dog", "Cat");
-	CrawlingSettings settings = new CrawlingSettings(Fixtures.getFixtureWebpageUrl(), topics);
-	settings.contentSearch = false;
-	settings.requireAllTopicsOnOnePage = true;
-	String title = "I love my dog and cat!";
-	String content = "My dog is my best friend, but I like cats too...";
+		assertFalse("Strona nie powinna byæ dodana do kolejki pobierania!", isNewPageAddedToDownload());
+	}
 
-	testHtmlPage(title, content, settings);
+	@Test
+	public void shouldDownloadHtmlPageIfContainsAllTopicsInTitle() {
+		String[] topics = Fixtures.getFixtureTopics("Dog", "Cat");
+		CrawlingSettings settings = new CrawlingSettings(Fixtures.getFixtureWebpageUrl(), topics);
+		settings.contentSearch = false;
+		settings.requireAllTopicsOnOnePage = true;
+		String title = "I love my dog and cat!";
+		String content = "My dog is my best friend, but I like cats too...";
 
-	assertTrue("Nie dodano strony do kolejki pobierania!", isNewPageAddedToDownload());
-    }
+		testHtmlPage(title, content, settings);
 
-    @Test
-    public void shouldNotDownloadHtmlPageIfNotContainsExcatlyAllTopicsInTitle() {
-	String[] topics = Fixtures.getFixtureTopics("Dog", "Cat");
-	CrawlingSettings settings = new CrawlingSettings(Fixtures.getFixtureWebpageUrl(), topics);
-	settings.contentSearch = false;
-	settings.requireAllTopicsOnOnePage = true;
-	String title = "I love my dog!";
-	String content = "My dog is my best friend...";
+		assertTrue("Nie dodano strony do kolejki pobierania!", isNewPageAddedToDownload());
+	}
 
-	testHtmlPage(title, content, settings);
+	@Test
+	public void shouldNotDownloadHtmlPageIfNotContainsExcatlyAllTopicsInTitle() {
+		String[] topics = Fixtures.getFixtureTopics("Dog", "Cat");
+		CrawlingSettings settings = new CrawlingSettings(Fixtures.getFixtureWebpageUrl(), topics);
+		settings.contentSearch = false;
+		settings.requireAllTopicsOnOnePage = true;
+		String title = "I love my dog!";
+		String content = "My dog is my best friend...";
 
-	assertFalse("Strona nie powinna byæ dodana do kolejki pobierania!",
-		isNewPageAddedToDownload());
-    }
+		testHtmlPage(title, content, settings);
 
-    public static final boolean isNewPageAddedToDownload() {
-	return Crawler.PAGES_TO_SAVE.size() == 1;
-    }
+		assertFalse("Strona nie powinna byæ dodana do kolejki pobierania!", isNewPageAddedToDownload());
+	}
 
-    public void testHtmlPage(String title, String content, CrawlingSettings settings) {
-	Crawler.SETTINGS = settings;
-	Crawler fixture = new Crawler();
-	Page pageFixture = Fixtures.getHtmlPageFixtureWith(title, content);
+	public static final boolean isNewPageAddedToDownload() {
+		return Crawler.PAGES_TO_SAVE.size() == 1;
+	}
 
-	fixture.visit(pageFixture);
-    }
-    
-    public void testTextPage(String content, CrawlingSettings settings) {
-	Crawler.SETTINGS = settings;
-	Crawler fixture = new Crawler();
-	Page pageFixture = Fixtures.getTextPageFixtureWith(content);
+	public void testHtmlPage(String title, String content, CrawlingSettings settings) {
+		Crawler.SETTINGS = settings;
+		Crawler fixture = new Crawler();
+		Page pageFixture = Fixtures.getHtmlPageFixtureWith(title, content);
 
-	fixture.visit(pageFixture);
-    }
+		fixture.visit(pageFixture);
+	}
+
+	public void testTextPage(String content, CrawlingSettings settings) {
+		Crawler.SETTINGS = settings;
+		Crawler fixture = new Crawler();
+		Page pageFixture = Fixtures.getTextPageFixtureWith(content);
+
+		fixture.visit(pageFixture);
+	}
 }

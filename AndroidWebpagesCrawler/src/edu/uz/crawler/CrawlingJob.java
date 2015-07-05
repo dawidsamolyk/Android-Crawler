@@ -1,41 +1,62 @@
 package edu.uz.crawler;
 
-import java.util.Arrays;
-import java.util.Map;
-
-import android.util.Log;
-import edu.uz.crawler.view.main.fragments.settings.CrawlingOption;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.support.v4.app.FragmentActivity;
+import edu.uz.crawler.db.DatabaseHelper;
 
 public class CrawlingJob {
-	private final String webpageUrl;
-	private final String[] topics;
-	private final Map<CrawlingOption, Boolean> crawlingOptions;
+	public static final String CRAWLING_ACTION_RESPONSE = "PAGE_DOWNLOADED";
+	public static final String CRAWLING_SETTINGS = "CRAWLING_SETTINGS";
 
-	public CrawlingJob(final String webpageUrl, final String[] topics,
-			final Map<CrawlingOption, Boolean> crawlingOptions) {
-		if (webpageUrl != null && webpageUrl.length() > 0) {
-			this.webpageUrl = webpageUrl;
+	private final BroadcastReceiver crawlingReceiver;
+	private final FragmentActivity fragmentActivity;
+	private final CrawlingSettings settings;
+
+	public CrawlingJob(final FragmentActivity fragmentActivity, final CrawlingSettings settings,
+			final DatabaseHelper database) {
+		if (settings != null) {
+			this.settings = settings;
 		} else {
 			throw new IllegalArgumentException("Webpage address is not specified!");
 		}
-
-		if (topics != null && topics.length > 0) {
-			this.topics = topics;
+		if (fragmentActivity != null) {
+			this.fragmentActivity = fragmentActivity;
 		} else {
-			throw new IllegalArgumentException("You must add at least one topic!");
+			throw new IllegalArgumentException("Fragment activity is not set!");
+		}
+		if (database == null) {
+			throw new IllegalArgumentException("Destination database is not specified!");
 		}
 
-		if (crawlingOptions != null) {
-			this.crawlingOptions = crawlingOptions;
-		} else {
-			throw new IllegalArgumentException("Crawling options are not set!");
-		}
+		crawlingReceiver = createCrawlingReceiverWhichUsing(database);
+		registerCrawlingResultReceiverIn(fragmentActivity);
 	}
 
-	public void start() {
-		Log.i("CrawlingJob: webpageUrl", webpageUrl);
-		Log.i("CrawlingJob: topics", Arrays.toString(topics));
-		Log.i("CrawlingJob: crawlingOptions", crawlingOptions.toString());
+	private BroadcastReceiver createCrawlingReceiverWhichUsing(final DatabaseHelper database) {
+		return new BroadcastReceiver() {
+			@Override
+			public void onReceive(final Context context, final Intent intent) {
+				CrawledPage downloadedPage = (CrawledPage) intent
+						.getSerializableExtra(CrawlingResultProvider.RESULT_NAME);
+				database.insert(downloadedPage);
+			}
+		};
+	}
+
+	private Intent registerCrawlingResultReceiverIn(final FragmentActivity fragmentActivity) {
+		IntentFilter intentFilter = new IntentFilter(CRAWLING_ACTION_RESPONSE);
+		intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
+		return fragmentActivity.registerReceiver(crawlingReceiver, intentFilter);
+	}
+
+	public synchronized void start() {
+		Intent crawlingIntent = new Intent(fragmentActivity, CrawlingResultProvider.class);
+		crawlingIntent.putExtra(CRAWLING_SETTINGS, settings);
+
+		fragmentActivity.startService(crawlingIntent);
 	}
 
 }

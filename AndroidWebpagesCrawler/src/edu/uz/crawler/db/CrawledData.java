@@ -6,13 +6,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.SimpleCursorAdapter;
+import edu.uz.crawler.CrawledPage;
 import edu.uz.crawler.R;
 
 @SuppressLint("NewApi")
 public class CrawledData {
-	private SimpleCursorAdapter cursorAdapter;
-	private SQLiteDatabase database;
-	private Cursor cursor;
+	private static SimpleCursorAdapter cursorAdapter;
+	private static SQLiteDatabase database;
+	private static Cursor cursor;
 
 	public final String TABLE_NAME = "Pages";
 	private final String ID = "_id";
@@ -30,7 +31,7 @@ public class CrawledData {
 	public final String DROP = "DROP TABLE IF EXISTS " + TABLE_NAME;
 
 	public void open(final SQLiteDatabase database) {
-		this.database = database;
+		CrawledData.database = database;
 	}
 
 	public void insert(final CrawledPage page) {
@@ -42,7 +43,10 @@ public class CrawledData {
 		initialValues.put(CONTENT, page.getContent());
 
 		database.insert(TABLE_NAME, null, initialValues);
-		cursorAdapter.changeCursor(cursor());
+
+		if (cursorAdapter != null) {
+			cursorAdapter.changeCursor(cursor());
+		}
 	}
 
 	public void deleteAll() {
@@ -65,8 +69,9 @@ public class CrawledData {
 
 	public SimpleCursorAdapter cursorAdapter(final Context context, final int[] rowsInViewList) {
 		if (cursorAdapter == null) {
-			cursorAdapter = new SimpleCursorAdapter(context, R.layout.history_list_item, cursor(), new String[] { DATE,
-					WEBURL, TITLE, TOPICS, CONTENT }, rowsInViewList, 0);
+			String[] rowsInDatabase = new String[] { WEBURL, TITLE, DATE, TOPICS };
+			cursorAdapter = new SimpleCursorAdapter(context, R.layout.history_list_item, cursor(), rowsInDatabase,
+					rowsInViewList, 0);
 		}
 
 		return cursorAdapter;
