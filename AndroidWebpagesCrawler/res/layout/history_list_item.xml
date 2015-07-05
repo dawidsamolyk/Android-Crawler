@@ -2,37 +2,75 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/mainRow"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:background="@drawable/history_main_row_background"
+        android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/secondRow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        <TextView
+            android:id="@+id/mainRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:textAppearance="?android:attr/textAppearanceListItem" />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/thirdRow"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:background="@drawable/history_second_row_background"
+        android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/fourthRow"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/secondRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:background="@drawable/history_third_row_background"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/thirdRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="5dp"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/history_third_row_background"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/fourthRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="5dp"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/showPage"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="SHOW"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:background="@drawable/history_button_background"
+        android:textColor="#FFFFFF"
+        android:text="SHOW PAGE"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </LinearLayout>

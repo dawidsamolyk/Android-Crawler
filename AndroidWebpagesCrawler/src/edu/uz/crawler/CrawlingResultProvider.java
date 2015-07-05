@@ -73,7 +73,6 @@ public class CrawlingResultProvider extends IntentService {
 
 						Log.i("CRAWLED", page.getTitle());
 						Log.i("CRAWLED", page.getUrl());
-						Log.i("CRAWLED", page.getContent());
 					}
 				}
 			}
