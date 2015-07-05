@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import android.widget.SimpleCursorAdapter;
 import edu.uz.crawler.CrawledPage;
 import edu.uz.crawler.R;
@@ -35,14 +36,19 @@ public class CrawledData {
 	}
 
 	public void insert(final CrawledPage page) {
-		ContentValues initialValues = new ContentValues();
-		initialValues.put(DATE, page.getDate());
-		initialValues.put(WEBURL, page.getUrl());
-		initialValues.put(TITLE, page.getTitle());
-		initialValues.put(TOPICS, page.getFoundTopics());
-		initialValues.put(CONTENT, page.getContent());
+		Log.i("DATABASE", page.getDate());
+		Log.i("DATABASE", page.getUrl());
+		Log.i("DATABASE", page.getTitle());
+		Log.i("DATABASE", page.getFoundTopics());
 
-		database.insert(TABLE_NAME, null, initialValues);
+		ContentValues values = new ContentValues();
+		values.put(DATE, page.getDate());
+		values.put(WEBURL, page.getUrl());
+		values.put(TITLE, page.getTitle());
+		values.put(TOPICS, page.getFoundTopics());
+		values.put(CONTENT, page.getContent());
+
+		database.insert(TABLE_NAME, null, values);
 
 		if (cursorAdapter != null) {
 			cursorAdapter.changeCursor(cursor());
