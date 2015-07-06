@@ -21,6 +21,7 @@ import edu.uz.crawler.db.DatabaseHelper;
 import edu.uz.crawler.view.main.CrawledPageActivity;
 
 public class HistoryFragment extends Fragment {
+	public static final String WEBPAGE_CONTENT = "WEBPAGE_CONTENT";
 	private DatabaseHelper databaseHelper;
 
 	@Override
@@ -38,6 +39,7 @@ public class HistoryFragment extends Fragment {
 		CrawledPage page = new CrawledPage("date", "URL", "Tytul", "tematy", "cos tam<br /><br />cos innego");
 		databaseHelper.insert(page);
 
+		// Akcja po "dotkniêciu" elementu pobranej strony
 		list.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -49,11 +51,12 @@ public class HistoryFragment extends Fragment {
 				String pageContent = databaseHelper.getContentFromPageWithId(crawledPageId);
 
 				Intent intent = new Intent(HistoryFragment.this.getActivity(), CrawledPageActivity.class);
-				intent.putExtra(CrawledPageActivity.WEBPAGE_CONTENT, pageContent);
+				intent.putExtra(WEBPAGE_CONTENT, pageContent);
 				startActivity(intent);
 			}
 		});
 
+		// Akcja po "dotkniêciu" i przytrzymaniu elementu pobranej strony
 		list.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override

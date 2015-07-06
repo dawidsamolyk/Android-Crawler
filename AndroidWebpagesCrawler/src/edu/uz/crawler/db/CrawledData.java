@@ -101,7 +101,9 @@ public class CrawledData {
 	}
 
 	public String getContentFromPageWithId(int id) {
-		Cursor cursor = database.rawQuery("select * from " + TABLE_NAME + " where " + ID + " = " + id, null);
+		Cursor cursor = database.rawQuery("select " + CONTENT + " from " + TABLE_NAME + " where " + ID + " = " + id,
+				null);
+		cursor.moveToFirst();
 		String result = cursor.getString(cursor.getColumnIndex(CONTENT));
 		cursor.close();
 
