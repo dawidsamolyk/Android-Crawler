@@ -66,26 +66,12 @@
             android:textAppearance="?android:attr/textAppearanceSmall" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="fill_parent"
+    <TextView
+        android:id="@+id/crawledPageId"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/removePage"
-            android:layout_width="0.0dip"
-            android:layout_height="fill_parent"
-            android:layout_weight="1.0"
-            android:text="REMOVE"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <Button
-            android:id="@+id/showPage"
-            android:layout_width="0.0dip"
-            android:layout_height="fill_parent"
-            android:layout_weight="1.0"
-            android:text="SHOW PAGE!"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </LinearLayout>
-
+        android:clickable="false"
+        android:enabled="false"
+        android:visibility="invisible" />
+    
 </LinearLayout>

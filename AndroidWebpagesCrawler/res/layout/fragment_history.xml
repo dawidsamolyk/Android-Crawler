@@ -12,7 +12,17 @@
     <ListView
         android:id="@+id/historyList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/deleteAllHistory" >
+
     </ListView>
+
+    <Button
+        android:id="@+id/deleteAllHistory"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/historyList"
+        android:layout_alignParentBottom="true"
+        android:text="DELETE ALL" />
 
 </RelativeLayout>

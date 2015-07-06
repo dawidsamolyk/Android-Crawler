@@ -9,7 +9,6 @@ import edu.uz.crawler.config.CrawlingConfiguration;
 import edu.uz.crawler.config.CrawlingSettings;
 
 public class CrawlingController {
-
 	private static final int CPU_CORES = Runtime.getRuntime().availableProcessors() * 2;
 	private final CrawlController controller;
 	private boolean started = false;

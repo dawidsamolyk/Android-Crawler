@@ -1,5 +1,6 @@
 package edu.uz.crawler.view.main.fragments;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -90,28 +91,23 @@ public class TopicsAndSettingsFragment extends Fragment {
 	}
 
 	private void configureStartButton() {
+		final CrawlingJob crawlingJob = new CrawlingJob(getActivity(), databaseHelper);
 		final Button addTopic = (Button) rootView.findViewById(R.id.startButton);
-		addTopic.setOnClickListener(new OnClickListener() {
 
+		addTopic.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				CrawlingSettings settings = null;
+				String webpageUrl = webpageFragment.getWebpageUrl();
+				ArrayList<String> topics = topicsListAdapter.getAllTopics();
 
 				try {
-					settings = new CrawlingSettings(webpageFragment.getWebpageUrl(), topicsListAdapter.getAllTopics(),
-							crawlingOptions);
-				} catch (IllegalArgumentException e) {
-					Log.e("EXCEPTION", e.getMessage());
-				}
+					CrawlingSettings settings = new CrawlingSettings(webpageUrl, topics, crawlingOptions);
+					crawlingJob.start(settings);
 
-				try {
-					final CrawlingJob crawlingJob = new CrawlingJob(getActivity(), settings, databaseHelper);
-					crawlingJob.start();
 				} catch (IllegalArgumentException e) {
 					Log.e("EXCEPTION", e.getMessage());
 				}
 			}
-
 		});
 	}
 

@@ -1,6 +1,5 @@
 package edu.uz.crawler;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -8,15 +7,17 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import android.annotation.SuppressLint;
 import android.app.IntentService;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.util.Log;
 import edu.uci.ics.crawler4j.url.WebURL;
 import edu.uz.crawler.config.CrawlingConfiguration;
 import edu.uz.crawler.controller.CrawlingController;
 import edu.uz.crawler.controller.CrawlingMonitor;
+import edu.uz.crawler.utils.TempDirectoryCreator;
 
 @SuppressLint("NewApi")
 public class CrawlingResultProvider extends IntentService {
+	private static final String TAG = CrawlingResultProvider.class.getName();
+	private static final int CRAWLED_PAGES_LIMIT = 50;
 	public static final String RESULT_NAME = "CRAWLING_RESULT";
 
 	public CrawlingResultProvider() {
@@ -26,125 +27,68 @@ public class CrawlingResultProvider extends IntentService {
 	@Override
 	protected void onHandleIntent(final Intent intent) {
 		CrawlingSettings settings = getCrawlingSettings(intent);
-		startCrawler(settings);
+		Log.i("CrawlingResultProvider", "onHandleIntent - begin");
+		try {
+			startCrawler(settings);
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage());
+		}
+		Log.i("CrawlingResultProvider", "onHandleIntent - end");
 	}
 
 	private CrawlingSettings getCrawlingSettings(final Intent intent) {
 		return (CrawlingSettings) intent.getSerializableExtra(CrawlingJob.CRAWLING_SETTINGS);
 	}
 
-<<<<<<< HEAD
-	private synchronized void startCrawler(final CrawlingSettings settings) {
-		new AsyncTask<Object, Void, Void>() {
-=======
 	private synchronized void startCrawler(final CrawlingSettings settings) throws Exception {
+		final CrawlingController controller = new CrawlingController(getConfiguration(), getSettings(settings));
+		final CrawlingMonitor crawlerMonitor = controller.start();
+
+		runSender(crawlerMonitor);
+
+		controller.stop();
+	}
+
+	private CrawlingConfiguration getConfiguration() throws IOException {
+		return new CrawlingConfiguration(TempDirectoryCreator.createTempDirectory());
+	}
+
+	private edu.uz.crawler.config.CrawlingSettings getSettings(final CrawlingSettings settings) {
 		final WebURL url = new WebURL();
 		url.setURL(settings.getWebpageUrl());
 		final ArrayList<String> topicsList = settings.getTopics();
 		final String[] topics = topicsList.toArray(new String[topicsList.size()]);
-		final edu.uz.crawler.config.CrawlingSettings setttings = new edu.uz.crawler.config.CrawlingSettings(url, topics);
-		final CrawlingConfiguration config = new CrawlingConfiguration(createTempDirectory());
-		final CrawlingController controller = new CrawlingController(config, setttings);
+		final edu.uz.crawler.config.CrawlingSettings result = new edu.uz.crawler.config.CrawlingSettings(url, topics);
 
-		final CrawlingMonitor crawlerMonitor = controller.start();
-		Log.i("CRAWLER", "Crawler started with parameters:");
-		Log.i("CRAWLER", "URL: " + url.getURL());
-		Log.i("CRAWLER", "Topics: " + topicsList.toString());
+		Log.i(TAG, "Crawler initialized with parameters:");
+		Log.i(TAG, "URL: " + url.getURL());
+		Log.i(TAG, "Topics: " + topicsList.toString());
 
-		runSender(crawlerMonitor);
-
-		new AsyncTask<Object, Void, Void>() {
-			private static final String TAG = "STOPPER";
->>>>>>> master
-
-			@Override
-			protected Void doInBackground(Object... params) {
-				try {
-<<<<<<< HEAD
-					CrawlingMonitor crawlerMonitor = getInitializedController().start();
-					runSender(crawlerMonitor);
-				} catch (IllegalStateException e) {
-					Log.e("CRAWLER", e.getMessage());
-				} catch (Exception e) {
-					Log.e("CRAWLER", e.getMessage());
-				}
-				return null;
-			}
-
-			private CrawlingController getInitializedController() throws Exception {
-				final WebURL url = new WebURL();
-				url.setURL(settings.getWebpageUrl());
-				final ArrayList<String> topicsList = settings.getTopics();
-				final String[] topics = topicsList.toArray(new String[topicsList.size()]);
-				final edu.uz.crawler.config.CrawlingSettings setttings = new edu.uz.crawler.config.CrawlingSettings(
-						url, topics);
-				final CrawlingConfiguration config = new CrawlingConfiguration(createTempDirectory());
-
-				Log.i("CRAWLER", "Crawler initialized with parameters:");
-				Log.i("CRAWLER", "URL: " + url.getURL());
-				Log.i("CRAWLER", "Topics: " + topicsList.toString());
-
-				return new CrawlingController(config, setttings);
-			}
-
-			private File createTempDirectory() throws IOException {
-				final File temp = File.createTempFile("webpages_crawler_temp", Long.toString(System.nanoTime()));
-				temp.deleteOnExit();
-
-				Log.i("CRAWLER", "Temp directory created: " + temp.getPath());
-
-				if (!(temp.delete())) {
-					throw new IOException("Could not delete temp file: " + temp.getAbsolutePath());
-				}
-				if (!(temp.mkdir())) {
-					throw new IOException("Could not create temp directory: " + temp.getAbsolutePath());
-				}
-
-				return temp;
-			}
-
-		}.doInBackground(settings);
-
-=======
-					int numberOfMinutesToSleep = 2;
-					int minutesToMiliseconds = numberOfMinutesToSleep * 60 * 1000;
-					Thread.sleep(minutesToMiliseconds);
-				} catch (InterruptedException e) {
-					Log.e(TAG, e.getMessage());
-				}
-				controller.stop();
-				Log.e(TAG, "Crawler stopped");
-				
-				return null;
-			}
-		}.doInBackground(crawlerMonitor);
->>>>>>> master
+		return result;
 	}
 
 	private void runSender(final CrawlingMonitor monitor) {
-		new AsyncTask<Object, Void, Void>() {
-			private final CrawlingMonitor crawlingMonitor = monitor;
+		int crawledPages = 0;
+		
+		while (!monitor.isFinished()) {
+			ConcurrentLinkedQueue<edu.uz.crawler.CrawledPage> pagesToSave = Crawler.PAGES_TO_SAVE;
 
-			@Override
-			protected Void doInBackground(Object... arguments) {
-				while (!crawlingMonitor.isFinished()) {
-					ConcurrentLinkedQueue<edu.uz.crawler.CrawledPage> pagesToSave = Crawler.PAGES_TO_SAVE;
+			while (!pagesToSave.isEmpty()) {
+				edu.uz.crawler.CrawledPage page = pagesToSave.poll();
+				sendByBroadcast(page);
 
-					while (!pagesToSave.isEmpty()) {
-						edu.uz.crawler.CrawledPage page = pagesToSave.poll();
-						sendByBroadcast(page);
-
-						Log.i("CRAWLED", "From: " + page.getUrl());
-						Log.i("CRAWLED", "Page title: " + page.getTitle());
-					}
-				}
-				return null;
+				Log.i(TAG, "Downloading page titled " + page.getTitle() + " from: " + page.getUrl());
+				
+				crawledPages++;
 			}
-
-		}.doInBackground(monitor);
+			
+			if(crawledPages >= CRAWLED_PAGES_LIMIT) {
+				break;
+			}
+		}
 	}
 
-	private Intent sendByBroadcast(final edu.uz.crawler.CrawledPage crawledPage) {
+	private Intent sendByBroadcast(final CrawledPage crawledPage) {
 		Intent result = new Intent();
 
 		result.setAction(CrawlingJob.CRAWLING_ACTION_RESPONSE);
@@ -155,5 +99,4 @@ public class CrawlingResultProvider extends IntentService {
 
 		return result;
 	}
-
 }

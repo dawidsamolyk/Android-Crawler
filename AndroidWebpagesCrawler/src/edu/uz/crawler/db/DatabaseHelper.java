@@ -5,7 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import android.widget.SimpleCursorAdapter;
-import edu.uz.crawler.CrawledPage;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 	private final CrawledData table = new CrawledData();
@@ -32,6 +31,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	public void insert(final CrawledPage page) {
 		table.insert(page);
+	}
+	
+	public void delete(final int id) {
+		table.delete(id);
+	}
+	
+	public String getContentFromPageWithId(final int id) {
+		return table.getContentFromPageWithId(id);
 	}
 
 	public SimpleCursorAdapter cursorAdapter(final Context context, final int[] rowsInViewList) {

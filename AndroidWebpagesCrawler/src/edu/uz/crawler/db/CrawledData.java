@@ -7,22 +7,22 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.widget.SimpleCursorAdapter;
-import edu.uz.crawler.CrawledPage;
 import edu.uz.crawler.R;
 
 @SuppressLint("NewApi")
 public class CrawledData {
+	private static final String TAG = CrawledData.class.getName();
 	private static SimpleCursorAdapter cursorAdapter;
 	private static SQLiteDatabase database;
 	private static Cursor cursor;
 
-	public final String TABLE_NAME = "Pages";
-	private final String ID = "_id";
-	public final String DATE = "DATE";
-	public final String WEBURL = "WEBURL";
-	public final String TITLE = "TITLE";
-	public final String TOPICS = "FOUND_TOPICS";
-	public final String CONTENT = "CONTENT";
+	public final static String TABLE_NAME = "Pages";
+	public final static String ID = "_id";
+	public final static String DATE = "DATE";
+	public final static String WEBURL = "WEBURL";
+	public final static String TITLE = "TITLE";
+	public final static String TOPICS = "FOUND_TOPICS";
+	public final static String CONTENT = "CONTENT";
 
 	public final String[] columns = new String[] { ID, DATE, WEBURL, TITLE, TOPICS, CONTENT };
 
@@ -36,10 +36,10 @@ public class CrawledData {
 	}
 
 	public void insert(final CrawledPage page) {
-		Log.i("DATABASE", page.getDate());
-		Log.i("DATABASE", page.getUrl());
-		Log.i("DATABASE", page.getTitle());
-		Log.i("DATABASE", page.getFoundTopics());
+		Log.i(TAG, page.getDate());
+		Log.i(TAG, page.getUrl());
+		Log.i(TAG, page.getTitle());
+		Log.i(TAG, page.getFoundTopics());
 
 		ContentValues values = new ContentValues();
 		values.put(DATE, page.getDate());
@@ -50,13 +50,19 @@ public class CrawledData {
 
 		database.insert(TABLE_NAME, null, values);
 
-		if (cursorAdapter != null) {
-			cursorAdapter.changeCursor(cursor());
-		}
+		refreshCursor();
 	}
 
 	public void deleteAll() {
 		database.delete(TABLE_NAME, null, null);
+
+		refreshCursor();
+	}
+
+	private void refreshCursor() {
+		if (cursorAdapter != null) {
+			cursorAdapter.changeCursor(cursor());
+		}
 	}
 
 	private Cursor cursor() {
@@ -75,7 +81,7 @@ public class CrawledData {
 
 	public SimpleCursorAdapter cursorAdapter(final Context context, final int[] rowsInViewList) {
 		if (cursorAdapter == null) {
-			String[] rowsInDatabase = new String[] { WEBURL, TITLE, TOPICS, DATE };
+			String[] rowsInDatabase = new String[] { WEBURL, TITLE, TOPICS, DATE, ID };
 			cursorAdapter = new SimpleCursorAdapter(context, R.layout.history_list_item, cursor(), rowsInDatabase,
 					rowsInViewList, 0);
 		}
@@ -86,5 +92,19 @@ public class CrawledData {
 	public void close() {
 		cursor.close();
 		database.close();
+	}
+
+	public void delete(int id) {
+		database.delete(TABLE_NAME, ID + " = " + id, null);
+
+		refreshCursor();
+	}
+
+	public String getContentFromPageWithId(int id) {
+		Cursor cursor = database.rawQuery("select * from " + TABLE_NAME + " where " + ID + " = " + id, null);
+		String result = cursor.getString(cursor.getColumnIndex(CONTENT));
+		cursor.close();
+
+		return result;
 	}
 }

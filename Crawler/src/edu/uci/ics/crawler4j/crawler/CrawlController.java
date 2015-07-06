@@ -42,9 +42,6 @@ import edu.uci.ics.crawler4j.util.IO;
  */
 public class CrawlController extends Configurable {
 
-	// static final Logger logger =
-	// Logger.getLogger(CrawlController.class.getName());
-
 	/**
 	 * The 'customData' object can be used for passing custom crawl-related
 	 * configurations to different components of the crawler.
