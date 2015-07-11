@@ -29,7 +29,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		onCreate(db);
 	}
 
-	public void insert(final CrawledPage page) {
+	public void insert(final edu.uz.crawler.CrawledPage page) {
 		table.insert(page);
 	}
 	
@@ -43,6 +43,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	public SimpleCursorAdapter cursorAdapter(final Context context, final int[] rowsInViewList) {
 		return table.cursorAdapter(context, rowsInViewList);
+	}
+	
+	public void refresh() {
+		table.refreshCursor();
 	}
 
 	public void deleteAll() {

@@ -25,6 +25,7 @@ public class CrawlingConfiguration extends CrawlConfig {
 		this.setMaxTotalConnections(100);
 		this.setResumableCrawling(false);
 		this.setUserAgentString(CRAWLER_NAME);
+		this.setMaxPagesToFetch(50);
 	}
 
 	public void searchAlsoInSubpages() {

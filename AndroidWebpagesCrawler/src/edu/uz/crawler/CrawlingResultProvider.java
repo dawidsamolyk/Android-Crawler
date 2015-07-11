@@ -16,9 +16,13 @@ import edu.uz.crawler.utils.TempDirectoryCreator;
 
 @SuppressLint("NewApi")
 public class CrawlingResultProvider extends IntentService {
+	public static final String PAGES_NUMBER = "CRAWLED_PAGES_NUMBER";
+	public static final String ACTION = "CRAWLING_DONE";
+	public static boolean stopCrawler = false;
 	private static final String TAG = CrawlingResultProvider.class.getName();
-	private static final int CRAWLED_PAGES_LIMIT = 50;
 	public static final String RESULT_NAME = "CRAWLING_RESULT";
+	private CrawlingController controller;
+	public static CrawlingMonitor crawlerMonitor;
 
 	public CrawlingResultProvider() {
 		super(CrawlingResultProvider.class.getName());
@@ -26,27 +30,31 @@ public class CrawlingResultProvider extends IntentService {
 
 	@Override
 	protected void onHandleIntent(final Intent intent) {
-		CrawlingSettings settings = getCrawlingSettings(intent);
-		Log.i("CrawlingResultProvider", "onHandleIntent - begin");
+		stopCrawler = false;
+		CrawlingSettings settings = (CrawlingSettings) intent.getSerializableExtra(CrawlingJob.CRAWLING_SETTINGS);
+
+		int crawledPages = startCrawlingWithNotificationManager(settings);
+		sendByBroadcast(crawledPages);
+	}
+
+	private int startCrawlingWithNotificationManager(final CrawlingSettings settings) {
 		try {
-			startCrawler(settings);
+			return startCrawler(settings);
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
 		}
-		Log.i("CrawlingResultProvider", "onHandleIntent - end");
+		return 0;
 	}
 
-	private CrawlingSettings getCrawlingSettings(final Intent intent) {
-		return (CrawlingSettings) intent.getSerializableExtra(CrawlingJob.CRAWLING_SETTINGS);
-	}
+	private synchronized int startCrawler(final CrawlingSettings settings) throws Exception {
+		if (controller != null && controller.isCrawlerStarted()) {
+			controller.stop();
+		}
 
-	private synchronized void startCrawler(final CrawlingSettings settings) throws Exception {
-		final CrawlingController controller = new CrawlingController(getConfiguration(), getSettings(settings));
-		final CrawlingMonitor crawlerMonitor = controller.start();
+		controller = new CrawlingController(getConfiguration(), getSettings(settings));
+		crawlerMonitor = controller.start();
 
-		runSender(crawlerMonitor);
-
-		controller.stop();
+		return runSender(crawlerMonitor);
 	}
 
 	private CrawlingConfiguration getConfiguration() throws IOException {
@@ -67,10 +75,10 @@ public class CrawlingResultProvider extends IntentService {
 		return result;
 	}
 
-	private void runSender(final CrawlingMonitor monitor) {
+	private int runSender(final CrawlingMonitor monitor) {
 		int crawledPages = 0;
 		
-		while (!monitor.isFinished()) {
+		while (!monitor.isFinished() && !stopCrawler) {
 			ConcurrentLinkedQueue<edu.uz.crawler.CrawledPage> pagesToSave = Crawler.PAGES_TO_SAVE;
 
 			while (!pagesToSave.isEmpty()) {
@@ -78,14 +86,16 @@ public class CrawlingResultProvider extends IntentService {
 				sendByBroadcast(page);
 
 				Log.i(TAG, "Downloading page titled " + page.getTitle() + " from: " + page.getUrl());
-				
+
 				crawledPages++;
 			}
-			
-			if(crawledPages >= CRAWLED_PAGES_LIMIT) {
-				break;
+
+			if (stopCrawler) {
+				controller.stop();
 			}
 		}
+		
+		return crawledPages;
 	}
 
 	private Intent sendByBroadcast(final CrawledPage crawledPage) {
@@ -94,6 +104,18 @@ public class CrawlingResultProvider extends IntentService {
 		result.setAction(CrawlingJob.CRAWLING_ACTION_RESPONSE);
 		result.addCategory(Intent.CATEGORY_DEFAULT);
 		result.putExtra(RESULT_NAME, crawledPage);
+
+		sendBroadcast(result);
+
+		return result;
+	}
+
+	private Intent sendByBroadcast(final int crawledPagesNumber) {
+		Intent result = new Intent();
+
+		result.setAction(ACTION);
+		result.addCategory(Intent.CATEGORY_DEFAULT);
+		result.putExtra(PAGES_NUMBER, crawledPagesNumber);
 
 		sendBroadcast(result);
 

@@ -23,6 +23,6 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/historyList"
         android:layout_alignParentBottom="true"
-        android:text="DELETE ALL" />
+        android:text="@string/delete_all" />
 
 </RelativeLayout>

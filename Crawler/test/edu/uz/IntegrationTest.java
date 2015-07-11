@@ -15,9 +15,9 @@ import edu.uz.crawler.controller.CrawlingMonitor;
 public class IntegrationTest {
 	public static void main(String[] args) throws Exception {
 		WebURL url = new WebURL();
-		url.setURL("http://overclock.pl/");
+		url.setURL("http://wp.pl/");
 		ArrayList<String> topicsList = new ArrayList<String>();
-		topicsList.add("980");
+		topicsList.add("Prezydent");
 		String[] topics = topicsList.toArray(new String[topicsList.size()]);
 		edu.uz.crawler.config.CrawlingSettings setttings = new edu.uz.crawler.config.CrawlingSettings(url, topics);
 		CrawlingConfiguration config = new CrawlingConfiguration(createTempDirectory());

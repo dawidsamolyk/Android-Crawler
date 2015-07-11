@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import edu.uz.crawler.db.CrawledPage;
 import edu.uz.crawler.db.DatabaseHelper;
 
 public class CrawlingJob {
@@ -34,7 +33,7 @@ public class CrawlingJob {
 		return new BroadcastReceiver() {
 			@Override
 			public void onReceive(final Context context, final Intent intent) {
-				CrawledPage page = (CrawledPage) intent.getSerializableExtra(CrawlingResultProvider.RESULT_NAME);
+				edu.uz.crawler.CrawledPage page = (edu.uz.crawler.CrawledPage) intent.getSerializableExtra(CrawlingResultProvider.RESULT_NAME);
 				database.insert(page);
 			}
 		};

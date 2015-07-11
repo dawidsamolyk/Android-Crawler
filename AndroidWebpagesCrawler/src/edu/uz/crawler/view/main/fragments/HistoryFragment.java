@@ -16,7 +16,6 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import edu.uz.crawler.R;
 import edu.uz.crawler.db.CrawledData;
-import edu.uz.crawler.db.CrawledPage;
 import edu.uz.crawler.db.DatabaseHelper;
 import edu.uz.crawler.view.main.CrawledPageActivity;
 
@@ -36,14 +35,13 @@ public class HistoryFragment extends Fragment {
 		final SimpleCursorAdapter adapter = databaseHelper.cursorAdapter(getActivity(), rowsInListView);
 		list.setAdapter(adapter);
 
-		CrawledPage page = new CrawledPage("date", "URL", "Tytul", "tematy", "cos tam<br /><br />cos innego");
-		databaseHelper.insert(page);
-
 		// Akcja po "dotkniêciu" elementu pobranej strony
 		list.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+				databaseHelper.refresh();
+				
 				Cursor cursor = (Cursor) adapter.getItem(position);
 				int crawledPageId = cursor.getInt(cursor.getColumnIndex(CrawledData.ID));
 				cursor.close();
@@ -61,6 +59,8 @@ public class HistoryFragment extends Fragment {
 
 			@Override
 			public boolean onItemLongClick(AdapterView<?> a, View v, int position, long id) {
+				databaseHelper.refresh();
+				
 				Cursor cursor = (Cursor) adapter.getItem(position);
 				int crawledPageId = cursor.getInt(cursor.getColumnIndex(CrawledData.ID));
 				cursor.close();

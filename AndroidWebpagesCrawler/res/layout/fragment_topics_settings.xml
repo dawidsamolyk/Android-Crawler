@@ -52,13 +52,12 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/bottom_layout"
+        android:id="@+id/bottom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/center_point"
         android:orientation="vertical" >
 
-        
         <CheckBox
             android:id="@+id/searchAlsoInSubpages"
             android:layout_width="wrap_content"
@@ -81,14 +80,34 @@
             android:text="@string/require_all_topics_on_one_page"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <Button
-            android:id="@+id/startButton"
+        <LinearLayout
+            android:id="@+id/buttons"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/start"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:orientation="horizontal" >
 
-    
+            <Button
+                android:id="@+id/startCrawler"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/start"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textOn="@string/stop" />
+
+            <Button
+                android:id="@+id/stopCrawler"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/stop"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/crawlerStatus"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        </LinearLayout>
+    </LinearLayout>
 
 </RelativeLayout>

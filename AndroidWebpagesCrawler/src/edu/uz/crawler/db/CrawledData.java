@@ -35,7 +35,7 @@ public class CrawledData {
 		CrawledData.database = database;
 	}
 
-	public void insert(final CrawledPage page) {
+	public void insert(final edu.uz.crawler.CrawledPage page) {
 		Log.i(TAG, page.getDate());
 		Log.i(TAG, page.getUrl());
 		Log.i(TAG, page.getTitle());
@@ -59,7 +59,7 @@ public class CrawledData {
 		refreshCursor();
 	}
 
-	private void refreshCursor() {
+	public void refreshCursor() {
 		if (cursorAdapter != null) {
 			cursorAdapter.changeCursor(cursor());
 		}

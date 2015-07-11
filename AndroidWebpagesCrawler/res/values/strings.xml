@@ -14,6 +14,8 @@
     <string name="content_search">Content search</string>
     <string name="require_all_topics_on_one_page">Require all topics on one page</string>
     <string name="start">Start!</string>
+    <string name="stop">Stop!</string>
+     <string name="delete_all">Delete all</string>
 
     <string-array name="history_filters_array">
         <item>Webpage address</item>
