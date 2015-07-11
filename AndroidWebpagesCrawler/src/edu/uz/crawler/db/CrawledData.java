@@ -48,6 +48,17 @@ public class CrawledData {
 		values.put(TOPICS, page.getFoundTopics());
 		values.put(CONTENT, page.getContent());
 
+		if (cursor != null) {
+			while (cursor.moveToNext()) {
+				String url = cursor.getString(cursor.getColumnIndex(WEBURL));
+				String title = cursor.getString(cursor.getColumnIndex(TITLE));
+				if (page.getUrl().equals(url) && page.getTitle().equals(title)) {
+					Log.i(TAG, "Duplicate entry. Will not download page with title: " + title + " from address: " + url);
+					return;
+				}
+			}
+		}
+
 		database.insert(TABLE_NAME, null, values);
 
 		refreshCursor();
@@ -90,7 +101,7 @@ public class CrawledData {
 	}
 
 	public void close() {
-		if(cursor != null && !cursor.isClosed()) {
+		if (cursor != null && !cursor.isClosed()) {
 			cursor.close();
 		}
 		database.close();

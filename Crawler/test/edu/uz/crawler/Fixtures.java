@@ -12,6 +12,7 @@ public class Fixtures {
 		HtmlParseData parseData = new HtmlParseData();
 		parseData.setTitle(title);
 		parseData.setText(content);
+		parseData.setHtml(content);
 
 		Page pageFixture = new Page(Fixtures.getFixtureWebpageUrl());
 		pageFixture.setParseData(parseData);
