@@ -13,8 +13,8 @@
         android:id="@+id/historyList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/deleteAllHistory" >
-
+        android:layout_above="@+id/deleteAllHistory"
+        android:visibility="visible" >
     </ListView>
 
     <Button
@@ -23,6 +23,23 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/historyList"
         android:layout_alignParentBottom="true"
-        android:text="@string/delete_all" />
+        android:text="@string/delete_all"
+        android:visibility="visible" />
+
+    <WebView
+        android:id="@+id/historyWebView"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/historyWebViewBackButton"
+        android:visibility="invisible" >
+    </WebView>
+
+    <Button
+        android:id="@+id/historyWebViewBackButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Back to history"
+        android:visibility="invisible" />
 
 </RelativeLayout>

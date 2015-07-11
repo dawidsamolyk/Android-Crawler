@@ -1,6 +1,5 @@
 package edu.uz.crawler.view.main.fragments;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,18 +7,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import edu.uz.crawler.R;
 import edu.uz.crawler.db.CrawledData;
 import edu.uz.crawler.db.DatabaseHelper;
-import edu.uz.crawler.view.main.CrawledPageActivity;
 
 public class HistoryFragment extends Fragment {
+	private static final String MIMIE_TYPE = "text/html";
+	private static final String ENCODING = "UTF-8";
 	public static final String WEBPAGE_CONTENT = "WEBPAGE_CONTENT";
 	private DatabaseHelper databaseHelper;
 
@@ -29,48 +31,11 @@ public class HistoryFragment extends Fragment {
 
 		View rootView = inflater.inflate(R.layout.fragment_history, container, false);
 
-		ListView list = (ListView) rootView.findViewById(R.id.historyList);
+		final ListView list = (ListView) rootView.findViewById(R.id.historyList);
 
 		int[] rowsInListView = { R.id.mainRow, R.id.secondRow, R.id.thirdRow, R.id.fourthRow, R.id.crawledPageId };
 		final SimpleCursorAdapter adapter = databaseHelper.cursorAdapter(getActivity(), rowsInListView);
 		list.setAdapter(adapter);
-
-		// Akcja po "dotkniêciu" elementu pobranej strony
-		list.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-				databaseHelper.refresh();
-				
-				Cursor cursor = (Cursor) adapter.getItem(position);
-				int crawledPageId = cursor.getInt(cursor.getColumnIndex(CrawledData.ID));
-				cursor.close();
-
-				String pageContent = databaseHelper.getContentFromPageWithId(crawledPageId);
-
-				Intent intent = new Intent(HistoryFragment.this.getActivity(), CrawledPageActivity.class);
-				intent.putExtra(WEBPAGE_CONTENT, pageContent);
-				startActivity(intent);
-			}
-		});
-
-		// Akcja po "dotkniêciu" i przytrzymaniu elementu pobranej strony
-		list.setOnItemLongClickListener(new OnItemLongClickListener() {
-
-			@Override
-			public boolean onItemLongClick(AdapterView<?> a, View v, int position, long id) {
-				databaseHelper.refresh();
-				
-				Cursor cursor = (Cursor) adapter.getItem(position);
-				int crawledPageId = cursor.getInt(cursor.getColumnIndex(CrawledData.ID));
-				cursor.close();
-
-				databaseHelper.delete(crawledPageId);
-				adapter.notifyDataSetChanged();
-
-				return true;
-			}
-		});
 
 		final Button deleteAllHistory = (Button) rootView.findViewById(R.id.deleteAllHistory);
 		deleteAllHistory.setOnClickListener(new OnClickListener() {
@@ -79,6 +44,51 @@ public class HistoryFragment extends Fragment {
 			public void onClick(View v) {
 				databaseHelper.deleteAll();
 				adapter.notifyDataSetChanged();
+			}
+		});
+
+		final WebView webView = (WebView) rootView.findViewById(R.id.historyWebView);
+		final Button backButton = (Button) rootView.findViewById(R.id.historyWebViewBackButton);
+		backButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg) {
+				webView.setVisibility(View.INVISIBLE);
+				backButton.setVisibility(View.INVISIBLE);
+				list.setVisibility(View.VISIBLE);
+				deleteAllHistory.setVisibility(View.VISIBLE);
+			}
+		});
+
+		list.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+				TextView t = (TextView) v.findViewById(R.id.crawledPageId);
+				int crawledPageId = Integer.parseInt(t.getText().toString());
+				String pageContent = databaseHelper.getContentFromPageWithId(crawledPageId);
+
+				list.setVisibility(View.INVISIBLE);
+				deleteAllHistory.setVisibility(View.INVISIBLE);
+				webView.setVisibility(View.VISIBLE);
+				backButton.setVisibility(View.VISIBLE);
+
+				webView.loadDataWithBaseURL("", pageContent, MIMIE_TYPE, ENCODING, "");
+			}
+		});
+
+		list.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> a, View v, int position, long id) {
+				Cursor cursor = (Cursor) adapter.getItem(position);
+				int crawledPageId = cursor.getInt(cursor.getColumnIndex(CrawledData.ID));
+				cursor.close();
+
+				databaseHelper.delete(crawledPageId);
+				adapter.notifyDataSetChanged();
+
+				return true;
 			}
 		});
 

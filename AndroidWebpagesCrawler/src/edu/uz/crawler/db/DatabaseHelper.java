@@ -44,10 +44,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public SimpleCursorAdapter cursorAdapter(final Context context, final int[] rowsInViewList) {
 		return table.cursorAdapter(context, rowsInViewList);
 	}
-	
-	public void refresh() {
-		table.refreshCursor();
-	}
 
 	public void deleteAll() {
 		table.deleteAll();

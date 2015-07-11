@@ -90,7 +90,9 @@ public class CrawledData {
 	}
 
 	public void close() {
-		cursor.close();
+		if(cursor != null && !cursor.isClosed()) {
+			cursor.close();
+		}
 		database.close();
 	}
 
@@ -107,6 +109,6 @@ public class CrawledData {
 		String result = cursor.getString(cursor.getColumnIndex(CONTENT));
 		cursor.close();
 
-		return result;
+		return new String(result);
 	}
 }
