@@ -48,13 +48,19 @@ public class CrawlingResultProvider extends IntentService {
 
 	private synchronized int startCrawler(final CrawlingSettings settings) throws Exception {
 		if (controller != null && controller.isCrawlerStarted()) {
-			controller.stop();
+			stopCrawler();
 		}
 
 		controller = new CrawlingController(getConfiguration(), getSettings(settings));
 		crawlerMonitor = controller.start();
 
 		return runSender(crawlerMonitor);
+	}
+
+	private void stopCrawler() {
+		if (controller != null && controller.isCrawlerStarted()) {
+			controller.stop();
+		}
 	}
 
 	private CrawlingConfiguration getConfiguration() throws IOException {
@@ -91,7 +97,7 @@ public class CrawlingResultProvider extends IntentService {
 			}
 
 			if (stopCrawler) {
-				controller.stop();
+				stopCrawler();
 				break;
 			}
 		}
@@ -126,7 +132,7 @@ public class CrawlingResultProvider extends IntentService {
 	@Override
 	public void onDestroy() {
 		stopCrawler = true;
-		controller.stop();
+		stopCrawler();
 		// wait while crawling is end
 		while (!crawlerMonitor.isFinished()) {
 			try {

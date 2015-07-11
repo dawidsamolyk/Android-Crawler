@@ -29,13 +29,13 @@ import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.html.HtmlParser;
 
-import android.util.Log;
 import edu.uci.ics.crawler4j.crawler.Configurable;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.url.URLCanonicalizer;
 import edu.uci.ics.crawler4j.url.WebURL;
 import edu.uci.ics.crawler4j.util.Util;
+import edu.uz.crawler.AndroidLogger;
 
 /**
  * @author Yasser Ganjisaffar <lastname at gmail dot com>
@@ -71,7 +71,7 @@ public class Parser extends Configurable {
 				page.setParseData(parseData);
 				return true;
 			} catch (Exception e) {
-				Log.e("CRAWLER", e.getMessage() + ", while parsing: " + page.getWebURL().getURL());
+				AndroidLogger.logError( e.getMessage() + ", while parsing: " + page.getWebURL().getURL());
 			}
 			return false;
 		}
@@ -83,14 +83,14 @@ public class Parser extends Configurable {
 			inputStream = new ByteArrayInputStream(page.getContentData());
 			htmlParser.parse(inputStream, contentHandler, metadata, parseContext);
 		} catch (Exception e) {
-			Log.e("CRAWLER", e.getMessage() + ", while parsing: " + page.getWebURL().getURL());
+			AndroidLogger.logError( e.getMessage() + ", while parsing: " + page.getWebURL().getURL());
 		} finally {
 			try {
 				if (inputStream != null) {
 					inputStream.close();
 				}
 			} catch (IOException e) {
-				Log.e("CRAWLER", e.getMessage() + ", while parsing: " + page.getWebURL().getURL());
+				AndroidLogger.logError( e.getMessage() + ", while parsing: " + page.getWebURL().getURL());
 			}
 		}
 

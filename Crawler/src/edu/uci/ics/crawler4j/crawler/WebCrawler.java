@@ -20,7 +20,6 @@ package edu.uci.ics.crawler4j.crawler;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.util.Log;
 import ch.boye.httpclientandroidlib.HttpStatus;
 import edu.uci.ics.crawler4j.fetcher.CustomFetchStatus;
 import edu.uci.ics.crawler4j.fetcher.PageFetchResult;
@@ -32,6 +31,7 @@ import edu.uci.ics.crawler4j.parser.ParseData;
 import edu.uci.ics.crawler4j.parser.Parser;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 import edu.uci.ics.crawler4j.url.WebURL;
+import edu.uz.crawler.AndroidLogger;
 
 /**
  * WebCrawler class in the Runnable class that is executed by each crawler
@@ -40,10 +40,6 @@ import edu.uci.ics.crawler4j.url.WebURL;
  * @author Yasser Ganjisaffar <lastname at gmail dot com>
  */
 public class WebCrawler implements Runnable {
-
-	// protected static final Logger logger =
-	// Logger.getLogger(WebCrawler.class.getName());
-
 	/**
 	 * The id associated to the crawler thread running this instance
 	 */
@@ -221,7 +217,7 @@ public class WebCrawler implements Runnable {
 						frontier.setProcessed(curURL);
 					}
 					if (myController.isShuttingDown()) {
-						Log.i("CRAWLER", "Exiting because of controller shutdown.");
+						AndroidLogger.logInfo("Exiting because of controller shutdown.");
 						return;
 					}
 				}
@@ -291,7 +287,7 @@ public class WebCrawler implements Runnable {
 						}
 					}
 				} else if (fetchResult.getStatusCode() == CustomFetchStatus.PageTooBig) {
-					Log.i("CRAWLER", "Skipping a page which was bigger than max allowed size: " + curURL.getURL());
+					AndroidLogger.logInfo("Skipping a page which was bigger than max allowed size: " + curURL.getURL());
 				}
 				return;
 			}
@@ -350,13 +346,12 @@ public class WebCrawler implements Runnable {
 			try {
 				visit(page);
 			} catch (Exception e) {
-				Log.e("CRAWLER",
-						"Exception while running the visit method. Message: '" + e.getMessage() + "' at "
-								+ e.getStackTrace()[0]);
+				AndroidLogger.logError("Exception while running the visit method. Message: '" + e.getMessage()
+						+ "' at " + e.getStackTrace()[0]);
 			}
 
 		} catch (Exception e) {
-			Log.e("CRAWLER", e.getMessage() + ", while processing: " + curURL.getURL());
+			AndroidLogger.logError(e.getMessage() + ", while processing: " + curURL.getURL());
 		} finally {
 			if (fetchResult != null) {
 				fetchResult.discardContentIfNotConsumed();

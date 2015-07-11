@@ -28,11 +28,12 @@ import edu.uz.crawler.controller.CrawlingControllerTest;
 public class AllTests {
 	public static void main(String[] args) {
 		Result result = JUnitCore.runClasses(AllTests.class);
+
 		for (Failure fail : result.getFailures()) {
 			System.out.println(fail.toString());
 		}
 		if (result.wasSuccessful()) {
-			System.out.println("All tests finished successfully...");
+			System.out.println("All tests (" + result.getRunCount() + ") finished successfully...");
 		}
 		System.exit(0);
 	}

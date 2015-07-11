@@ -21,8 +21,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.util.Log;
-
 import com.sleepycat.je.Environment;
 import com.sleepycat.je.EnvironmentConfig;
 
@@ -33,6 +31,7 @@ import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 import edu.uci.ics.crawler4j.url.URLCanonicalizer;
 import edu.uci.ics.crawler4j.url.WebURL;
 import edu.uci.ics.crawler4j.util.IO;
+import edu.uz.crawler.AndroidLogger;
 
 /**
  * The controller that manages a crawling session. This class creates the
@@ -153,8 +152,7 @@ public class CrawlController extends Configurable {
 				thread.start();
 				crawlers.add(crawler);
 				threads.add(thread);
-				Log.i("CRAWLER", "Crawler " + i + " started.");
-				Log.i("CRAWLER", "Crawler " + i + " started.");
+				AndroidLogger.logInfo("Crawler " + i + " started.");
 			}
 
 			final CrawlController controller = this;
@@ -173,8 +171,7 @@ public class CrawlController extends Configurable {
 									Thread thread = threads.get(i);
 									if (!thread.isAlive()) {
 										if (!shuttingDown) {
-											Log.i("CRAWLER", "Thread " + i + " was dead, I'll recreate it.");
-											Log.i("CRAWLER", "Thread " + i + " was dead, I'll recreate it.");
+											AndroidLogger.logInfo("Thread " + i + " was dead, I'll recreate it.");
 											T crawler = _c.newInstance();
 											thread = new Thread(crawler, "Crawler " + (i + 1));
 											threads.remove(i);
@@ -193,10 +190,8 @@ public class CrawlController extends Configurable {
 									// Make sure again that none of the threads
 									// are
 									// alive.
-									Log.i("CRAWLER",
-											"It looks like no thread is working, waiting for 10 seconds to make sure...");
-									Log.i("CRAWLER",
-											"It looks like no thread is working, waiting for 10 seconds to make sure...");
+									AndroidLogger
+											.logInfo("It looks like no thread is working, waiting for 10 seconds to make sure...");
 									sleep(10);
 
 									someoneIsWorking = false;
@@ -212,8 +207,8 @@ public class CrawlController extends Configurable {
 											if (queueLength > 0) {
 												continue;
 											}
-											Log.i("CRAWLER",
-													"No thread is working and no more URLs are in queue waiting for another 10 seconds to make sure...");
+											AndroidLogger
+													.logInfo("No thread is working and no more URLs are in queue waiting for another 10 seconds to make sure...");
 											sleep(10);
 											queueLength = frontier.getQueueLength();
 											if (queueLength > 0) {
@@ -221,7 +216,8 @@ public class CrawlController extends Configurable {
 											}
 										}
 
-										Log.i("CRAWLER", "All of the crawlers are stopped. Finishing the process...");
+										AndroidLogger
+												.logInfo("All of the crawlers are stopped. Finishing the process...");
 										// At this step, frontier notifies the
 										// threads that were
 										// waiting for new URLs and they should
@@ -232,7 +228,7 @@ public class CrawlController extends Configurable {
 											crawlersLocalData.add(crawler.getMyLocalData());
 										}
 
-										Log.i("CRAWLER", "Waiting for 10 seconds before final clean up...");
+										AndroidLogger.logInfo("Waiting for 10 seconds before final clean up...");
 										sleep(10);
 
 										frontier.close();
@@ -332,7 +328,7 @@ public class CrawlController extends Configurable {
 	public void addSeed(String pageUrl, int docId) {
 		String canonicalUrl = URLCanonicalizer.getCanonicalURL(pageUrl);
 		if (canonicalUrl == null) {
-			Log.e("CRAWLER", "Invalid seed URL: " + pageUrl);
+			AndroidLogger.logError("Invalid seed URL: " + pageUrl);
 			return;
 		}
 		if (docId < 0) {
@@ -346,7 +342,7 @@ public class CrawlController extends Configurable {
 			try {
 				docIdServer.addUrlAndDocId(canonicalUrl, docId);
 			} catch (Exception e) {
-				Log.e("CRAWLER", "Could not add seed: " + e.getMessage());
+				AndroidLogger.logError("Could not add seed: " + e.getMessage());
 			}
 		}
 
@@ -355,7 +351,7 @@ public class CrawlController extends Configurable {
 		webUrl.setDocid(docId);
 		webUrl.setDepth((short) 0);
 		if (!robotstxtServer.allows(webUrl)) {
-			Log.i("CRAWLER", "Robots.txt does not allow this seed: " + pageUrl);
+			AndroidLogger.logInfo("Robots.txt does not allow this seed: " + pageUrl);
 		} else {
 			frontier.schedule(webUrl);
 		}
@@ -380,13 +376,13 @@ public class CrawlController extends Configurable {
 	public void addSeenUrl(String url, int docId) {
 		String canonicalUrl = URLCanonicalizer.getCanonicalURL(url);
 		if (canonicalUrl == null) {
-			Log.e("CRAWLER", "Invalid Url: " + url);
+			AndroidLogger.logError("Invalid Url: " + url);
 			return;
 		}
 		try {
 			docIdServer.addUrlAndDocId(canonicalUrl, docId);
 		} catch (Exception e) {
-			Log.e("CRAWLER", "Could not add seen url: " + e.getMessage());
+			AndroidLogger.logError("Could not add seen url: " + e.getMessage());
 		}
 	}
 
@@ -444,7 +440,7 @@ public class CrawlController extends Configurable {
 	 * process new pages.
 	 */
 	public void shutdown() {
-		Log.i("CRAWLER", "Shutting down...");
+		AndroidLogger.logInfo("Shutting down...");
 		this.shuttingDown = true;
 		frontier.finish();
 	}

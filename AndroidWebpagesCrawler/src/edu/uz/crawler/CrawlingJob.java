@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import edu.uz.crawler.db.DatabaseHelper;
 
 public class CrawlingJob {
@@ -54,8 +53,6 @@ public class CrawlingJob {
 		crawlingIntent.putExtra(CRAWLING_SETTINGS, settings);
 
 		fragmentActivity.startService(crawlingIntent);
-		
-		Log.i("CrawlingJob", "After starting service...");
 	}
 
 }

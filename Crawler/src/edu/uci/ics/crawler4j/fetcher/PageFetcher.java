@@ -22,7 +22,6 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.zip.GZIPInputStream;
 
-import android.util.Log;
 import ch.boye.httpclientandroidlib.Header;
 import ch.boye.httpclientandroidlib.HeaderElement;
 import ch.boye.httpclientandroidlib.HttpEntity;
@@ -56,15 +55,13 @@ import edu.uci.ics.crawler4j.crawler.Configurable;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.url.URLCanonicalizer;
 import edu.uci.ics.crawler4j.url.WebURL;
+import edu.uz.crawler.AndroidLogger;
 
 /**
  * @author Yasser Ganjisaffar <lastname at gmail dot com>
  */
 @SuppressWarnings("deprecation")
 public class PageFetcher extends Configurable {
-
-	// protected static final Logger logger =
-	// Logger.getLogger(PageFetcher.class);
 
 	protected PoolingClientConnectionManager connectionManager;
 
@@ -174,7 +171,7 @@ public class PageFetcher extends Configurable {
 						fetchResult.setStatusCode(statusCode);
 						return fetchResult;
 					}
-					Log.i("CRAWLER", "Failed: " + response.getStatusLine().toString() + ", while fetching "
+					AndroidLogger.logInfo("Failed: " + response.getStatusLine().toString() + ", while fetching "
 							+ toFetchURL);
 				}
 				fetchResult.setStatusCode(response.getStatusLine().getStatusCode());
@@ -226,9 +223,9 @@ public class PageFetcher extends Configurable {
 			// and other schemes
 		} catch (Exception e) {
 			if (e.getMessage() == null) {
-				Log.e("CRAWLER", "Error while fetching " + webUrl.getURL());
+				AndroidLogger.logError("Error while fetching " + webUrl.getURL());
 			} else {
-				Log.e("CRAWLER", e.getMessage() + " while fetching " + webUrl.getURL());
+				AndroidLogger.logError(e.getMessage() + " while fetching " + webUrl.getURL());
 			}
 		} finally {
 			try {
