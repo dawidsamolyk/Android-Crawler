@@ -12,6 +12,7 @@ import android.widget.EditText;
 @SuppressLint("NewApi")
 public class WebpagesNavigatorHandler extends WebViewClient implements OnClickListener, OnKeyListener {
 	private final WebView webpageView;
+	private String actualUrl;
 
 	public WebpagesNavigatorHandler(final WebView webpageView) {
 		this.webpageView = webpageView;
@@ -29,10 +30,14 @@ public class WebpagesNavigatorHandler extends WebViewClient implements OnClickLi
 
 		if (keyCode == KeyEvent.KEYCODE_ENTER && webpageAddress != null && webpageAddress.length() > 0) {
 			if (!webpageAddress.startsWith("http://")) {
-				webpageView.loadUrl("http://" + webpageAddress);
+				actualUrl = "http://" + webpageAddress;
 			} else {
-				webpageView.loadUrl(webpageAddress);
+				actualUrl = webpageAddress;
 			}
+			
+			webpageView.loadUrl(actualUrl);
+			webpageView.requestFocus();
+			
 			return true;
 		}
 		return false;

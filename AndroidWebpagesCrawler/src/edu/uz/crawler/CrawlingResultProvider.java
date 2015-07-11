@@ -77,7 +77,7 @@ public class CrawlingResultProvider extends IntentService {
 
 	private int runSender(final CrawlingMonitor monitor) {
 		int crawledPages = 0;
-		
+
 		while (!monitor.isFinished() && !stopCrawler) {
 			ConcurrentLinkedQueue<edu.uz.crawler.CrawledPage> pagesToSave = Crawler.PAGES_TO_SAVE;
 
@@ -92,9 +92,10 @@ public class CrawlingResultProvider extends IntentService {
 
 			if (stopCrawler) {
 				controller.stop();
+				break;
 			}
 		}
-		
+
 		return crawledPages;
 	}
 
@@ -120,5 +121,20 @@ public class CrawlingResultProvider extends IntentService {
 		sendBroadcast(result);
 
 		return result;
+	}
+
+	@Override
+	public void onDestroy() {
+		stopCrawler = true;
+		controller.stop();
+		// wait while crawling is end
+		while (!crawlerMonitor.isFinished()) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				Log.e("EXCEPTION", e.getMessage());
+			}
+		}
+		super.onDestroy();
 	}
 }

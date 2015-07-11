@@ -1,4 +1,4 @@
-package edu.uz.crawler.view.main.fragments;
+package edu.uz.crawler.view.main.fragments.settings;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +29,7 @@ import edu.uz.crawler.CrawlingResultProvider;
 import edu.uz.crawler.CrawlingSettings;
 import edu.uz.crawler.R;
 import edu.uz.crawler.db.DatabaseHelper;
-import edu.uz.crawler.view.main.fragments.settings.CrawlingOption;
+import edu.uz.crawler.view.main.fragments.navigator.WebpageFragment;
 
 public class TopicsAndSettingsFragment extends Fragment {
 	public static final String WEBPAGE_FRAGMENT_BUNDLE_NAME = "WebpageFragment";
@@ -90,6 +90,7 @@ public class TopicsAndSettingsFragment extends Fragment {
 			public void onClick(final View view) {
 				String newTopic = newTopicName.getText().toString();
 				topicsListAdapter.add(newTopic);
+				newTopicName.setText("");
 			}
 		});
 	}
@@ -162,12 +163,13 @@ public class TopicsAndSettingsFragment extends Fragment {
 			stopCrawler.setEnabled(false);
 		}
 		if (crawlerStatus != null) {
-			crawlerStatus.setText("Downloaded pages: " + crawledPages);
+			crawlerStatus.setText("Crawled: " + crawledPages);
 		}
 	}
 
 	@Override
 	public void onDestroy() {
+		CrawlingResultProvider.stopCrawler = true;
 		databaseHelper.close();
 		super.onDestroy();
 	}

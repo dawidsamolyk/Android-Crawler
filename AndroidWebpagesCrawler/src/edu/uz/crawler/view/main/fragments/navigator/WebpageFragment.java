@@ -1,7 +1,8 @@
-package edu.uz.crawler.view.main.fragments;
+package edu.uz.crawler.view.main.fragments.navigator;
 
 import java.io.Serializable;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,11 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import edu.uz.crawler.R;
-import edu.uz.crawler.view.main.fragments.navigator.WebpagesNavigatorHandler;
 
 public class WebpageFragment extends Fragment implements Serializable {
 	private static final long serialVersionUID = 5990770478494895878L;
@@ -46,6 +47,17 @@ public class WebpageFragment extends Fragment implements Serializable {
 					progressBar.setVisibility(ProgressBar.GONE);
 				}
 			}
+
+		});
+		
+		webpageView.setWebViewClient(new WebViewClient() {
+
+			@Override
+			public void onPageStarted(WebView view, String url, Bitmap favicon) {
+				webpageAddress.setText(url);
+				super.onPageStarted(view, url, favicon);
+			}
+			
 		});
 
 		return rootView;

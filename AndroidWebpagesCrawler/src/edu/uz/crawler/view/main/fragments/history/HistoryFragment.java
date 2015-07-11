@@ -1,4 +1,4 @@
-package edu.uz.crawler.view.main.fragments;
+package edu.uz.crawler.view.main.fragments.history;
 
 import android.database.Cursor;
 import android.os.Bundle;
